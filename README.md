@@ -9,7 +9,6 @@ I'm an **Undergraduate Software Engineering Student** with a focus on both **fro
 - 🌐 Web Development: Proficient in building responsive, accessible websites with a user-centric approach.
 - 📱 Mobile Development: Actively learning mobile app development to expand my expertise in building seamless, multi-platform applications.
 - 🌍 Location: Based in Colombo, Sri Lanka.
-    - **Current Weather**: 0°C, broken clouds
 - 🚀 Goals: Eager to gain hands-on experience through internships, projects, and collaborations.
 - 🎓 Continuous Learner: Constantly refining my skills to keep up with the latest in tech.
 
@@ -22,7 +21,7 @@ In my free time, I love to play games, listen to music, and watch sports. These 
     <a href="https://discord.gg/JYHZS6zhwS"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&color=black" alt="Discord"></a>
 </div>
 
-### Things I code with:
+<h2 style="font-size: 20px;">Things I code with:</h2>
 
 [![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
