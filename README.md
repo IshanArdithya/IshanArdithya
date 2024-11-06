@@ -15,10 +15,10 @@ I'm an **Undergraduate Software Engineering Student** with a focus on both **fro
 In my free time, I love to play games, listen to music, and watch sports. These hobbies keep me balanced, inspired, and motivated to bring creativity into my projects.
 
 <div align="center">
-    <a href="mailto:ishanardithya@gmail.com" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Gmail: ishanardithya@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white&color=black" alt="Gmail"></a>
-    <a href="https://www.linkedin.com/in/ishan-ardithya/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&color=black" alt="Linkedin"></a><br>
-    <a href="https://www.instagram.com/ishan_ardithya/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white&color=black" alt="Instagram"></a>
-    <a href="https://discord.gg/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Discord: heoughten-5865F2?style=for-the-badge&logo=discord&logoColor=white&color=black" alt="Discord"></a>
+    <a href="mailto:ishanardithya@gmail.com"><img src="https://img.shields.io/badge/Gmail: ishanardithya@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white&color=black" alt="Gmail"></a>
+    <a href="https://www.linkedin.com/in/ishan-ardithya/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&color=black" alt="Linkedin"></a><br>
+    <a href="https://www.instagram.com/ishan_ardithya/"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white&color=black" alt="Instagram"></a>
+    <a href="https://discord.gg/"><img src="https://img.shields.io/badge/Discord: heoughten-5865F2?style=for-the-badge&logo=discord&logoColor=white&color=black" alt="Discord"></a>
 </div>
 
 ## Things I code with:
