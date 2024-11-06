@@ -1,7 +1,7 @@
-## Hey <img src="https://github.com/KenanGain/KenanGain/blob/main/icons/wave.gif" width="48">, I'm Ishan Ardithya
+## <div align="center"> Hey <img src="https://github.com/KenanGain/KenanGain/blob/main/icons/wave.gif" width="48">, I'm Ishan Ardithya </div>
 <br>
 <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?color=E22FE4&width=380&height=28&lines=Hello,+I'm+Ishan+Ardithya..;Undergraduate+Software+Engineer&center=true"></a>
+    <img src="https://readme-typing-svg.herokuapp.com?color=70a5fd&width=380&height=28&lines=Undergraduate+SE+Student;Full+Stack+Developer;Web+Developer&center=true"></a>
 </p>
 
 I'm an **Undergraduate Software Engineering Student** with a focus on both **frontend** and **backend** web development. Currently, I'm exploring **mobile application development** and expanding my skill set in multi-platform solutions.
@@ -21,7 +21,7 @@ In my free time, I love to play games, listen to music, and watch sports. These 
     <a href="https://discord.gg/JYHZS6zhwS"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&color=black" alt="Discord"></a>
 </div>
 
-<h2 style="font-size: 20px;">Things I code with:</h2>
+## Things I code with:
 
 [![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
@@ -50,7 +50,7 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 [![Android Studio](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)](https://developer.android.com/studio)
 [![Android Studio](https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white)](https://developer.android.com/studio)
 
-### My Github Stats
+## Github Stats
 <div class="badges-githubstats">
     <p align="center">
     <img src="https://github-readme-stats.vercel.app/api?username=IshanArdithya&hide_title=true&hide_rank=false&show_icons=true&include_all_commits=false&count_private=true&disable_animations=false&theme=tokyonight&locale=en&hide_border=true&order=1" height="155" alt="Ishan's Stats"  />
@@ -58,8 +58,11 @@ In my free time, I love to play games, listen to music, and watch sports. These 
     </p>
 </div>
 
-###
+##
 
 <div align="center">
     <img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/output/snake.svg" alt="Snake animation" />
 </div>
+
+![Profile views](https://komarev.com/ghpvc/?username=IshanArdithya&label=Profile%20views&color=60598F&style=pixel)
+---
