@@ -9,6 +9,7 @@ I'm an **Undergraduate Software Engineering Student** with a focus on both **fro
 - 🌐 Web Development: Proficient in building responsive, accessible websites with a user-centric approach.
 - 📱 Mobile Development: Actively learning mobile app development to expand my expertise in building seamless, multi-platform applications.
 - 🌍 Location: Based in Colombo, Sri Lanka.
+    - **Current Weather**: 0°C, broken clouds
 - 🚀 Goals: Eager to gain hands-on experience through internships, projects, and collaborations.
 - 🎓 Continuous Learner: Constantly refining my skills to keep up with the latest in tech.
 
@@ -53,12 +54,13 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 ### My Github Stats
 <div class="badges-githubstats">
     <p align="center">
-    <img src="https://github-readme-stats.vercel.app/api?username=IshanArdithya&hide_title=true&hide_rank=false&show_icons=true&include_all_commits=false&count_private=true&disable_animations=false&theme=tokyonight&locale=en&hide_border=true&order=1" height="165" alt="Ishan's Stats"  />
-    <img src="https://streak-stats.demolab.com?user=IshanArdithya&locale=en&mode=daily&theme=tokyonight&hide_border=true&border_radius=5&order=3" height="165" alt="Ishan's Streak"  />
+    <img src="https://github-readme-stats.vercel.app/api?username=IshanArdithya&hide_title=true&hide_rank=false&show_icons=true&include_all_commits=false&count_private=true&disable_animations=false&theme=tokyonight&locale=en&hide_border=true&order=1" height="155" alt="Ishan's Stats"  />
+    <img src="https://streak-stats.demolab.com?user=IshanArdithya&locale=en&mode=daily&theme=tokyonight&hide_border=true&border_radius=5&order=3" height="155" alt="Ishan's Streak"  />
     </p>
 </div>
 
 ###
-<br clear="both">
 
-<img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/output/snake.svg" alt="Snake animation" />
+<div align="center">
+    <img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/output/snake.svg" alt="Snake animation" />
+</div>
