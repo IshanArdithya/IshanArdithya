@@ -54,7 +54,7 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 <div class="badges-githubstats">
     <p align="center">
     <img src="https://github-readme-stats.vercel.app/api?username=IshanArdithya&hide_title=true&hide_rank=false&show_icons=true&include_all_commits=false&count_private=true&disable_animations=false&theme=tokyonight&locale=en&hide_border=true&order=1" height="155" alt="Ishan's Stats"  />
-    <img src="https://streak-stats.demolab.com?user=IshanArdithya&locale=en&mode=daily&theme=tokyonight&hide_border=true&border_radius=5&order=3" height="155" alt="Ishan's Streak"  />
+    <img src="https://github-readme-streak-stats-salesp07.vercel.app?user=IshanArdithya&theme=tokyonight&hide_border=true&card_width=466" height="155" alt="Ishan's Streak"  />
     </p>
 </div>
 
@@ -65,4 +65,5 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 </div>
 
 ![Profile views](https://komarev.com/ghpvc/?username=IshanArdithya&label=Profile%20views&color=60598F&style=pixel)
+
 ---
