@@ -4,7 +4,7 @@
     <img src="https://readme-typing-svg.herokuapp.com?color=70a5fd&width=380&height=28&lines=Undergraduate+SE+Student;Full+Stack+Developer;Web+Developer&center=true"></a>
 </p>
 
-I'm an **Undergraduate Software Engineering Student** with a focus on both **frontend** and **backend** web development. Currently, I'm exploring **mobile application development** and expanding my skill set in multi-platform solutions.
+I'm an **Undergraduate Software Engineering Student** with a focus on both **frontend** and **backend** web development. Currently, I'm exploring **web development with Next.js** and expanding my skill set in modern web frameworks.
 
 - 🌐 Web Development: Proficient in building responsive, accessible websites with a user-centric approach.
 - 📱 Mobile Development: Actively learning mobile app development to expand my expertise in building seamless, multi-platform applications.
