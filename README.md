@@ -65,6 +65,6 @@ In my free time, I love to play games, listen to music, and watch sports. These 
     <img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/output/snake.svg" alt="Snake animation" />
 </div>
 
-[Profile views](https://komarev.com/ghpvc/?username=IshanArdithya&label=Profile%20views&color=60598F&style=pixel)
+![Profile views](https://komarev.com/ghpvc/?username=IshanArdithya&label=Profile%20views&color=60598F&style=pixel)
 
 ---
