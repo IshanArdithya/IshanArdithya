@@ -1,16 +1,16 @@
 ## <div align="center"> Hey <img src="https://github.com/KenanGain/KenanGain/blob/main/icons/wave.gif" width="48">, I'm Ishan Ardithya </div>
 <br>
 <p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?color=70a5fd&width=380&height=28&lines=Undergraduate+SE+Student;Full+Stack+Developer;Web+Developer&center=true"></a>
+    <img src="https://readme-typing-svg.herokuapp.com?color=70a5fd&width=380&height=28&lines=Software+Engineer;Full+Stack+Developer;Freelancer&center=true" alt="Typing SVG">
 </p>
 
-I'm an **Undergraduate Software Engineering Student** with a focus on both **frontend** and **backend** web development. Currently, I'm exploring **web development with Next.js** and expanding my skill set in modern web frameworks.
+I'm a **Software Engineer** and **Freelancer** with a focus on delivering robust **frontend** and **backend** solutions. Currently, I'm building full-stack applications with **Next.js**, diving deep into **DevOps** and infrastructure, and planning my next steps into the world of 3D web graphics.
 
-- 🌐 Web Development: Proficient in building responsive, accessible websites with a user-centric approach.
-- 📱 Mobile Development: Actively learning mobile app development to expand my expertise in building seamless, multi-platform applications.
-- 🌍 Location: Based in Colombo, Sri Lanka.
-- 🚀 Goals: Eager to gain hands-on experience through internships, projects, and collaborations.
-- 🎓 Continuous Learner: Constantly refining my skills to keep up with the latest in tech.
+- 🌐 **Web Development:** Proficient in building responsive, scalable, and accessible applications with a user-centric approach.
+- ⚙️ **DevOps & Infrastructure:** Actively learning and implementing modern deployment workflows, containerization, and server management.
+- 🎨 **Next Frontier:** Planning to explore **Three.js** and **OpenGL** for immersive web experiences.
+- 🌍 **Location:** Based in Colombo, Sri Lanka.
+- 🚀 **Goals:** Open to **Associate / Software Engineer (SE)** roles and exciting freelance collaborations.
 
 In my free time, I love to play games, listen to music, and watch sports. These hobbies keep me balanced, inspired, and motivated to bring creativity into my projects.
 
@@ -23,33 +23,36 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 
 ## Things I code with:
 
+### Frontend
 [![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-<br>
 [![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)](https://www.javascript.com/)
 [![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://cplusplus.com/)
-[![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)]()
-[![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.java.com/)
-[![DotNet](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/en-us/)
+<br>
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
+[![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+
+### Backend & Database
 [![Nodejs](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Expressjs](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-<br>
 [![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 <br>
+[![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://cplusplus.com/)
+[![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.java.com/)
+[![DotNet](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/en-us/)
+<br>
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+
+### DevOps, Tools & OS
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
 [![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com/)
 [![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white)](https://www.postman.com/)
 <br>
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)]()
 [![Visual Studio Code](https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)](https://code.visualstudio.com/)
-[![Apache NetBeans](https://img.shields.io/badge/apache%20netbeans-1B6AC6?style=for-the-badge&logo=apache%20netbeans%20IDE&logoColor=white)](https://netbeans.apache.org/front/main/index.html)
-[![Android Studio](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)](https://developer.android.com/studio)
-[![Android Studio](https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white)](https://developer.android.com/studio)
 
 ## Github Stats
 <div class="badges-githubstats">
