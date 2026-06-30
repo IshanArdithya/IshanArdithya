@@ -4,13 +4,13 @@
     <img src="https://readme-typing-svg.herokuapp.com?color=70a5fd&width=380&height=28&lines=Software+Engineer;Full+Stack+Developer;Freelancer&center=true" alt="Typing SVG">
 </p>
 
-I'm a **Software Engineer** and **Freelancer** with a focus on delivering robust **frontend** and **backend** solutions. Currently, I'm building full-stack applications with **Next.js**, diving deep into **DevOps** and infrastructure, and planning my next steps into the world of 3D web graphics.
+I'm a full-stack Software Engineer and freelancer. I spend my days building web apps, writing APIs, and automating my deployment workflows.
 
-- 🌐 **Web Development:** Proficient in building responsive, scalable, and accessible applications with a user-centric approach.
-- ⚙️ **DevOps & Infrastructure:** Actively learning and implementing modern deployment workflows, containerization, and server management.
-- 🎨 **Next Frontier:** Planning to explore **Three.js** and **OpenGL** for immersive web experiences.
+- 🌐 **Web Development:** Focused on building full-stack applications using TypeScript, React, and Next.js.
+- ⚙️ **DevOps & Infrastructure:** Exploring modern deployment pipelines, Docker containerization, and server management.
+- 🎨 **Next Frontier:** Planning to dive into **Three.js** and **WebGL** to build interactive 3D browser experiences.
 - 🌍 **Location:** Based in Colombo, Sri Lanka.
-- 🚀 **Goals:** Open to **Associate / Software Engineer (SE)** roles and exciting freelance collaborations.
+- 💼 **Open to:** **Software Engineer** roles and freelance collaborations.
 
 In my free time, I love to play games, listen to music, and watch sports. These hobbies keep me balanced, inspired, and motivated to bring creativity into my projects.
 
@@ -38,6 +38,7 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 [![Nodejs](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Expressjs](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com/)
 <br>
 [![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://cplusplus.com/)
 [![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.java.com/)
