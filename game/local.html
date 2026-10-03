@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>README Raid · Play locally</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0d1117; color: #f3e6cb; font: 15px/1.6 system-ui, sans-serif; }
+    main { max-width: 688px; margin: 48px auto; padding: 0 24px; }
+    header { margin-bottom: 24px; }
+    .eyebrow { color: #55d7c3; font: 12px ui-monospace, monospace; letter-spacing: 2px; text-transform: uppercase; }
+    h1 { font-size: clamp(25px, 5vw, 34px); letter-spacing: -1px; margin: 8px 0; line-height: 1.2; }
+    p { margin: 8px 0; }
+    .muted, small { color: #a5b5c9; }
+    #scene { display: block; width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 12px; }
+    #actions { display: flex; gap: 8px; margin: 18px 0; }
+    #actions button { background: none; padding: 0; border: none; cursor: pointer; max-width: 96px; min-width: 0; flex: 1; border-radius: 5px; }
+    #actions img { display: block; width: 100%; height: auto; }
+    button:focus-visible, summary:focus-visible { outline: 2px solid #f3e6cb; outline-offset: 4px; }
+    #actions button:hover:not(:disabled) { filter: brightness(1.25); }
+    #actions button:disabled { cursor: default; opacity: .65; }
+    #stats { font: 13px/1.7 ui-monospace, monospace; color: #a5b5c9; }
+    #intent { margin-top: 14px; font-weight: 650; }
+    #result { border-left: 2px solid #55d7c3; padding: 4px 0 4px 14px; margin-top: 18px; min-height: 60px; }
+    #roll { color: #ebbb76; font: 13px/1.7 ui-monospace, monospace; }
+    .foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 24px 0; }
+    #reset { background: transparent; border: 1px solid #364458; border-radius: 5px; color: #a5b5c9; padding: 8px 12px; cursor: pointer; }
+    details { border-top: 1px solid #263345; padding: 16px 0; }
+    summary { cursor: pointer; color: #a5b5c9; }
+    li { margin: 8px 0; }
+    ul, ol { padding-left: 20px; }
+    @media (max-width: 400px) { main { padding: 0 16px; margin-top: 24px; } }
+    @media (prefers-color-scheme: light) { body { background: #f6f8fa; color: #182334; } .muted, small, summary, #stats, #reset { color: #526174; } .eyebrow { color: #17796f; } #roll { color: #876028; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Local playtest</div>
+      <h1>Protect the moonlit shrine.</h1>
+      <p class="muted">The real battle rules, with fresh random rolls on every attack.</p>
+    </header>
+    <img id="scene" alt="Frieren versus Aura" width="640" height="360">
+    <div id="actions" aria-label="Battle actions"></div>
+    <div id="stats"></div>
+    <p id="intent"></p>
+    <div id="result" role="status" aria-live="polite"><p id="message"></p><p id="roll"></p></div>
+    <div class="foot"><small>Only this tab. Refreshing resets the demo.</small><button id="reset" type="button">Reset demo</button></div>
+    <details open>
+      <summary>How to play</summary>
+      <ul>
+        <li><strong>Attack:</strong> deal 5–7 damage, or 14–18 while charged. Each attack has a 10% critical chance for 1.5× damage, rounded down.</li>
+        <li><strong>Guard:</strong> take at most 1 damage this turn and keep your charge.</li>
+        <li><strong>Charge:</strong> power up your next attack. Charging leaves you exposed, and cannot stack.</li>
+      </ul>
+      <p class="muted">Aura repeats Guard → Attack (4) → Charge (0) → Assault (10). Her Guard halves your final damage, rounded up. Her Charge is an opening before a strong assault. A killing blow prevents retaliation.</p>
+      <p class="muted">This is a simplified encounter inspired by her army and scales. Her full obedience magic and Frieren’s extra abilities are reserved for the next phase.</p>
+    </details>
+    <details><summary>Recent turns</summary><ol id="history"></ol></details>
+    <p class="muted"><small>This demo tests combat and artwork. GitHub issue handling and Actions need a separate GitHub test.</small></p>
+    <noscript>Enable JavaScript to play this local demo.</noscript>
+  </main>
+  <script type="module" src="/local-client.mjs"></script>
+</body>
+</html>

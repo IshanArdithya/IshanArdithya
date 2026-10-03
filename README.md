@@ -21,6 +21,47 @@ In my free time, I love to play games, listen to music, and watch sports. These 
     <a href="https://discord.com/users/365863757735395328"><img src="https://img.shields.io/badge/Discord: heoughten-5865F2?style=for-the-badge&logo=discord&logoColor=white&color=black" alt="Discord"></a>
 </div>
 
+<!-- README-RAID:START -->
+## README Raid
+
+**Frieren faces Aura. Everyone takes a turn.** Help protect the moonlit shrine.
+
+![Frieren 24/24 HP; Aura 60/60 HP; active; uncharged](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=0)
+
+[![Attack — 5–7 damage, or 14–18 when charged](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cattack&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Guard — take at most 1 damage; keep charge](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cguard&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Charge — power up the next attack](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/charge.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Ccharge&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.)
+
+**Frieren:** 24/24 HP · **Aura:** 60/60 HP · **Charge:** empty
+
+**Next:** Guard · 0 damage. Aura shelters behind her army. Your attacks deal half damage, rounded up.
+
+**Your move:** Charge while Aura guards, Attack during openings, and Guard her assault.
+
+Choose an action → submit the prefilled issue → wait for the result → return and refresh. GitHub sign-in required.
+
+**Victories:** 0 · **Defeats:** 0 · Encounter 1 · Revision 0
+
+<details>
+<summary>How to play / Recent turns</summary>
+
+Everyone shares the same hero. You may play consecutive turns; nothing happens while nobody is playing.
+
+| Action | Effect |
+| --- | --- |
+| Attack | 5–7 damage, or 14–18 when charged. Uses charge. A 10% critical chance multiplies damage by 1.5, rounded down. |
+| Guard | Take at most 1 damage this turn and preserve charge. No healing. |
+| Charge | Power up your next Attack. Take incoming damage normally. Charge cannot stack. |
+
+Aura repeats **Guard → Attack (4) → Charge (0) → Assault (10)**. Her Guard halves your damage (rounded up) after critical hits; her Charge leaves her open and prepares the next assault. Your action resolves first; a killing blow prevents retaliation. Moves from an outdated page are rejected without changing the game.
+
+Her army and scales inspire this simplified encounter. [Character abilities and next-phase notes](game/ABILITIES.md).
+
+No moves yet. Take the first turn!
+
+[Game source and setup](game/README.md)
+
+</details>
+<!-- README-RAID:END -->
+
 ## Things I code with:
 
 ### Frontend

@@ -1,0 +1,26 @@
+name: README Raid checks
+
+on:
+  pull_request:
+    paths: ['game/**', 'README.md', '.github/workflows/raid*.yml']
+  push:
+    paths: ['game/**', 'README.md', '.github/workflows/raid*.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test game/test/*.test.mjs
+      - name: Check generated assets are current
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          node game/generate.mjs
+          git diff --exit-code -- README.md game/state.json game/assets game/events.jsonl

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "encounter": 1,
+  "revision": 0,
+  "status": "active",
+  "turn": 0,
+  "heroHp": 24,
+  "bossHp": 60,
+  "charged": false,
+  "intent": 0,
+  "wins": 0,
+  "losses": 0,
+  "previousResult": null,
+  "recent": []
+}
