@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { initialState, validateState, migrateState } from './engine.mjs';
-import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY } from './render.mjs';
+import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS } from './render.mjs';
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 export const GENERATED_PATHS = ['README.md', 'game/state.json', 'game/events.jsonl', 'game/assets/battle.svg'];
@@ -26,7 +26,7 @@ export async function generate() {
     repository: process.env.GITHUB_REPOSITORY || DEFAULT_REPOSITORY,
     branch: process.env.DEFAULT_BRANCH || 'main',
   });
-  for (const action of ['attack', 'guard', 'charge', 'charged', 'restart'])
+  for (const action of BUTTON_ASSETS)
     await writeFile(resolve(ROOT, `game/assets/${action}.svg`), renderButton(action));
   await writeFile(resolve(ROOT, 'game/events.jsonl'), '', { flag: 'a' });
 }

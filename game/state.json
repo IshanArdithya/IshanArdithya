@@ -1,15 +1,19 @@
 {
-  "version": 2,
+  "version": 3,
   "encounter": 1,
   "revision": 0,
   "status": "active",
   "turn": 0,
-  "heroHp": 24,
-  "bossHp": 60,
+  "heroHp": 26,
+  "bossHp": 100,
   "charged": false,
   "intent": 0,
   "wins": 0,
   "losses": 0,
   "previousResult": null,
-  "recent": []
+  "recent": [],
+  "heroMana": 240,
+  "bossMana": 40,
+  "guardCooldown": 0,
+  "ultimateCooldown": 0
 }

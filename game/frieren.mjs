@@ -1,21 +1,18 @@
-import { FRIEREN_IMAGE } from './frieren-source.mjs';
-
-// Masks use the source image's 1254 × 1254 coordinates. The original image is
-// embedded once; clipped copies isolate the twin tails without changing pixels.
-const LEFT_HAIR = 'M410 240H548V350H500V395H447V450H428V520H387V583H348V644H300V720H280V795H85V540H190V480H230V420H270V360H330V300H390Z';
-const RIGHT_HAIR = 'M779 505H800V527H821V548H843V570H856V608H820L802 588L782 549H779Z';
+import { FRIEREN_LAYERS, FRIEREN_SEAMS } from './frieren-source.mjs';
 
 function closedEyes(half = false) {
-  // Cover only the two eye regions. Separate stepped skin patches follow the
-  // existing fringe so neither the hair nor the nose moves during a blink.
-  const lower = half ? 438 : 480;
-  const lid = half ? 431 : 449;
-  return `<path d="M612 400h45v21h-45zM593 420h64v${lower - 420}h-64zM716 400h43v21h20v17h-20v${lower - 438}h-43z" fill="#fde4cf"/>
-    <path d="M593 420h18v18h-18z" fill="#f9c7af"/>
-    <path d="M595 ${lid}h18v8h-18zM613 ${lid + 8}h43v9h-43zM716 ${lid + 8}h41v9h-41zM757 ${lid}h17v8h-17z" fill="#392c36"/>`;
+  // Coordinates are native pixel cells. Leave the fringe and nose untouched.
+  return half
+    ? '<path fill="#fce3ce" d="M59 35h4v3h-4zM68 35h4v3h-4z"/><path fill="#0e080e" d="M59 37h4v1h-4zM68 37h4v1h-4z"/>'
+    : '<path fill="#fce3ce" d="M59 35h4v5h-4zM68 35h4v5h-4z"/><path fill="#0e080e" d="M59 37h4v1h-4zM68 37h4v1h-4z"/>';
 }
 
 function magic(pose) {
+  if (pose === 'ultimate') return `<g class="spell-cast" data-effect="unleashed-zoltraak">
+    <path d="M150 44h18v-7h40v7h108v5h40v4h-40v5H208v7h-40v-7h-18z" fill="#c6a8fa" opacity=".38"/>
+    <path d="M154 49h36v-4h26v4h112v4H216v4h-26v-4h-36z" fill="#fff7dc"/>
+    <path d="M147 37h4v8h-4zM147 60h4v8h-4zM181 28h4v8h-4zM181 70h4v8h-4z" fill="#c6a8fa"/>
+  </g>`;
   if (pose === 'attacking') return `<g class="spell-cast" data-effect="spell-bolt">
     <path d="M171 47h42v3h15v3h24v3h-24v3h-15v3h-42v-3h-12v-9h12z" fill="#55d7c3" opacity=".3"/>
     <path d="M156 51h63v3h21v3h-21v3h-63z" fill="#c2f4e7"/>
@@ -35,31 +32,23 @@ function magic(pose) {
   return '';
 }
 
-export function frierenArt(pose) {
+export function frierenEffects(pose) {
+  return `<g transform="${pose === 'attacking' || pose === 'ultimate' ? 'translate(98 109)' : 'translate(112 138)'}">${magic(pose)}</g>`;
+}
+
+export function frierenArt(pose, { effects = true } = {}) {
   const fallen = pose === 'defeated';
   const eyes = fallen
-    ? `<g data-eyes="closed">${closedEyes()}</g>`
+    ? `<g class="fallen-eyes" data-eyes="closed">${closedEyes()}</g>`
     : `<g class="blink-half" data-eyes="half">${closedEyes(true)}</g><g class="blink" data-eyes="closed">${closedEyes()}</g>`;
-  return `<g data-character="frieren" data-pose="${pose}">
-    <defs>
-      <image id="frieren-source" width="1254" height="1254" href="${FRIEREN_IMAGE}" image-rendering="pixelated"/>
-      <clipPath id="frieren-bounds"><rect x="110" y="240" width="1100" height="840"/></clipPath>
-      <clipPath id="frieren-left-hair"><path d="${LEFT_HAIR}"/></clipPath>
-      <clipPath id="frieren-right-hair"><path d="${RIGHT_HAIR}"/></clipPath>
-      <mask id="frieren-body" maskUnits="userSpaceOnUse" x="0" y="0" width="1254" height="1254" style="mask-type:luminance">
-        <rect width="1254" height="1254" fill="white"/>
-        <path d="${LEFT_HAIR}" fill="black"/><path d="${RIGHT_HAIR}" fill="black"/>
-      </mask>
-    </defs>
-    ${fallen ? '' : `<g transform="translate(112 ${pose === 'attacking' ? 120 : 138})">${magic(pose)}</g>`}
-    <g transform="translate(75 98)" opacity="${fallen ? '.55' : '1'}">
+  const part = (name, motion = '') => `<g data-frieren-layer="${name}" class="${fallen ? '' : motion}">${FRIEREN_LAYERS[name]}</g>`;
+  return `<g data-character="frieren" data-pose="${pose}" shape-rendering="crispEdges">
+${fallen || !effects ? '' : frierenEffects(pose)}
+    <g transform="translate(54 86) scale(2)" class="${fallen ? 'frieren-fallen-body' : ''}">
       <g class="${fallen ? 'frieren-fallen' : 'frieren-idle'}">
-        <g transform="scale(.16)"><g clip-path="url(#frieren-bounds)">
-          <g class="${fallen ? '' : 'hair-left'}"><g clip-path="url(#frieren-left-hair)"><use href="#frieren-source"/></g></g>
-          <g class="${fallen ? '' : 'hair-right'}"><g clip-path="url(#frieren-right-hair)"><use href="#frieren-source"/></g></g>
-          <use href="#frieren-source" mask="url(#frieren-body)"/>
-          ${eyes}
-        </g></g>
+        <g data-frieren-joints="true">${FRIEREN_SEAMS}</g>
+        ${part('hairLeft', 'hair-left')}${part('hairRight', 'hair-right')}${part('body')}
+        ${eyes}
       </g>
     </g>
   </g>`;

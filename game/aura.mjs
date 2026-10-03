@@ -11,27 +11,31 @@ function knight(x, y, attack = false) {
   </g>`;
 }
 
-export function auraArt(pose) {
+export function auraEffects(pose) {
+  if (pose === 'guard') return `<g data-effect="aura-guard">${knight(365,236)}</g>`;
+  if (pose === 'attack' || pose === 'assault') return `<g data-effect="aura-${pose}">
+    <g class="raid-soldier-lunge">${knight(367,236,true)}${pose === 'assault' ? knight(331,236,true) : ''}</g>
+    <path d="M434 190Q389 192 327 229" fill="none" stroke="#d69cf4" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/>
+  </g>`;
+  if (pose === 'charge') return `<g data-effect="aura-mana-recovery" fill="#d69cf4">
+    <path d="M420 273h14v-2h92v2h14v4h-14v2h-92v-2h-14z" opacity=".4"/>
+    <path d="M406 251v-49h3v49zM551 247v-53h3v53zM419 181h3v9h-3zM544 167h3v9h-3z" opacity=".7"/>
+    <g transform="translate(352 94) scale(2)" fill="#fff2b3"><path d="M32 56h2v1h-2zM46 56h2v1h-2zM40 46h2v2h-2z"/></g>
+  </g>`;
+  return '';
+}
+export function auraArt(pose, { effects = true } = {}) {
   const fallen = pose === 'defeated';
-  const charging = pose === 'charge';
-  const attacking = pose === 'attack' || pose === 'assault';
-  const army = fallen || charging ? '' : pose === 'guard' ? knight(365, 236)
-    : `${knight(367, 236, true)}${pose === 'assault' ? knight(331, 236, true) : ''}`;
   const part = (name, motion = '') => `<g data-aura-layer="${name}" class="${fallen ? '' : motion}">${AURA_LAYERS[name]}</g>`;
   return `<g data-character="aura" data-pose="aura-${pose}" shape-rendering="crispEdges">
-    ${army}
-    ${charging ? '<g class="aura-mana" fill="#d69cf4"><ellipse cx="465" cy="266" rx="58" ry="6" opacity=".4"/><path d="M406 251v-49h3v49zM533 247v-53h3v53zM419 181h3v9h-3zM526 167h3v9h-3z" opacity=".7"/></g>' : ''}
-    <g transform="translate(405 119) scale(1.38)" opacity="${fallen ? '.4' : '1'}">
+${effects && !fallen ? auraEffects(pose) : ''}
+    <g transform="translate(352 94) scale(2)" class="${fallen ? 'aura-fallen-body' : ''}">
       <g class="${fallen ? '' : 'aura-idle'}">
         <g data-aura-joints="true">${AURA_SEAMS}</g>
         ${part('cape', 'aura-cape')}${part('hair', 'aura-hair')}${part('body')}
-        <g class="${charging ? 'aura-scales-powered' : ''}">
-          ${part('scales')}${part('panLeft', 'aura-pan-left')}${part('panRight', 'aura-pan-right')}
-        </g>
-        ${fallen ? '' : '<g class="aura-blink"><path fill="#fdf1da" d="M42 31h3v3h-3zM49 30h5v3h-5z"/><path fill="#302039" d="M42 32h3v1h-3zM49 31h5v1h-5z"/></g>'}
-        ${charging ? '<g class="aura-mana" fill="#fff2b3"><path d="M4 59h3v2H4zM24 59h3v2h-3zM14 47h3v3h-3z" opacity=".8"/></g>' : ''}
+        ${part('scales')}${part('panLeft', 'aura-pan-left')}${part('panRight', 'aura-pan-right')}
+        ${fallen ? '' : '<g class="aura-blink"><path fill="#fdf1da" d="M60 35h2v2h-2zM65 34h3v2h-3z"/><path fill="#302039" d="M60 35h2v1h-2zM65 34h3v1h-3z"/></g>'}
       </g>
     </g>
-    ${attacking ? `<path class="aura-command" d="M419 201Q389 192 ${pose === 'assault' ? '327' : '373'} 229" fill="none" stroke="#d69cf4" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/>` : ''}
   </g>`;
 }

@@ -12,35 +12,40 @@ Aura fights through an army of controlled, headless armored warriors, which wear
 
 There is no canonical three-button Attack/Guard/Charge kit or fixed damage table. In particular, this research does **not** establish a special personal “Aura shield” spell or that her sword is her primary combat style. The supplied art retains her sword, while our effects emphasize her army and scales.
 
-## Implemented now: a small, readable adaptation
+## Implemented now: mana and Unleashed Zoltraak
 
-Frieren keeps Attack, Guard, and Charge. Her existing spell bolt and barrier remain visual interpretations. There are no mana meters, cooldowns, extra action buttons, or obedience status effects yet.
+Frieren has 26 HP / 240 MP; Aura has 100 HP and starts with 40/60 MP. The four-to-one maximum-mana ratio is a game choice representing Frieren's much larger reserve. The series does not provide these numeric measurements.
 
-| Aura's announced turn | Current game rule | Visual | Relationship to the story |
-| --- | --- | --- | --- |
-| Guard | Halve Frieren's final attack damage, rounded up. Deal 0 damage. | An armored servant screens Aura. | Army-based protection is a game interpretation, not a named canonical guard ability. |
-| Attack | Deal 4 damage after Frieren's action. | Command trail and an attacking armored servant. | Inspired by her use of controlled warriors. |
-| Charge | Deal 0 damage; allow full incoming damage. Next turn is Assault. | Her scales sway and glow with gathered mana. | Telegraphing and a one-turn windup are game rules. No soul comparison occurs. |
-| Assault | Deal 10 damage, or 1 against Frieren's Guard. | Multiple armored servants advance. | A stronger army command, not Auserlese redefined as a damage beam. |
+The new **Unleashed Zoltraak** button adapts her ordinary offensive magic and revealed mana into a stronger shot. Zoltraak itself appears in the [official magic catalog](https://frieren-anime.jp/special/magic/). The word “Unleashed,” its ultimate classification, and all numerical mechanics below are our design, not an official ultimate spell name.
 
-The cycle repeats in that order. Aura's Guard is active during the player's move; her attacks resolve afterward. Critical hits are rolled before her guard reduction. A killing blow prevents the enemy response. The 50% reduction, damage values, cycle, and critical chance are balance decisions, not facts about the series.
+| Character / action | Implemented rule | Canon relationship |
+| --- | --- | --- |
+| Frieren / Attack | 10 MP for 5–7 damage; charged: 20 MP for 14–18. 10% critical chance. | Generic offensive magic, with original game damage rolls. |
+| Frieren / Guard | 15 MP, incoming damage at most 1. One intervening turn before reuse. | Inspired by defensive magic; cooldown is a game rule. |
+| Frieren / Charge | Restore up to 40 MP and ready a charged attack/ultimate. Can refill while charged. | A resource-recovery adaptation, not a claim that revealing hidden mana creates more energy. |
+| Frieren / Unleashed Zoltraak | 80 MP, requires/consumes charge, 32 fixed damage. Six other accepted turns before reuse. Aura's guard halves it. | A stronger Zoltraak presentation, without a canonical “ultimate form” claim. |
+| Aura / Guard | 15 MP, halve incoming damage (rounded up), no outgoing damage. | Army-based protection is a game adaptation. |
+| Aura / Attack | One controlled soldier deals 4 damage, no MP cost. | Inspired by her use of the controlled army. |
+| Aura / Charge | Recover up to 35 MP, deal 0 damage. | A game windup/recovery mechanic using her scales visually. |
+| Aura / Assault | 30 MP, army deals 10 damage. | A stronger army command, not obedience magic repurposed into a damage beam. |
 
-## Next phase: candidate ability notes, not implemented
+Aura cycles Guard → Attack → Charge → Assault. An unaffordable Guard/Assault becomes a visibly announced mana recovery turn instead; it deals no damage and offers no damage reduction. The enemy pattern then advances normally. This makes her mana availability matter before the player acts.
 
-| Character | Ability / technique | Canon basis | Small-screen game proposal |
-| --- | --- | --- | --- |
-| Aura | Auserlese / Scales of Obedience | Mana-based subjugation, with a risk of reversal. | A clearly announced mana contest with a turn to respond. Show two scale pans and the stakes. Never an invisible random instant loss. |
-| Aura | Controlled army | Sustained attacks through subjugated warriors. | At most two visible servant tokens. Removing a token weakens the next attack or guard. |
-| Aura | Mana assessment | She bases the scales decision on her reading of the opponent. | Her decision uses visible/revealed mana; concealment can mislead her. Avoid inventing a named “mana scan” spell. |
-| Frieren | Zoltraak | Offensive magic listed in the [official magic catalog](https://frieren-anime.jp/special/magic/); a central attack in the series. | Upgrade the existing Attack into a named, mana-costing shot. Do not claim the current random damage formula is canonical. |
-| Frieren | Defensive magic | Protective barriers; the [official catalog](https://frieren-anime.jp/special/magic/) lists defensive magic, with caster details in the [secondary character reference](https://frieren.fandom.com/wiki/Frieren). | Upgrade Guard to a short barrier with a visible mana cost. |
-| Frieren | Mana suppression and revelation | Concealed strength is pivotal to the Aura confrontation. | Hide stored mana, then reveal it as a counter to the scales. Suppression disguises existing mana; it does not create energy. |
-| Frieren | Dispel / spell analysis | She removes control from Aura's soldiers; see the [chapter 18 summary](https://frieren.fandom.com/wiki/Chapter_18) and the official catalog's dispelling entry. | Spend mana to remove one servant or break a temporary guard. The cost creates a choice between immediate safety and saving mana for the scales. |
+Both cooldowns belong to the shared encounter. Invalid requests and retries do not advance them. The ultimate cannot critically hit, gain another charged multiplier, or bypass guard. These limits prevent an automatic victory while allowing tactical players to finish faster. See the [simulation results](README.md#balance-validation).
 
-Recommended next-phase starting point: add one visible mana resource, Aura's announced scales contest, and Frieren's reveal response. Keep the remaining abilities as later candidates until the basic duel is still understandable at 320px. Damage, costs, cooldowns, tie behavior, and victory effects require a separate design pass.
+## Still reserved for a later phase
+
+- **Aura's actual Auserlese / Scales of Obedience contest:** compare mana with clearly announced stakes and a response turn. It is not implemented by the current Charge animation.
+- **Frieren's mana suppression/revelation as deception:** conceal existing mana, then reveal it to counter the scales. This would need a visible versus hidden mana model.
+- **Frieren's dispelling / spell analysis:** potentially remove a controlled soldier or temporary guard, based on the [chapter 18 summary](https://frieren.fandom.com/wiki/Chapter_18) and official spell catalog.
+- **Army tokens with separate health:** current soldiers illustrate Aura's commands; they are not separately targetable combatants.
 
 ## Artwork notes
 
-Aura uses the supplied 96 × 110 true pixel SVG. `assets/aura-original.svg` preserves it unchanged. `tools/prepare-aura.py` groups its 5,125 pixel cells into six independently animated layers, preserving all 95 colors. Paths use integer row runs and crisp edges, with no smoothing. Hair, cape, and scale pans move in one-pixel steps; a separate eye overlay creates occasional blinks. The army and mana effects reflect the announced intent.
+The forest is the supplied 320 × 180 pixel SVG, preserved in `assets/forest-original.svg`. `tools/prepare-forest.py` compacts all 57,600 pixels and 192 colors into same-color paths without changing the image. It fills a 640 × 360 battlefield inside the 640 × 624 scene, at two scene pixels per source pixel. Small original-color canopy highlights move over the intact background; translucent sunlight and drifting pollen add ambient motion. Status bands stay outside the battlefield, and reduced motion freezes all ambient effects.
+
+Frieren uses the supplied 128 × 96 uniform pixel SVG. `assets/frieren-original.svg` preserves it unchanged. `tools/prepare-frieren.py` partitions its 3,276 pixel cells and 95 colors into a body and two hair layers. Twin tails move independently in one-pixel steps, with original-color joint patches preventing gaps; pixel eyelids create half/closed blink frames. Staff casting, defensive barrier, mana charge, and victory effects remain separate vector geometry. The former embedded PNG is no longer used.
+
+Aura uses the supplied 128 × 96 uniform pixel SVG. `assets/aura-original.svg` preserves it unchanged. `tools/prepare-aura.py` groups its 2,724 pixel cells into six independently animated layers, preserving all 93 colors. Paths use integer row runs and crisp edges, with no smoothing. Aura renders at two scene pixels per source pixel. Frieren and her effects render 20% smaller, at 1.6, to balance the different sprite proportions; their original SVG geometry remains unchanged. Hair, cape, and scale pans move in one-pixel steps; a separate eye overlay creates occasional blinks. The army and mana effects reflect the announced intent.
 
 The standalone pixel asset is `assets/aura.svg`; the game embeds its generated layers from `aura-source.mjs`. Both characters remain self-contained in the battle SVG. Motion stops under reduced-motion preferences, and defeated Aura is still.

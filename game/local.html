@@ -14,8 +14,8 @@
     h1 { font-size: clamp(25px, 5vw, 34px); letter-spacing: -1px; margin: 8px 0; line-height: 1.2; }
     p { margin: 8px 0; }
     .muted, small { color: #a5b5c9; }
-    #scene { display: block; width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 12px; }
-    #actions { display: flex; gap: 8px; margin: 18px 0; }
+    #scene { display: block; width: 100%; height: auto; aspect-ratio: 40/39; border-radius: 12px; }
+    #actions { display: grid; grid-template-columns: repeat(2,96px); gap: 8px; margin: 18px 0; }
     #actions button { background: none; padding: 0; border: none; cursor: pointer; max-width: 96px; min-width: 0; flex: 1; border-radius: 5px; }
     #actions img { display: block; width: 100%; height: auto; }
     button:focus-visible, summary:focus-visible { outline: 2px solid #f3e6cb; outline-offset: 4px; }
@@ -39,24 +39,26 @@
   <main>
     <header>
       <div class="eyebrow">Local playtest</div>
-      <h1>Protect the moonlit shrine.</h1>
-      <p class="muted">The real battle rules, with fresh random rolls on every attack.</p>
+      <h1>Protect the forest clearing.</h1>
+      <p class="muted">Choose a move, watch both actions, then take your next turn.</p>
     </header>
-    <img id="scene" alt="Frieren versus Aura" width="640" height="360">
+    <img id="scene" alt="Frieren versus Aura in a forest clearing" width="640" height="624">
     <div id="actions" aria-label="Battle actions"></div>
-    <div id="stats"></div>
+    <div id="stats" style="white-space:pre-line"></div>
+    <p id="availability" class="muted"></p>
     <p id="intent"></p>
     <div id="result" role="status" aria-live="polite"><p id="message"></p><p id="roll"></p></div>
     <div class="foot"><small>Only this tab. Refreshing resets the demo.</small><button id="reset" type="button">Reset demo</button></div>
     <details open>
       <summary>How to play</summary>
       <ul>
-        <li><strong>Attack:</strong> deal 5–7 damage, or 14–18 while charged. Each attack has a 10% critical chance for 1.5× damage, rounded down.</li>
-        <li><strong>Guard:</strong> take at most 1 damage this turn and keep your charge.</li>
-        <li><strong>Charge:</strong> power up your next attack. Charging leaves you exposed, and cannot stack.</li>
+        <li><strong>Attack:</strong> 5–7 damage for 10 mana; 14–18 for 20 mana when charged. 10% critical chance (×1.5, rounded down).</li>
+        <li><strong>Guard:</strong> 15 mana, take at most 1 damage, and preserve charge. Take one other turn before guarding again.</li>
+        <li><strong>Charge:</strong> restore up to 40 mana and prepare an Attack or Ultimate. You can refill mana while already charged.</li>
+        <li><strong>Ultimate — Unleashed Zoltraak:</strong> 32 fixed damage for 80 mana. Requires and consumes charge. Six other accepted turns before reuse; no critical hits.</li>
       </ul>
-      <p class="muted">Aura repeats Guard → Attack (4) → Charge (0) → Assault (10). Her Guard halves your final damage, rounded up. Her Charge is an opening before a strong assault. A killing blow prevents retaliation.</p>
-      <p class="muted">This is a simplified encounter inspired by her army and scales. Her full obedience magic and Frieren’s extra abilities are reserved for the next phase.</p>
+      <p class="muted">Frieren: 26 HP / 240 MP. Aura: 100 HP, starting with 40/60 MP. Aura cycles Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP). If she cannot afford Guard or Assault, she restores mana instead.</p>
+      <p class="muted">Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns tick only when someone plays a valid turn. These numbers and the ultimate form are game adaptations; the full Scales of Obedience contest remains a future feature.</p>
     </details>
     <details><summary>Recent turns</summary><ol id="history"></ol></details>
     <p class="muted"><small>This demo tests combat and artwork. GitHub issue handling and Actions need a separate GitHub test.</small></p>

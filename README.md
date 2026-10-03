@@ -24,15 +24,21 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 <!-- README-RAID:START -->
 ## README Raid
 
-**Frieren faces Aura. Everyone takes a turn.** Help protect the moonlit shrine.
+**Frieren faces Aura. Everyone takes a turn.** Help protect the forest clearing.
 
-![Frieren 24/24 HP; Aura 60/60 HP; active; uncharged](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=0)
+![Frieren 26/26 HP; Aura 100/100 HP; active; uncharged](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=0)
 
-[![Attack — 5–7 damage, or 14–18 when charged](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cattack&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Guard — take at most 1 damage; keep charge](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cguard&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Charge — power up the next attack](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/charge.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Ccharge&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.)
+[![Attack — 5–7 damage, or 14–18 charged; 10 mana](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cattack&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Guard — take at most 1 damage; 15 mana; skip one turn before reusing](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cguard&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.)<br> [![Charge — restore 40 mana and prepare an attack or ultimate](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/charge.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Ccharge&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) ![Unleashed Zoltraak — 32 damage; 80 mana; requires Charge; 6 other turns before reuse — unavailable: Charge before casting Unleashed Zoltraak.](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate-disabled.svg)
 
-**Frieren:** 24/24 HP · **Aura:** 60/60 HP · **Charge:** empty
+**Frieren:** 26/26 HP · **Aura:** 100/100 HP · **Charge:** empty
 
-**Next:** Guard · 0 damage. Aura shelters behind her army. Your attacks deal half damage, rounded up.
+**Mana:** Frieren 240/240 MP · Aura 40/60 MP
+
+**Cooldowns:** CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.
+
+ultimate: Charge before casting Unleashed Zoltraak.
+
+**Next:** Guard · 0 damage. Aura spends 15 mana to guard. Your damage is halved, rounded up.
 
 **Your move:** Charge while Aura guards, Attack during openings, and Guard her assault.
 
@@ -47,11 +53,16 @@ Everyone shares the same hero. You may play consecutive turns; nothing happens w
 
 | Action | Effect |
 | --- | --- |
-| Attack | 5–7 damage, or 14–18 when charged. Uses charge. A 10% critical chance multiplies damage by 1.5, rounded down. |
-| Guard | Take at most 1 damage this turn and preserve charge. No healing. |
-| Charge | Power up your next Attack. Take incoming damage normally. Charge cannot stack. |
+| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when charged. Consumes charge. 10% critical chance, ×1.5 rounded down. |
+| Guard | 15 mana. Take at most 1 damage and keep charge. Must take one other turn before guarding again. |
+| Charge | Restore up to 40 mana and prepare one charged Attack or Ultimate. May refill mana while charged; cannot stack the damage boost. |
+| Ultimate | Unleashed Zoltraak: 32 fixed damage for 80 mana. Requires and consumes charge. No critical multiplier. Six other accepted turns before reuse. |
 
-Aura repeats **Guard → Attack (4) → Charge (0) → Assault (10)**. Her Guard halves your damage (rounded up) after critical hits; her Charge leaves her open and prepares the next assault. Your action resolves first; a killing blow prevents retaliation. Moves from an outdated page are rejected without changing the game.
+Frieren starts with **26 HP / 240 MP**; Aura has **100 HP / 40 MP**, with a **60 MP** limit. These are game balance values, not canon measurements.
+
+Aura cycles **Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP)**. Guard halves all incoming damage, including the ultimate. If she cannot afford Guard or Assault, she visibly recovers mana instead (0 damage, no guard). Check the displayed intent before choosing. Your action resolves first; a killing blow prevents retaliation and Aura's mana recovery.
+
+Cooldowns do not tick while nobody plays. Invalid actions, stale links, and retries spend no mana and consume no turns. Ultimate and Guard availability belongs to the shared encounter, not individual visitors.
 
 Her army and scales inspire this simplified encounter. [Character abilities and next-phase notes](game/ABILITIES.md).
 

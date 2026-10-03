@@ -119,3 +119,15 @@ test('HTTP errors never expose authentication tokens', async () => {
 test('local execution cannot reset a developer checkout', () => {
   if (process.env.GITHUB_ACTIONS !== 'true') assert.throws(() => gitRepository('/tmp', 'owner/repo', 'main'), /runner/);
 });
+
+test('ultimate receipt retries cannot spend mana or restart cooldown twice', async () => {
+  const repo=memory(); repo.state.charged=true; repo.state.intent=2;
+  const input=issue(1,'raid|1|0|ultimate');
+  await assert.rejects(processIssue(input,repo,async()=>{throw Error('feedback failed')}), /feedback failed/);
+  const before=structuredClone(repo.state);
+  const retry=await processIssue(input,repo,async()=>{});
+  assert.equal(retry.duplicate,true); assert.deepEqual(repo.state,before);
+  assert.equal(repo.state.heroMana,160); assert.equal(repo.state.ultimateCooldown,6);
+  const unavailable=await processIssue(issue(2,'raid|1|1|ultimate'),repo,async()=>{});
+  assert.equal(unavailable.rejected,true); assert.deepEqual(repo.state,before);
+});
