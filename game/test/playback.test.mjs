@@ -18,6 +18,12 @@ test('playback uses the resolved enemy action, not the next announced intent',()
   assert.match(svg,/data-timeline="frieren-damage"/);
   assert.match(svg,/data-hud="before-heroHp"/);
   assert.equal(before.heroHp,26);
+  const playback=turnPlayback(state);
+  assert.equal(playback.enemyDuration,2200);
+  assert.equal(playback.heroDamageAt,3950);
+  assert.equal(playback.duration,4900);
+  assert.match(svg,/data-timeline="frieren-damage" style="animation-delay:3.95s/);
+  assert.equal(turnPlayback(take({...initialState(),intent:1,bossHp:1},'attack').state).duration,TURN_TIMING.victoryFinish);
 });
 
 test('winning blows skip Aura response and losing blows still play the full turn',()=>{

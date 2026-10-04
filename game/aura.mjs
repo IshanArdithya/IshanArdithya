@@ -1,4 +1,6 @@
 import { AURA_LAYERS, AURA_SEAMS } from './aura-source.mjs';
+import { KNIGHT_IMAGE, KNIGHT_WIDTH, KNIGHT_HEIGHT } from './knight-source.mjs';
+import { SHIELD_KNIGHT_IMAGE, SHIELD_KNIGHT_WIDTH, SHIELD_KNIGHT_HEIGHT } from './shield-knight-source.mjs';
 
 // Small headless armored figures represent Aura's controlled army. These are
 // illustrations of her commands, not additional actors with separate HP.
@@ -12,9 +14,46 @@ function knight(x, y, attack = false) {
 }
 
 export function auraEffects(pose) {
-  if (pose === 'guard') return `<g data-effect="aura-guard">${knight(365,236)}</g>`;
-  if (pose === 'attack' || pose === 'assault') return `<g data-effect="aura-${pose}">
-    <g class="raid-soldier-lunge">${knight(367,236,true)}${pose === 'assault' ? knight(331,236,true) : ''}</g>
+  if (pose === 'guard') return `<g data-effect="aura-guard">
+    <g transform="translate(342 136)"><g class="raid-shield-advance" data-effect="shield-knight">
+      <ellipse cx="58" cy="141" rx="43" ry="5" fill="#101521" opacity=".45"/>
+      <defs>
+        <image id="shield-sprite" href="${SHIELD_KNIGHT_IMAGE}" width="${148 * SHIELD_KNIGHT_WIDTH / SHIELD_KNIGHT_HEIGHT}" height="148" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/>
+        <mask id="shield-body" maskUnits="userSpaceOnUse" x="0" y="0" width="114" height="148"><path fill="white" d="M0 0h114v148H0z"/><path fill="black" d="M12 117h31v31H12zM88 121h26v27H88z"/></mask>
+        <clipPath id="shield-front-foot"><path d="M12 117h31v31H12z"/></clipPath>
+        <clipPath id="shield-back-foot"><path d="M88 121h26v27H88z"/></clipPath>
+      </defs>
+      <g class="raid-shield-front-foot"><use href="#shield-sprite" clip-path="url(#shield-front-foot)"/></g>
+      <g class="raid-shield-back-foot"><use href="#shield-sprite" clip-path="url(#shield-back-foot)"/></g>
+      <use href="#shield-sprite" mask="url(#shield-body)"/>
+      <g class="raid-shield-block" data-effect="shield-block" fill="none" stroke-linejoin="round">
+        <path d="M14 38L30 25L42 37L54 43L56 81L52 99L44 111L27 91L20 75Z" stroke="#b8a2e8" stroke-width="4" opacity=".3"/>
+        <path d="M14 38L30 25L42 37L54 43L56 81L52 99L44 111L27 91L20 75Z" stroke="#e1d8f8" stroke-width="1"/>
+      </g>
+    </g></g>
+  </g>`;
+  if (pose === 'attack') return `<g data-effect="aura-attack">
+    <g transform="translate(320 126)"><g class="raid-knight-advance">
+      <ellipse cx="76" cy="151" rx="43" ry="5" fill="#101521" opacity=".45"/>
+      <g class="raid-knight-body" data-effect="halberd-knight">
+        <defs>
+          <image id="halberd-sprite" href="${KNIGHT_IMAGE}" width="${152 * KNIGHT_WIDTH / KNIGHT_HEIGHT}" height="152" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/>
+          <mask id="knight-upper" maskUnits="userSpaceOnUse" x="0" y="0" width="114" height="152"><path fill="white" d="M0 0h114v152H0z"/><path fill="black" d="M25 121h30v31H25zM85 128h29v24H85z"/></mask>
+          <clipPath id="knight-left-leg"><path d="M25 121h30v31H25z"/></clipPath>
+          <clipPath id="knight-right-leg"><path d="M85 128h29v24H85z"/></clipPath>
+        </defs>
+        <g class="raid-knight-left-leg"><use href="#halberd-sprite" clip-path="url(#knight-left-leg)"/></g>
+        <g class="raid-knight-right-leg"><use href="#halberd-sprite" clip-path="url(#knight-right-leg)"/></g>
+        <use href="#halberd-sprite" mask="url(#knight-upper)"/>
+        <g class="raid-halberd-glow" data-effect="halberd-edge-glow" fill="none" stroke-linejoin="round">
+          <path d="M7 9L10 19L17 30M8 28L9 37L14 42L20 45" stroke="#bc9df3" stroke-width="4" opacity=".4"/>
+          <path d="M7 9L10 19L17 30M8 28L9 37L14 42L20 45" stroke="#eee1ff" stroke-width="1.5"/>
+        </g>
+      </g>
+    </g></g>
+  </g>`;
+  if (pose === 'assault') return `<g data-effect="aura-assault">
+    <g class="raid-soldier-lunge">${knight(367,236,true)}${knight(331,236,true)}</g>
     <path d="M434 190Q389 192 327 229" fill="none" stroke="#d69cf4" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/>
   </g>`;
   if (pose === 'charge') return `<g data-effect="aura-mana-recovery" fill="#d69cf4">

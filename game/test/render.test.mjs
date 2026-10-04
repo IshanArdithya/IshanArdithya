@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { initialState } from '../engine.mjs';
 import { renderScene, renderSection, renderButton, updateReadme, issueUrl, START, END } from '../render.mjs';
 import { fixtures } from '../preview.mjs';
+import { KNIGHT_IMAGE } from '../knight-source.mjs';
+import { SHIELD_KNIGHT_IMAGE } from '../shield-knight-source.mjs';
 
 test('README insertion preserves all existing content and subsequent rendering is idempotent', () => {
   const before = 'intro\ncontact links\n\n## Things I code with:\nexisting content\n';
@@ -44,14 +46,16 @@ test('fixtures contain self-contained accessible SVG with reduced-motion and sti
     assert.match(svg, /viewBox="0 0 640 624"/);
     assert.match(svg, /<title id="title">/);
     assert.match(svg, /prefers-reduced-motion: reduce/);
-    assert.doesNotMatch(svg, /<script|<foreignObject|<image|data:image|@import|\son\w+=/i);
-    // Both supplied character sprites are now vector pixels. No embedded
-    // bitmaps or external image requests are needed.
+    assert.doesNotMatch(svg, /<script|<foreignObject|@import|\son\w+=/i);
+    // The supplied knights are embedded PNGs. Only those exact images and local
+    // fragment references are allowed; no external image requests are needed.
     for (const [, href] of svg.matchAll(/\bhref="([^"]+)"/g))
-      assert.ok(href.startsWith('#'));
+      assert.ok(href.startsWith('#') || [KNIGHT_IMAGE, SHIELD_KNIGHT_IMAGE].includes(href));
     for (const [, target] of svg.matchAll(/url\(([^)]+)\)/g)) assert.ok(target.startsWith('#'));
     assert.equal(svg, renderScene(state));
-    assert.ok(svg.length < 700_000, `${name} should contain compact forest and character paths`);
+    const imageCount = [...svg.matchAll(/<image\b/g)].length;
+    assert.ok(imageCount <= 1, `${name} embeds the knight at most once`);
+    assert.ok(svg.length - [...svg.matchAll(/<image[^>]+href="([^"]+)"/g)].reduce((size, match) => size + match[1].length, 0) < 700_000, `${name} should contain compact forest and character paths`);
   }
 });
 

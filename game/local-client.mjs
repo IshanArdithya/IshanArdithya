@@ -39,7 +39,7 @@ function beginPlayback(token) {
   later(() => { if (e.damage) element('message').textContent = `Frieren dealt ${e.damage} damage${e.critical ? ' — critical!' : '.'}`; }, T.bossDamage);
   if (playback.enemyActs) {
     later(() => { element('message').textContent = `Aura uses ${e.enemyAction}.`; }, T.enemy);
-    later(() => { element('message').textContent = e.incoming ? `Frieren took ${e.incoming} damage.` : 'Frieren took no damage.'; }, T.heroDamage);
+    later(() => { element('message').textContent = e.incoming ? `Frieren took ${e.incoming} damage.` : 'Frieren took no damage.'; }, playback.heroDamageAt);
   }
   later(() => finishPlayback(token), playback.duration);
 }

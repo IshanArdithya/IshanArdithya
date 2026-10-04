@@ -15,6 +15,8 @@ const files = new Map([
   ['/frieren-source.mjs', ['frieren-source.mjs', 'text/javascript']],
   ['/aura.mjs', ['aura.mjs', 'text/javascript']],
   ['/aura-source.mjs', ['aura-source.mjs', 'text/javascript']],
+  ['/knight-source.mjs', ['knight-source.mjs', 'text/javascript']],
+  ['/shield-knight-source.mjs', ['shield-knight-source.mjs', 'text/javascript']],
 ]);
 
 // A read-only server. Battles live only in each browser tab, never in repository files.

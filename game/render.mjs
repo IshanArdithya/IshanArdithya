@@ -26,7 +26,7 @@ export function renderScene(state, { animate = true } = {}) {
     : last?.action === 'ultimate' ? 'ultimate' : last?.action === 'guard' ? 'guarding' : state.charged ? 'charged' : last?.action === 'attack' ? 'attacking' : 'ready';
   const swap = (key, value, markup) => {
     if (!playback?.event.before || playback.event.before[key] === value) return markup(value);
-    const time = key === 'bossHp' ? T.bossDamage : key === 'heroHp' ? T.heroDamage
+    const time = key === 'bossHp' ? T.bossDamage : key === 'heroHp' ? playback.heroDamageAt
       : key === 'heroMana' ? (playback.event.action === 'charge' ? T.bossDamage : T.player)
       : playback.enemyPose === 'guard' ? T.player : playback.enemyPose === 'charge' ? T.heroDamage : T.enemy;
     const style = `style="animation-delay:${seconds(time)}"`;
@@ -35,10 +35,10 @@ export function renderScene(state, { animate = true } = {}) {
   const bar = (key,x,y,max,color) => swap(key,state[key],value => `<rect x="${x}" y="${y}" width="${Math.round(250*value/max)}" height="6" fill="${color}"/>`);
   const reading = (key,x,y,max,unit,color,extra='') => swap(key,state[key],value => text(x,y,`${value}/${max} ${unit}`,24,color,extra));
   const heroAction = playback ? timedEffect('frieren-action',frierenEffects(playback.playerPose),T.player,
-    playback.playerPose === 'guarding' && playback.enemyActs ? T.enemy+T.actionDuration : T.actionDuration) : '';
+    playback.playerPose === 'guarding' && playback.enemyActs ? T.enemy+playback.enemyDuration : T.actionDuration) : '';
   const enemyAction = playback?.enemyActs ? timedEffect('aura-action',auraEffects(playback.enemyPose),
     playback.enemyPose === 'guard' ? T.player : T.enemy,
-    playback.enemyPose === 'guard' ? T.enemy+T.actionDuration : T.actionDuration) : '';
+    playback.enemyPose === 'guard' ? T.enemy+playback.enemyDuration : playback.enemyDuration) : '';
   let popups = '';
   if (playback) {
     const e = playback.event;
@@ -48,7 +48,7 @@ export function renderScene(state, { animate = true } = {}) {
     if (playback.enemyActs) {
       if (e.enemyAction === 'guard') popups += floatingText('aura-guard',444,303,'GUARD',T.enemy,18,'#d9b8ff','end');
       if (e.enemyAction === 'charge') popups += floatingText('aura-charge',444,303,'CHARGE',T.enemy,18,'#d9b8ff','end');
-      if (e.incoming > 0) popups += floatingText('frieren-damage',65,390,`−${e.incoming}`,T.heroDamage,28,'#ffb5b5');
+      if (e.incoming > 0) popups += floatingText('frieren-damage',65,390,`−${e.incoming}`,playback.heroDamageAt,28,'#ffb5b5');
     }
   }
   const auraPose = state.status === 'victory' ? 'defeated' : intent.kind;
@@ -104,6 +104,14 @@ export function renderScene(state, { animate = true } = {}) {
     .raid-after { animation: raid-show 1ms steps(1,end) 1 both; }
     .raid-settled { animation: raid-show 1ms steps(1,end) var(--turn-duration) 1 both; }
     .raid-soldier-lunge { animation: raid-lunge 700ms steps(5,end) ${seconds(T.enemy)} 1 both; }
+    .raid-knight-advance { animation: raid-knight-advance ${seconds(T.knightDuration)} linear ${seconds(T.enemy)} 1 both; }
+    .raid-halberd-glow { opacity: 0; animation: raid-halberd-glow ${seconds(T.knightDuration)} linear ${seconds(T.enemy)} 1 both; }
+    .raid-knight-left-leg { transform-origin: 41px 121px; animation: raid-knight-left-leg ${seconds(T.knightDuration)} linear ${seconds(T.enemy)} 1 both; }
+    .raid-knight-right-leg { transform-origin: 96px 128px; animation: raid-knight-right-leg ${seconds(T.knightDuration)} linear ${seconds(T.enemy)} 1 both; }
+    .raid-shield-advance { animation: raid-shield-advance 650ms ease-in-out 1 both; }
+    .raid-shield-front-foot { transform-origin: 29px 117px; animation: raid-shield-front-foot 650ms linear 1 both; }
+    .raid-shield-back-foot { transform-origin: 99px 121px; animation: raid-shield-back-foot 650ms linear 1 both; }
+    .raid-shield-block { opacity: 0; animation: raid-shield-block 2.4s linear 1 both; }
     .frieren-fallen-body { opacity: .55; }
     .aura-fallen-body { opacity: .4; }
     .turn-playback .frieren-fallen-body { animation: raid-frieren-fall var(--turn-duration) steps(1,end) 1 both; }
@@ -116,12 +124,52 @@ export function renderScene(state, { animate = true } = {}) {
     @keyframes raid-hide { from { opacity: 1; } to { opacity: 0; } }
     @keyframes raid-show { from { opacity: 0; } to { opacity: 1; } }
     @keyframes raid-lunge { 0% { transform: translateX(0); } 75%,100% { transform: translateX(-130px); } }
+    @keyframes raid-knight-advance {
+      0%,12% { transform: translateX(0); }
+      30%,36% { transform: translateX(-8px); }
+      54%,100% { transform: translateX(-16px); }
+    }
+    @keyframes raid-knight-left-leg {
+      0%,12%,30%,100% { transform: rotate(0deg); }
+      20% { transform: translateY(-2px) rotate(12deg); }
+      36% { transform: rotate(-5deg); }
+      54% { transform: rotate(0deg); }
+    }
+    @keyframes raid-knight-right-leg {
+      0%,12% { transform: rotate(0deg); }
+      30% { transform: rotate(-5deg); }
+      36% { transform: rotate(0deg); }
+      44% { transform: translateY(-2px) rotate(12deg); }
+      54%,100% { transform: rotate(0deg); }
+    }
+    @keyframes raid-halberd-glow {
+      0%,58%,96%,100% { opacity: 0; }
+      70%,80% { opacity: .9; }
+    }
     @keyframes raid-frieren-fall { from { opacity: 1; } to { opacity: .55; } }
+    @keyframes raid-shield-advance {
+      0%,15% { transform: translateX(0); }
+      75%,100% { transform: translateX(-10px); }
+    }
+    @keyframes raid-shield-front-foot {
+      0%,15%,75%,100% { transform: rotate(0deg); }
+      45% { transform: translateY(-2px) rotate(12deg); }
+    }
+    @keyframes raid-shield-back-foot {
+      0%,15%,100% { transform: rotate(0deg); }
+      75% { transform: rotate(-5deg); }
+    }
+    @keyframes raid-shield-block {
+      0%,22%,100% { opacity: 0; }
+      28%,36% { opacity: .8; }
+      45%,85% { opacity: .4; }
+    }
     @keyframes raid-aura-fall { from { opacity: 1; } to { opacity: .4; } }
     @media (prefers-reduced-motion: reduce) { .hair-left,.hair-right,.frieren-idle,.blink,.blink-half,.spell-cast,.barrier,.forest-leaves,.forest-light,.forest-pollen,.aura,.aura-idle,.aura-hair,.aura-cape,.aura-pan-left,.aura-pan-right,.aura-blink,.aura-mana,.aura-command { animation: none !important; } .blink,.blink-half,.aura-blink { opacity: 0; } }
     @media (prefers-reduced-motion: reduce) {
-      .raid-caster,.raid-window,.raid-popup,.raid-before,.raid-after,.raid-settled,.raid-soldier-lunge,.turn-playback .frieren-fallen-body,.turn-playback .aura-fallen-body,.turn-playback .fallen-eyes { animation: none !important; }
-      .raid-window,.raid-popup,.raid-before { opacity: 0; }
+      .raid-caster,.raid-window,.raid-popup,.raid-before,.raid-after,.raid-settled,.raid-soldier-lunge,.raid-knight-advance,.raid-halberd-glow,.raid-knight-left-leg,.raid-knight-right-leg,.turn-playback .frieren-fallen-body,.turn-playback .aura-fallen-body,.turn-playback .fallen-eyes { animation: none !important; }
+      .raid-shield-advance,.raid-shield-front-foot,.raid-shield-back-foot,.raid-shield-block { animation: none !important; }
+      .raid-window,.raid-popup,.raid-before,.raid-shield-block { opacity: 0; }
       .raid-after,.raid-settled,.fallen-eyes { opacity: 1; }
     }
   </style>
