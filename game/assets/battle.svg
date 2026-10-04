@@ -46,14 +46,20 @@
     .raid-before { animation: raid-hide 1ms steps(1,end) 1 both; }
     .raid-after { animation: raid-show 1ms steps(1,end) 1 both; }
     .raid-settled { animation: raid-show 1ms steps(1,end) var(--turn-duration) 1 both; }
-    .raid-soldier-lunge { animation: raid-lunge 700ms steps(5,end) 1.7s 1 both; }
-    .raid-knight-advance { animation: raid-knight-advance 2.2s linear 1.7s 1 both; }
-    .raid-halberd-glow { opacity: 0; animation: raid-halberd-glow 2.2s linear 1.7s 1 both; }
-    .raid-knight-left-leg { transform-origin: 41px 121px; animation: raid-knight-left-leg 2.2s linear 1.7s 1 both; }
-    .raid-knight-right-leg { transform-origin: 96px 128px; animation: raid-knight-right-leg 2.2s linear 1.7s 1 both; }
-    .raid-shield-advance { animation: raid-shield-advance 650ms ease-in-out 1 both; }
-    .raid-shield-front-foot { transform-origin: 29px 117px; animation: raid-shield-front-foot 650ms linear 1 both; }
-    .raid-shield-back-foot { transform-origin: 99px 121px; animation: raid-shield-back-foot 650ms linear 1 both; }
+    .raid-army-arrive { opacity: 0; animation: raid-show 180ms linear var(--march-delay) 1 forwards; }
+    .raid-army-march { animation: raid-army-march 1400ms steps(3,end) var(--march-delay) 1 both; }
+    .raid-army-front-leg { animation: raid-army-front-leg 1400ms steps(2,end) var(--march-delay) 1 both; }
+    .raid-army-back-leg { animation: raid-army-back-leg 1400ms steps(2,end) var(--march-delay) 1 both; }
+    .raid-army-edge { opacity: 0; animation: raid-army-edge 1800ms linear var(--weapon-delay) 1 both; }
+    .raid-army-command { opacity: 0; animation: raid-army-edge 4s linear 1.7s 1 both; }
+    .raid-knight-advance { animation: raid-knight-advance 2.2s steps(3,end) 1.7s 1 both; }
+    .raid-halberd-glow { opacity: 0; animation: raid-halberd-glow 3.4s linear 1.7s 1 both; }
+    .raid-knight-left-leg { animation: raid-knight-left-leg 2.2s steps(3,end) 1.7s 1 both; }
+    .raid-knight-right-leg { animation: raid-knight-right-leg 2.2s steps(3,end) 1.7s 1 both; }
+    .raid-shield-advance { animation: raid-shield-advance 650ms steps(3,end) 1 both; }
+    .raid-shield-front-foot { animation: raid-shield-front-foot 650ms steps(3,end) 1 both; }
+    .raid-shield-back-foot { animation: raid-shield-back-foot 650ms steps(3,end) 1 both; }
+    .raid-shield-raise { animation: raid-shield-raise 650ms steps(1,end) 1 both; }
     .raid-shield-block { opacity: 0; animation: raid-shield-block 2.4s linear 1 both; }
     .frieren-fallen-body { opacity: .55; }
     .aura-fallen-body { opacity: .4; }
@@ -66,28 +72,28 @@
     @keyframes raid-popup { 0% { opacity: 0; transform: translateY(3px); } 15%,75% { opacity: 1; } 100% { opacity: 0; transform: translateY(-9px); } }
     @keyframes raid-hide { from { opacity: 1; } to { opacity: 0; } }
     @keyframes raid-show { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes raid-lunge { 0% { transform: translateX(0); } 75%,100% { transform: translateX(-130px); } }
+    @keyframes raid-army-march { 0%,10% { transform: translateX(0); } 40%,50% { transform: translateX(-6px); } 85%,100% { transform: translateX(-12px); } }
+    @keyframes raid-army-front-leg { 0%,10%,40%,50%,85%,100% { transform: translate(0,0); } 25% { transform: translate(-2px,-2px); } 65% { transform: translate(1px,0); } }
+    @keyframes raid-army-back-leg { 0%,10%,40%,50%,85%,100% { transform: translate(0,0); } 25% { transform: translate(1px,0); } 65% { transform: translate(-2px,-2px); } }
+    @keyframes raid-army-edge { 0%,100% { opacity: 0; } 20%,80% { opacity: .9; } }
     @keyframes raid-knight-advance {
       0%,12% { transform: translateX(0); }
       30%,36% { transform: translateX(-8px); }
       54%,100% { transform: translateX(-16px); }
     }
     @keyframes raid-knight-left-leg {
-      0%,12%,30%,100% { transform: rotate(0deg); }
-      20% { transform: translateY(-2px) rotate(12deg); }
-      36% { transform: rotate(-5deg); }
-      54% { transform: rotate(0deg); }
+      0%,12%,30%,36%,54%,100% { transform: translate(0,0); }
+      20% { transform: translate(-2px,-2px); }
+      44% { transform: translate(1px,0); }
     }
     @keyframes raid-knight-right-leg {
-      0%,12% { transform: rotate(0deg); }
-      30% { transform: rotate(-5deg); }
-      36% { transform: rotate(0deg); }
-      44% { transform: translateY(-2px) rotate(12deg); }
-      54%,100% { transform: rotate(0deg); }
+      0%,12%,30%,36%,54%,100% { transform: translate(0,0); }
+      20% { transform: translate(1px,0); }
+      44% { transform: translate(-2px,-2px); }
     }
     @keyframes raid-halberd-glow {
-      0%,58%,96%,100% { opacity: 0; }
-      70%,80% { opacity: .9; }
+      0%,35%,100% { opacity: 0; }
+      45%,86% { opacity: .9; }
     }
     @keyframes raid-frieren-fall { from { opacity: 1; } to { opacity: .55; } }
     @keyframes raid-shield-advance {
@@ -95,12 +101,16 @@
       75%,100% { transform: translateX(-10px); }
     }
     @keyframes raid-shield-front-foot {
-      0%,15%,75%,100% { transform: rotate(0deg); }
-      45% { transform: translateY(-2px) rotate(12deg); }
+      0%,15%,75%,100% { transform: translate(0,0); }
+      45% { transform: translate(-2px,-2px); }
     }
     @keyframes raid-shield-back-foot {
-      0%,15%,100% { transform: rotate(0deg); }
-      75% { transform: rotate(-5deg); }
+      0%,15%,100% { transform: translate(0,0); }
+      75% { transform: translate(1px,0); }
+    }
+    @keyframes raid-shield-raise {
+      0%,70% { transform: translate(0,0); }
+      100% { transform: translate(-1px,-1px); }
     }
     @keyframes raid-shield-block {
       0%,22%,100% { opacity: 0; }
@@ -110,8 +120,9 @@
     @keyframes raid-aura-fall { from { opacity: 1; } to { opacity: .4; } }
     @media (prefers-reduced-motion: reduce) { .hair-left,.hair-right,.frieren-idle,.blink,.blink-half,.spell-cast,.barrier,.forest-leaves,.forest-light,.forest-pollen,.aura,.aura-idle,.aura-hair,.aura-cape,.aura-pan-left,.aura-pan-right,.aura-blink,.aura-mana,.aura-command { animation: none !important; } .blink,.blink-half,.aura-blink { opacity: 0; } }
     @media (prefers-reduced-motion: reduce) {
-      .raid-caster,.raid-window,.raid-popup,.raid-before,.raid-after,.raid-settled,.raid-soldier-lunge,.raid-knight-advance,.raid-halberd-glow,.raid-knight-left-leg,.raid-knight-right-leg,.turn-playback .frieren-fallen-body,.turn-playback .aura-fallen-body,.turn-playback .fallen-eyes { animation: none !important; }
-      .raid-shield-advance,.raid-shield-front-foot,.raid-shield-back-foot,.raid-shield-block { animation: none !important; }
+      .raid-caster,.raid-window,.raid-popup,.raid-before,.raid-after,.raid-settled,.raid-knight-advance,.raid-halberd-glow,.raid-knight-left-leg,.raid-knight-right-leg,.turn-playback .frieren-fallen-body,.turn-playback .aura-fallen-body,.turn-playback .fallen-eyes { animation: none !important; }
+      .raid-army-arrive,.raid-army-march,.raid-army-front-leg,.raid-army-back-leg,.raid-army-edge,.raid-army-command { animation: none !important; }
+      .raid-shield-advance,.raid-shield-front-foot,.raid-shield-back-foot,.raid-shield-raise,.raid-shield-block { animation: none !important; }
       .raid-window,.raid-popup,.raid-before,.raid-shield-block { opacity: 0; }
       .raid-after,.raid-settled,.fallen-eyes { opacity: 1; }
     }

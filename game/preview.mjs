@@ -16,7 +16,7 @@ export function fixtures() {
   const victory = take({ ...ready, bossHp: 1 }, 'attack');
   const defeat = take({ ...ready, heroHp: 1, intent: 3 }, 'attack');
   const auraCharge = { ...ready, intent: 2 };
-  const auraAssault = { ...ready, intent: 3 };
+  const auraAssault = take({ ...ready, intent: 3 }, 'attack');
   const ultimate = take(charged, 'ultimate');
   const depleted = { ...ready, heroMana: 0, bossMana: 0, charged: true, guardCooldown: 1, ultimateCooldown: 3 };
   return { ultimate, depleted, ready, charged, attacking, guarding, critical, victory, defeat, 'aura-charge': auraCharge, 'aura-assault': auraAssault };

@@ -13,6 +13,8 @@ const files = new Map([
   ['/forest-source.mjs', ['forest-source.mjs', 'text/javascript']],
   ['/frieren.mjs', ['frieren.mjs', 'text/javascript']],
   ['/frieren-source.mjs', ['frieren-source.mjs', 'text/javascript']],
+  ['/army.mjs', ['army.mjs', 'text/javascript']],
+  ['/sword-knight-source.mjs', ['sword-knight-source.mjs', 'text/javascript']],
   ['/aura.mjs', ['aura.mjs', 'text/javascript']],
   ['/aura-source.mjs', ['aura-source.mjs', 'text/javascript']],
   ['/knight-source.mjs', ['knight-source.mjs', 'text/javascript']],

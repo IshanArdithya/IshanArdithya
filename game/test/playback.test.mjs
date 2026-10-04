@@ -19,10 +19,10 @@ test('playback uses the resolved enemy action, not the next announced intent',()
   assert.match(svg,/data-hud="before-heroHp"/);
   assert.equal(before.heroHp,26);
   const playback=turnPlayback(state);
-  assert.equal(playback.enemyDuration,2200);
-  assert.equal(playback.heroDamageAt,3950);
-  assert.equal(playback.duration,4900);
-  assert.match(svg,/data-timeline="frieren-damage" style="animation-delay:3.95s/);
+  assert.equal(playback.enemyDuration,3400);
+  assert.equal(playback.heroDamageAt,5150);
+  assert.equal(playback.duration,6100);
+  assert.match(svg,/data-timeline="frieren-damage" style="animation-delay:5.15s/);
   assert.equal(turnPlayback(take({...initialState(),intent:1,bossHp:1},'attack').state).duration,TURN_TIMING.victoryFinish);
 });
 
@@ -34,7 +34,7 @@ test('winning blows skip Aura response and losing blows still play the full turn
   const lose=take({...initialState(),heroHp:1,intent:3},'attack').state;
   assert.equal(turnPlayback(lose).enemyActs,true);
   assert.match(renderScene(lose),/data-timeline="frieren-damage"/);
-  assert.equal(turnPlayback(lose).duration,TURN_TIMING.finish);
+  assert.equal(turnPlayback(lose).duration,6700);
 });
 
 test('guard feedback is separate from damage; zero damage does not create a popup',()=>{
@@ -54,4 +54,27 @@ test('restart, still renders, and initial state have no turn replay',()=>{
   const still=renderScene(won,{animate:false});
   assert.doesNotMatch(still,/data-timeline=|data-hud="before-/);
   assert.match(still,/0\/100 HP/);
+});
+
+
+test('Assault renders five soldiers but resolves one paid hit before unlocking',()=>{
+  const {state,event}=take({...initialState(),intent:3},'attack');
+  const svg=renderScene(state);
+  assert.equal(state.heroHp,16);
+  assert.equal(state.bossMana,10);
+  assert.equal(event.incoming,10);
+  assert.equal((svg.match(/data-army-soldier="sword"/g)||[]).length,3);
+  assert.equal((svg.match(/data-army-soldier="halberd"/g)||[]).length,2);
+  assert.equal(turnPlayback(state).heroDamageAt,5750);
+  assert.equal(turnPlayback(state).duration,6700);
+  const ids=[...svg.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
+  assert.equal(new Set(ids).size,ids.length);
+  for (const [,id] of svg.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(id));
+  const guarded=take({...initialState(),intent:3},'guard').state;
+  assert.equal(guarded.heroHp,25);
+  assert.equal(turnPlayback(guarded).duration,6700);
+  const recovered=take({...initialState(),intent:3,bossMana:0},'attack').state;
+  assert.doesNotMatch(renderScene(recovered),/data-army-soldier=/);
+  assert.equal(turnPlayback(recovered).duration,TURN_TIMING.finish);
+  assert.doesNotMatch(renderScene(state,{animate:false}),/data-army-soldier=/);
 });

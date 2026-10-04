@@ -1,6 +1,6 @@
 # Frieren vs Aura — research and next-phase abilities
 
-Research date: 2026-10-03. This note focuses on the Aura encounter and early-series abilities; it contains encounter spoilers. The game is a fan-made adaptation, not a canonical combat simulator.
+Research dates: 2026-10-03; Assault presentation checked 2026-10-04. This note focuses on the Aura encounter and early-series abilities; it contains encounter spoilers. The game is a fan-made adaptation, not a canonical combat simulator.
 
 ## What the sources establish
 
@@ -32,6 +32,14 @@ The new **Unleashed Zoltraak** button adapts her ordinary offensive magic and re
 Aura cycles Guard → Attack → Charge → Assault. An unaffordable Guard/Assault becomes a visibly announced mana recovery turn instead; it deals no damage and offers no damage reduction. The enemy pattern then advances normally. This makes her mana availability matter before the player acts.
 
 Both cooldowns belong to the shared encounter. Invalid requests and retries do not advance them. The ultimate cannot critically hit, gain another charged multiplier, or bypass guard. These limits prevent an automatic victory while allowing tactical players to finish faster. See the [simulation results](README.md#balance-validation).
+
+## Assault army presentation
+
+The [official Aura-arc announcement](https://frieren-anime.jp/news/644/) describes fighting the army led by Aura. Her [official character profile](https://frieren-anime.jp/character/chara_group2/2-2/) ties her control of weaker opponents to Auserlese and the Scales of Obedience. The [licensed episode listings](https://www.hulu.jp/frieren-beyond-journeys-end/assets) describe her sending successive waves of the dead against Frieren in episode 9.
+
+Our **Assault** is a game label for a coordinated army command. The five-soldier formation, exact weapon mix, visible purple command/weapon effects, 30 MP cost, and 10 damage are presentation and balance choices, not a named canonical spell or a reenactment of a specific formation. The sequence keeps Aura behind her controlled soldiers: her scales light up, two halberdiers and three swordsmen take short staggered steps, their weapons glow, and the formation fades before one combined damage popup. The fade is an animation cleanup, not a claim that Aura conjures new soldiers from nothing or destroys them after every command.
+
+The army has no separate HP or extra hits. Guard still reduces the combined hit to at most 1. Unaffordable Assault becomes mana recovery, and killing Aura prevents the command entirely.
 
 ## Still reserved for a later phase
 
