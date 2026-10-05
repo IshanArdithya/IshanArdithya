@@ -10,7 +10,7 @@ Aura fights through an army of controlled, headless armored warriors, which wear
 
 **Frieren** uses offensive magic, protective barriers, mana concealment, and spell analysis. Her deliberate suppression and later revelation of her enormous mana are central to her confrontation with Aura. [Episode 10's official licensed synopsis](https://www.crunchyroll.com/watch/GVWU0WMW4/a-powerful-mage) identifies her training under Flamme and the scales as the encounter's focus; [Sony's official event transcript](https://www.sony.com/en/transcript/CrunchyrollAnimeAwards2025/Full.html) describes the mana-revelation scene. Supporting spell details are indexed in the secondary [Frieren reference](https://frieren.fandom.com/wiki/Frieren).
 
-There is no canonical three-button Attack/Guard/Charge kit or fixed damage table. In particular, this research does **not** establish a special personal “Aura shield” spell or that her sword is her primary combat style. The supplied art retains her sword, while our effects emphasize her army and scales.
+There is no canonical Attack/Guard/Focus kit or fixed damage table. In particular, this research does **not** establish a special personal “Aura shield” spell or that her sword is her primary combat style. The supplied art retains her sword, while our effects emphasize her army and scales.
 
 ## Implemented now: mana and Unleashed Zoltraak
 
@@ -20,10 +20,10 @@ The new **Unleashed Zoltraak** button adapts her ordinary offensive magic and re
 
 | Character / action | Implemented rule | Canon relationship |
 | --- | --- | --- |
-| Frieren / Attack | 10 MP for 5–7 damage; charged: 20 MP for 14–18. 10% critical chance. | Generic offensive magic, with original game damage rolls. |
+| Frieren / Attack | 10 MP for 5–7 damage; focused: 20 MP for 14–18. 10% critical chance. | Generic offensive magic, with original game damage rolls. |
 | Frieren / Guard | 15 MP, incoming damage at most 1. One intervening turn before reuse. | Inspired by defensive magic; cooldown is a game rule. |
-| Frieren / Charge | Restore up to 40 MP and ready a charged attack/ultimate. Can refill while charged. | A resource-recovery adaptation, not a claim that revealing hidden mana creates more energy. |
-| Frieren / Unleashed Zoltraak | 80 MP, requires/consumes charge, 32 fixed damage. Six other accepted turns before reuse. Aura's guard halves it. | A stronger Zoltraak presentation, without a canonical “ultimate form” claim. |
+| Frieren / Focus | Restore up to 40 MP and empower the next normal Attack. Can refill while focused; separate from Ultimate. | A resource-recovery adaptation, not a claim that revealing hidden mana creates more energy. |
+| Frieren / Unleashed Zoltraak | First click spends 80 MP and a turn preparing. A later click casts for 32 fixed damage without further mana cost. Preparation persists through other actions. Casting preserves Focus and starts a six-turn cooldown. Aura's guard halves it. | A stronger Zoltraak presentation, without a canonical “ultimate form” claim. |
 | Aura / Guard | 15 MP, halve incoming damage (rounded up), no outgoing damage. | Army-based protection is a game adaptation. |
 | Aura / Attack | One controlled soldier deals 4 damage, no MP cost. | Inspired by her use of the controlled army. |
 | Aura / Charge | Recover up to 35 MP, deal 0 damage. | A game windup/recovery mechanic using her scales visually. |
@@ -31,7 +31,7 @@ The new **Unleashed Zoltraak** button adapts her ordinary offensive magic and re
 
 Aura cycles Guard → Attack → Charge → Assault. An unaffordable Guard/Assault becomes a visibly announced mana recovery turn instead; it deals no damage and offers no damage reduction. The enemy pattern then advances normally. This makes her mana availability matter before the player acts.
 
-Both cooldowns belong to the shared encounter. Invalid requests and retries do not advance them. The ultimate cannot critically hit, gain another charged multiplier, or bypass guard. These limits prevent an automatic victory while allowing tactical players to finish faster. See the [simulation results](README.md#balance-validation).
+Both cooldowns belong to the shared encounter. Invalid requests and retries do not advance them. The ultimate cannot critically hit, gain a Focus multiplier, or bypass guard. These limits prevent an automatic victory while allowing tactical players to finish faster. See the [simulation results](README.md#balance-validation).
 
 ## Assault army presentation
 

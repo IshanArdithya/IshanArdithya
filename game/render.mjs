@@ -27,11 +27,11 @@ export function renderScene(state, { animate = true } = {}) {
   const intent = enemyIntent(state);
   const ended = state.status !== 'active';
   const pose = state.status === 'defeat' ? 'defeated' : state.status === 'victory' ? 'victorious'
-    : last?.action === 'ultimate' ? 'ultimate' : last?.action === 'guard' ? 'guarding' : state.charged ? 'charged' : last?.action === 'attack' ? 'attacking' : 'ready';
+    : last?.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'preparing' : 'ultimate') : last?.action === 'guard' ? 'guarding' : state.charged ? 'charged' : last?.action === 'attack' ? 'attacking' : 'ready';
   const swap = (key, value, markup) => {
     if (!playback?.event.before || playback.event.before[key] === value) return markup(value);
     const time = key === 'bossHp' ? T.bossDamage : key === 'heroHp' ? playback.heroDamageAt
-      : key === 'heroMana' ? (playback.event.action === 'charge' ? T.bossDamage : T.player)
+      : key === 'heroMana' ? (playback.event.action === 'focus' ? T.bossDamage : T.player)
       : playback.enemyPose === 'guard' ? T.player : playback.enemyPose === 'charge' ? T.heroDamage : T.enemy;
     const style = `style="animation-delay:${seconds(time)}"`;
     return `<g class="raid-before" data-hud="before-${key}" ${style}>${markup(playback.event.before[key])}</g><g class="raid-after" data-hud="after-${key}" ${style}>${markup(value)}</g>`;
@@ -46,7 +46,8 @@ export function renderScene(state, { animate = true } = {}) {
     const e = playback.event;
     if (e.damage > 0) popups += floatingText(text, 'aura-damage',582,214,`−${e.damage}`,T.bossDamage,28,e.critical ? '#ffd279' : '#fff2d6','middle',e.critical ? 'CRITICAL' : '');
     if (e.action === 'guard') popups += floatingText(text, 'frieren-guard',212,190,'GUARD',50,18,'#a6ece5','start');
-    if (e.action === 'charge') popups += floatingText(text, 'frieren-charge',212,190,'CHARGE',T.bossDamage,18,'#a6ece5','start');
+    if (e.action === 'focus') popups += floatingText(text, 'frieren-focus',212,190,'FOCUS',T.bossDamage,18,'#a6ece5','start');
+    if (e.ultimatePhase === 'prepare') popups += floatingText(text, 'frieren-ultimate-prepared',212,190,'ULT CHARGED',T.bossDamage,14,'#d6a8f3','start');
     if (playback.enemyActs) {
       if (e.enemyAction === 'guard') popups += floatingText(text, 'aura-guard',444,151,'GUARD',T.enemy,18,'#d9b8ff','end');
       if (e.enemyAction === 'charge') popups += floatingText(text, 'aura-charge',444,151,'CHARGE',T.enemy,18,'#d9b8ff','end');
@@ -59,7 +60,7 @@ export function renderScene(state, { animate = true } = {}) {
     : `${intent.name.toUpperCase()} · ${intent.damage} DAMAGE`;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="472" viewBox="0 0 640 472" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
   <title id="title">README Raid: Frieren vs Aura</title>
-  <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. ${ended ? state.status : intent.message} ${state.charged ? 'Charged attack ready.' : 'Not charged.'}`)}</desc>
+  <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. Ultimate ${state.ultimatePrepared ? 'prepared; mana already paid' : 'not prepared'}. ${ended ? state.status : intent.message} ${state.charged ? 'Attack focused.' : 'Attack normal.'}`)}</desc>
   <style>
     .hair-left { animation: hair-left 3.8s steps(1,end) infinite; }
     .hair-right { animation: hair-right 4.2s steps(1,end) infinite; }
@@ -187,14 +188,14 @@ export function renderScene(state, { animate = true } = {}) {
   </style>
   <g shape-rendering="crispEdges">${background()}
     <g transform="translate(35 90) scale(.8)">
-      <g class="${playback && ['attack','ultimate'].includes(last.action) ? 'raid-caster' : ''}">${heroArt(pose, { effects: false })}</g>${heroAction}
-      <g class="raid-settled">${frierenEffects(state.status === 'victory' ? 'victorious' : state.status === 'active' && state.charged ? 'charged' : 'ready')}</g>
+      <g class="${playback && ['attacking','ultimate'].includes(playback.playerPose) ? 'raid-caster' : ''}">${heroArt(pose, { effects: false })}</g>${heroAction}
+      <g class="raid-settled">${frierenEffects(state.status === 'victory' ? 'victorious' : state.status === 'active' && state.ultimatePrepared ? 'preparing' : state.status === 'active' && state.charged ? 'charged' : 'ready')}</g>
     </g>
     <g transform="translate(0 28)">${auraArt(auraPose, { effects: false })}${enemyAction}</g>
   </g>
   ${renderHud(state, { text, swap, playback })}
 ${popups}
-  ${text(24, 391, state.charged ? 'CHARGE: READY' : 'CHARGE: EMPTY', 24, state.charged ? '#55d7c3' : '#a5b5c9')}
+  ${text(24, 391, state.charged ? 'ATTACK: FOCUSED' : 'ATTACK: NORMAL', 24, state.charged ? '#55d7c3' : '#a5b5c9')}
   ${text(24, 423, cooldownSummary(state), 24, '#c5b3e8')}
   ${text(24, 456, ended ? label : `NEXT: ${label}`, 24, ended ? '#ebbb76' : '#f3e6cb')}
   <rect x=".5" y=".5" width="639" height="471" rx="12" fill="none" stroke="#364458"/>
@@ -207,22 +208,25 @@ export function cooldownSummary(state) {
 }
 export function actionDescription(state, action) {
   return {
-    attack: `Attack — 5–7 damage, or 14–18 charged; ${state.charged ? RULES.chargedCost : RULES.attackCost} mana`,
+    attack: `Attack — 5–7 damage, or 14–18 focused; ${state.charged ? RULES.chargedCost : RULES.attackCost} mana`,
     guard: `Guard — take at most 1 damage; ${RULES.guardCost} mana; skip one turn before reusing`,
-    charge: `Charge — restore ${RULES.chargeRestore} mana and prepare an attack or ultimate`,
-    ultimate: `Unleashed Zoltraak — ${RULES.ultimateDamage} damage; ${RULES.ultimateCost} mana; requires Charge; ${RULES.ultimateCooldown} other turns before reuse`,
+    focus: `Focus — restore ${RULES.chargeRestore} mana and empower the next normal Attack`,
+    ultimate: state.ultimatePrepared
+      ? `Cast Ultimate — ${RULES.ultimateDamage} damage; mana already paid; starts a ${RULES.ultimateCooldown}-turn cooldown`
+      : `Prepare Ultimate — spend ${RULES.ultimateCost} mana now; Aura responds; cast on a later turn`,
   }[action];
 }
 export function buttonKind(state, action) {
-  return actionUnavailable(state, action) ? `${action}-disabled` : action;
+  const kind = action === 'ultimate' && state.ultimatePrepared ? 'ultimate-cast' : action;
+  return actionUnavailable(state, action) ? `${kind}-disabled` : kind;
 }
-export const BUTTON_ASSETS = [...ACTIONS, ...ACTIONS.map(a => `${a}-disabled`), 'charged', 'restart'];
+export const BUTTON_ASSETS = [...ACTIONS, ...ACTIONS.map(a => `${a}-disabled`), 'ultimate-cast', 'ultimate-cast-disabled', 'restart'];
 export function renderButton(action) {
   const disabled = action.endsWith('-disabled');
   const base = disabled ? action.slice(0, -9) : action;
   const config = {
-    attack: ['ATTACK', '#e66870'], guard: ['GUARD', '#82b5d5'], charge: ['CHARGE', '#55d7c3'],
-    ultimate: ['ULTIMATE', '#d6a8f3'], charged: ['CHARGED ✓', '#8896a9'], restart: ['PLAY AGAIN', '#ebbb76'],
+    attack: ['ATTACK', '#e66870'], guard: ['GUARD', '#82b5d5'], focus: ['FOCUS', '#55d7c3'],
+    ultimate: ['PREPARE ULT', '#d6a8f3'], 'ultimate-cast': ['CAST ULT', '#e5c5ff'], restart: ['PLAY AGAIN', '#ebbb76'],
   }[base];
   if (!config) throw new Error('Unknown button');
   const color = disabled ? '#667285' : config[1];
@@ -243,7 +247,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   validateState(state);
   if (!/^[\w.-]+\/[\w.-]+$/.test(repository)) throw new Error('Invalid repository');
   const raw = `https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets`;
-  const button = (action, alt) => `[![${alt}](${raw}/${action}.svg)](${issueUrl(state, action, repository)})`;
+  const button = (action, alt) => `[![${alt}](${raw}/${action === 'restart' ? action : buttonKind(state, action)}.svg)](${issueUrl(state, action, repository)})`;
   const active = state.status === 'active';
   const intent = enemyIntent(state);
   const controls = active ? ACTIONS.map((action, i) => {
@@ -260,11 +264,11 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
 
 **Frieren faces Aura. Everyone takes a turn.** Help protect the forest clearing.
 
-![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'charged' : 'uncharged'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg?v=${state.revision})
+![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg?v=${state.revision})
 
 ${controls}
 
-**Frieren:** ${state.heroHp}/${RULES.heroHp} HP · **Aura:** ${state.bossHp}/${RULES.bossHp} HP · **Charge:** ${state.charged ? 'ready' : 'empty'}
+**Frieren:** ${state.heroHp}/${RULES.heroHp} HP · **Aura:** ${state.bossHp}/${RULES.bossHp} HP · **Attack:** ${state.charged ? 'focused' : 'normal'} · **Ultimate:** ${state.ultimatePrepared ? 'charged; mana paid' : 'not prepared'}
 
 **Mana:** Frieren ${state.heroMana}/${RULES.heroMana} MP · Aura ${state.bossMana}/${RULES.bossMana} MP
 
@@ -272,7 +276,7 @@ ${controls}
 ${unavailable ? `\n${unavailable}\n` : ''}
 ${next}
 
-${state.recent[0] ? `**Last turn:** ${state.recent[0].summary}` : '**Your move:** Charge while Aura guards, Attack during openings, and Guard her assault.'}
+${state.recent[0] ? `**Last turn:** ${state.recent[0].summary}` : '**Your move:** Focus or prepare Ultimate while Aura guards, Attack during openings, and Guard her assault.'}
 
 Choose an action → submit the prefilled issue → wait for the result → return and refresh. GitHub sign-in required.
 
@@ -285,10 +289,10 @@ Everyone shares the same hero. You may play consecutive turns; nothing happens w
 
 | Action | Effect |
 | --- | --- |
-| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when charged. Consumes charge. 10% critical chance, ×1.5 rounded down. |
-| Guard | 15 mana. Take at most 1 damage and keep charge. Must take one other turn before guarding again. |
-| Charge | Restore up to 40 mana and prepare one charged Attack or Ultimate. May refill mana while charged; cannot stack the damage boost. |
-| Ultimate | Unleashed Zoltraak: 32 fixed damage for 80 mana. Requires and consumes charge. No critical multiplier. Six other accepted turns before reuse. |
+| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when focused. Consumes Focus. 10% critical chance, ×1.5 rounded down. |
+| Guard | 15 mana. Take at most 1 damage and keep Focus and ultimate preparation. Must take one other turn before guarding again. |
+| Focus | Restore up to 40 mana and empower the next normal Attack. May refill mana while focused; cannot stack the damage boost. Does not prepare Ultimate. |
+| Prepare Ult / Cast Ult | First click spends 80 mana to prepare, deals no damage, and lets Aura respond. A later click casts Unleashed Zoltraak for 32 fixed damage with no further mana cost. Preparation persists through other actions. Casting starts a six-turn cooldown and preserves Focus. No critical multiplier. |
 
 Frieren starts with **26 HP / 240 MP**; Aura has **100 HP / 40 MP**, with a **60 MP** limit. These are game balance values, not canon measurements.
 

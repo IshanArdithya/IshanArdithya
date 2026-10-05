@@ -26,15 +26,15 @@ test('issue links encode the exact encounter, revision, action, and instructions
   assert.match(url.searchParams.get('body'), /shared turn/);
 });
 
-test('charged state has no charge link and terminal state only offers restart', () => {
+test('full-mana focused state has no Focus link and terminal state only offers restart', () => {
   const all = fixtures();
   const charged = renderSection(all.charged);
-  assert.match(charged, /charge-disabled.svg/);
-  assert.doesNotMatch(charged, /title=raid%7C\d+%7C\d+%7Ccharge&/);
+  assert.match(charged, /focus-disabled.svg/);
+  assert.doesNotMatch(charged, /title=raid%7C\d+%7C\d+%7Cfocus&/);
   for (const state of [all.victory, all.defeat]) {
     const section = renderSection(state);
     assert.match(section, /%7Crestart&/);
-    assert.doesNotMatch(section, /%7C(?:attack|guard|charge|ultimate)&/);
+    assert.doesNotMatch(section, /%7C(?:attack|guard|focus|ultimate)&/);
   }
 });
 
@@ -71,7 +71,7 @@ test('each battle state has its intended character pose and readable health', ()
 });
 
 test('button geometry and generated image revision are stable', () => {
-  for (const action of ['attack', 'guard', 'charge', 'ultimate', 'guard-disabled', 'ultimate-disabled', 'charged', 'restart']) assert.match(renderButton(action), /width="96" height="44"/);
+  for (const action of ['attack', 'guard', 'focus', 'ultimate', 'guard-disabled', 'ultimate-disabled', 'ultimate-cast', 'restart']) assert.match(renderButton(action), /width="96" height="44"/);
   assert.match(renderSection(initialState()), /battle.svg\?v=0/);
   assert.match(renderSection(initialState(), { repository: 'owner/repo', branch: 'trunk' }), /owner\/repo\/trunk\/game\/assets/);
 });
@@ -87,6 +87,19 @@ test('mana, ultimate effects, fallback intent, and unavailable actions appear in
     assert.match(section,new RegExp(`${action}-disabled.svg`));
     assert.ok(!section.includes(`%7C${action}&`));
   }
-  assert.match(section, /%7Ccharge&/);
+  assert.match(section, /%7Cfocus&/);
   assert.match(renderSection(all.charged), /%7Cultimate&/);
+});
+
+test('ultimate controls use phase-specific assets but the same revisioned action', () => {
+  const all=fixtures();
+  assert.match(renderSection(all.ready),/assets\/ultimate.svg/);
+  assert.match(renderSection(all.prepared),/assets\/ultimate-cast.svg/);
+  assert.match(renderSection(all.prepared),/%7Cultimate&/);
+  assert.doesNotMatch(renderSection(all.prepared),/%7Cultimate-cast&/);
+  assert.match(renderScene(all.prepared),/data-effect="ultimate-preparation"/);
+  assert.doesNotMatch(renderScene(all.prepared),/data-effect="unleashed-zoltraak"/);
+  assert.match(renderScene(all.charged),/ATTACK: FOCUSED/);
+  assert.match(renderSection(all.ready),/%7Cfocus&/);
+  assert.doesNotMatch(renderSection(all.ready),/%7Ccharge&/);
 });

@@ -10,7 +10,7 @@ Use Node.js 24 or later, from the repository root:
 node game/local.mjs
 ```
 
-Open **http://127.0.0.1:4173** to play immediately. Attack, Guard, Charge, Ultimate, mana, cooldowns, critical hits, endings, and Play Again use the real battle engine and SVG renderer. Each attack gets fresh random rolls; the result also shows its damage calculation. The demo keeps its state only in the browser tab. Refresh or choose Reset demo to start over. It never writes the saved game, makes commits, or contacts GitHub. Stop the server with Ctrl+C. If the port is busy, use `PORT=4174 node game/local.mjs`.
+Open **http://127.0.0.1:4173** to play immediately. Attack, Guard, Focus, Prepare Ult / Cast Ult, mana, cooldowns, critical hits, endings, and Play Again use the real battle engine and SVG renderer. Each attack gets fresh random rolls; the result also shows its damage calculation. The demo keeps its state only in the browser tab. Refresh or choose Reset demo to start over. It never writes the saved game, makes commits, or contacts GitHub. Stop the server with Ctrl+C. If the port is busy, use `PORT=4174 node game/local.mjs`.
 
 This tests gameplay and artwork locally; GitHub issue handling and Actions still need separate live verification.
 
@@ -22,7 +22,7 @@ node game/generate.mjs
 node game/preview.mjs
 ```
 
-Open `game/preview/index.html` to inspect the ready, charged, attacking, guarding, critical, victory, defeat, Aura charge, and Aura assault, ultimate, and depleted-mana states at 640px and 320px. Preview files are ignored by Git. Browser motion and theme preferences apply to the preview. Rendering never advances the game or rolls damage.
+Open `game/preview/index.html` to inspect the ready, focused, ultimate-prepared, attacking, guarding, critical, victory, defeat, Aura charge, and Aura assault, ultimate, and depleted-mana states at 640px and 320px. Preview files are ignored by Git. Browser motion and theme preferences apply to the preview. Rendering never advances the game or rolls damage.
 
 The scene is 640 × 472: the full 640 × 360 forest battlefield with the compact HUD overlaid at the top, followed by a 112-pixel intent/cooldown band. At 320px wide it scales to 320 × 236. The supplied background keeps its original 16:9 proportions; the battlefield is not cropped or stretched into a narrow strip.
 
@@ -36,7 +36,7 @@ GITHUB_REPOSITORY=owner/profile DEFAULT_BRANCH=trunk node game/generate.mjs
 
 The HUD occupies about 108 pixels over the top of the forest, with no separate header band. It uses a compact fighting-game layout: inset vector portraits at the outer edges, gold pixel frames, teal/magenta character accents, and a central **TURNS** medallion. HP is green and MP is blue for both characters, with smaller current/max counts centered inside each bar. Portraits have internal padding and a separate gutter before the bars; compact nameplates and resource rows leave breathing room around the turn medallion. The fills mirror each other and update with their numeric values at the existing action-resolution times. Portraits are lossless crops of the current pixel sprites; frames, bars, medallion, and ultimate badge are SVG geometry. Encounter numbers stay outside the HUD.
 
-Below Frieren's mana bar, a borderless pixel nameplate and inset diamond crest display **ULT NOT READY** in grey until Ultimate is actually available: the encounter is active, charge is stored, at least 80 MP remains, and cooldown is zero. When ready, the crest lights gold and violet beside **ULT READY**. During playback, it remains grey until the turn finishes and local controls unlock. Still images and reduced-motion mode show the final eligibility immediately. The footer and action buttons retain the detailed charge/mana/cooldown information. Aura has a mirrored badge for her existing **Army Assault**: it lights only when Assault is next and she can afford its 30 MP cost. Other intents, mana-recovery substitutions, and ended encounters show **ULT NOT READY**. Both badges wait for playback to finish. This HUD label does not add a new enemy ability or alter the battle rules.
+Below Frieren's mana bar, the borderless pixel nameplate separates Ultimate from Focus. **ULT READY** (gold) means the spell can be prepared: at least 80 MP, no cooldown, and an active battle. **ULT CHARGED** (violet with a bright center) means preparation has been paid for and the spell can be cast without spending more mana. **ULT COOLDOWN** and **ULT LOW MP** are grey; ended encounters show **ULT NOT READY**. The button changes from **PREPARE ULT** to **CAST ULT**. Ready/charged badges settle when the turn finishes; still images and reduced-motion mode show the resulting state immediately. The footer displays **ATTACK: FOCUSED / NORMAL** for the separate normal-attack boost. Aura's mirrored badge continues to represent her existing Army Assault: ready only when Assault is next and she has 30 MP. Her combat rules are unchanged.
 
 `hud.mjs` renders the committed state through the same health/mana snapshots as the battle. `hud-source.mjs` stores the cropped vector portraits; regenerate them with `python3 game/tools/prepare-hud.py` followed by the normal scene generator. The forest retains its full 640 × 360 dimensions beneath the HUD.
 
@@ -60,7 +60,7 @@ Each accepted move plays once per image load: Frieren acts (0–0.7s), Aura's da
 
 Aura's normal Attack summons the supplied headless halberd soldier. It takes two small steps (16 scene pixels total), keeping its body upright while the feet alternately lift and plant. The halberd's edge brightens after the steps, holds its glow for about 1.4 seconds, then fades with the soldier before her damage popup. The walking speed is unchanged. This response takes 3.4 seconds (1.7–5.1s); damage appears at 5.15s and the next move unlocks at 6.1s. Other responses keep their existing timings. Guard uses the supplied shield soldier: it takes one small step, plants its feet, and braces its shield with a restrained rim glow before the player's damage resolves. It stays through the hit, then fades. Assault commands five vector soldiers: two halberdiers closely behind three swordsmen, all at the same 1.75 scale as the individual Attack and Guard soldiers. The overlapping ranks share one small area of ground. Their short steps and weapon glows are staggered after a scales command cue. The whole formation fades before a single combined damage popup. Assault responds from 1.7–5.7s; damage appears at 5.75s and controls unlock at 6.7s. Its 30 MP cost and 10 damage remain unchanged.
 
-The event records pre-turn health and mana. The SVG updates those values at their resolution times and uses the recorded enemy action, rather than animating the next announced intent. Old receipts without a pre-turn snapshot keep final health/mana visible. Rendering never rolls or reapplies a move. Damage popups, critical labels, attack effects, and guard barriers disappear; ambient character/forest motion and a ready-charge aura may remain.
+The event records pre-turn health and mana. The SVG updates those values at their resolution times and uses the recorded enemy action, rather than animating the next announced intent. Old receipts without a pre-turn snapshot keep final health/mana visible. Rendering never rolls or reapplies a move. Damage popups, critical labels, attack effects, and guard barriers disappear; ambient character/forest motion and focused/prepared mana effects may remain.
 
 The local demo locks all combat buttons during playback, starts its clock after the scene loads, and cancels pending callbacks on Reset. Reduced-motion mode shows the final state immediately, with no artificial wait. A failed image load releases controls and leaves the textual result available.
 
@@ -72,10 +72,11 @@ Frieren starts with **26 HP and 240/240 MP**. Aura starts with **100 HP and 40/6
 
 | Action | Effect | Mana / restriction |
 | --- | --- | --- |
-| Attack | 5–7 damage, or 14–18 while charged. Consumes charge. | 10 MP normally, 20 MP charged. Independent 10% critical chance; ×1.5 rounded down. |
-| Guard | Reduce this turn's incoming damage to at most 1. Preserve charge. | 15 MP. Take one other accepted turn before guarding again. |
-| Charge | Restore up to 40 MP and prepare one charged Attack or Ultimate. | Free. Can refill mana while already charged; the damage boost never stacks. Unavailable only when already charged and at full MP. |
-| Ultimate | **Unleashed Zoltraak**, 32 fixed damage. Requires and consumes charge. | 80 MP; no critical hit or extra charge multiplier. Six other accepted turns before reuse. |
+| Attack | 5–7 damage, or 14–18 while focused. Consumes Focus. | 10 MP normally, 20 MP focused. Independent 10% critical chance; ×1.5 rounded down. |
+| Guard | Reduce this turn's incoming damage to at most 1. Preserve Focus and ultimate preparation. | 15 MP. Take one other accepted turn before guarding again. |
+| Focus | Restore up to 40 MP and empower the next normal Attack. | Free. Can refill while focused; the boost never stacks. Unavailable only when focused and at full MP. Does not prepare Ultimate. |
+| Prepare Ult | Spend a turn preparing **Unleashed Zoltraak**; deal no damage and let Aura respond. | 80 MP, paid now. Requires zero cooldown. Preparation persists through Attack, Guard, and Focus. |
+| Cast Ult | Cast the prepared spell for 32 fixed damage. Preserve Focus. | No further mana cost; no critical hit or Focus multiplier. Starts a cooldown of six other accepted turns. |
 
 The ultimate is an adaptation of Zoltraak and Frieren's mana revelation, not an official named ultimate form. [Research and ability notes](ABILITIES.md) separate canonical abilities from game rules.
 
@@ -83,7 +84,7 @@ Aura's cycle is **Guard → Attack → Charge → Assault**. Guard costs 15 MP a
 
 Aura pays for Guard before the player's hit, because it protects that hit. Other enemy effects and costs resolve only if Aura survives. Killing blows prevent retaliation and mana recovery. Invalid moves, unavailable actions, stale links, rendering, and duplicate issue retries spend nothing and never tick cooldowns. A cooldown of 6 means six other accepted turns, with reuse possible on the following turn. Guard's cooldown is 1 under the same rule.
 
-Victory and defeat persist until Play Again. Restart restores health, mana, charge, the pattern, and both cooldowns, while preserving lifetime results and incrementing the encounter number. Nothing advances on a timer.
+Victory and defeat persist until Play Again. Restart restores health and mana, clears Focus and ultimate preparation, and resets the pattern and both cooldowns, while preserving lifetime results and incrementing the encounter number. Nothing advances on a timer.
 
 ## Balance validation
 
@@ -91,10 +92,10 @@ Run `node game/balance.mjs` for reproducible seeded simulations (10,000 encounte
 
 | Policy | Wins | Winning turn range | Mean winning turns |
 | --- | ---: | --- | ---: |
-| Charge openings, use ultimate, guard assaults | 10,000 | 13–15 | 14.57 |
+| Prepare under Guard, cast in openings, guard assaults | 10,000 | 11–14 | 13.35 |
 | Same defensive approach without ultimate | 10,000 | 15–22 | 19.91 |
-| Attack repeatedly, recharge only when necessary | 0 | — | — |
-| Rush charge/attack/ultimate without guarding | 40 | 8 | 8.00 |
+| Attack repeatedly, Focus only when necessary | 0 | — | — |
+| Rush Focus/Attack/Ultimate without guarding | 40 | 8 | 8.00 |
 
 These are fixed-policy simulations, not a guarantee about every player strategy. They establish that the ultimate saves turns, remains optional, and does not make ignoring defense reliable.
 
@@ -102,7 +103,7 @@ These are fixed-policy simulations, not a guarantee about every player strategy.
 
 - `engine.mjs`: pure state transitions, input validation, and injectable integer randomness.
 - `frieren-source.mjs`: the supplied 128 × 96 uniform pixel SVG, partitioned into body and twin-tail layers without changing its pixel geometry or palette. `assets/frieren-original.svg` preserves the input; `assets/frieren.svg` is the compact standalone version. Regenerate with `python3 game/tools/prepare-frieren.py game/assets/frieren-original.svg`.
-- `frieren.mjs`: independent one-pixel twin-tail movements, gentle breathing, and open/half-closed/closed eye frames. Attack casts a spell from her staff, Guard raises a barrier, and Charge gathers mana. Both characters now use vector geometry without embedded bitmaps.
+- `frieren.mjs`: independent one-pixel twin-tail movements, gentle breathing, and open/half-closed/closed eye frames. Attack casts a spell from her staff, Guard raises a barrier, Focus gathers teal mana, and ultimate preparation gathers violet mana. Only casting releases the ultimate beam. Both characters now use vector geometry without embedded bitmaps.
 - `aura.mjs` / `aura-source.mjs`: Aura's supplied 128 × 96 uniform pixel SVG, divided into six vector layers with stepped hair/cape motion, balancing scale pans, blinking eyes, mana glow, and controlled-army effects. Aura uses two scene pixels per source pixel; Frieren uses 1.6 to balance her wider, larger-headed sprite against Aura. Her effects scale with her, and both remain grounded on the clearing. `assets/aura-original.svg` preserves the input; `assets/aura.svg` preserves its pixel geometry and palette. Regenerate the standalone asset and embedded layers with `python3 game/tools/prepare-aura.py game/assets/aura-original.svg`.
 - `knight-source.mjs`: the supplied 96 × 96 true pixel halberd soldier, preserved as 2,035 vector cells across front-leg, back-leg, body, and weapon layers. Short stepped strides move the legs separately, with original joint pixels beneath them to avoid gaps. The upright body and halberd stay steady; the glow follows the blade's actual light steel pixels. `assets/knight-original.svg` preserves the input and `assets/knight.svg` is its compact vector version. Regenerate with `python3 game/tools/prepare-halberd.py`. Reduced motion omits the transient attack.
 - `shield-knight-source.mjs`: the supplied 96 × 96 true pixel shield soldier, separated into front-leg, back-leg, body, and shield vector layers. It takes one short step, plants its feet, then raises its shield a pixel into the block. A purple pixel halo and light rim hold through the hit. `assets/shield-knight-original.svg` preserves the input; `assets/shield-knight.svg` is the compact standalone vector. Regenerate with `python3 game/tools/prepare-knight.py`. Both soldiers now use vector geometry with no embedded PNGs.
@@ -117,7 +118,7 @@ These are fixed-policy simulations, not a guarantee about every player strategy.
 - `github.mjs`: GitHub API feedback and Git persistence in a disposable Actions checkout only.
 - `state.json`: current versioned state. `events.jsonl`: append-only accepted-move receipts, including issue number, actor, random outcomes, and resulting revision.
 
-State version 3 adds mana, cooldowns, and the revised HP limits. Loading versions 1/2 preserves the encounter, revision, results, and history; remaining HP is rescaled proportionally (rounded up) to the new maximum, and mana starts at the new initial values. Version 1 intent positions first map to Guard/Attack/Assault. Existing event receipts remain untouched. New receipts include mana spent/restored, resulting mana and cooldowns, and actual enemy intent, and a pre-turn health/mana snapshot for playback.
+State version 4 adds `ultimatePrepared`. The legacy `charged` field now means only the Focus boost for normal Attack. Upgrading a version 3 save preserves HP, MP, Focus, cooldowns, results, and history, sets `ultimatePrepared: false`, and increments the revision once so links from the old rules must refresh. Versions 1/2 first migrate mana/HP as before. The migration is idempotent and does not rewrite event receipts or apply a battle turn. New ultimate receipts include `ultimatePhase: prepare|cast`, resource changes, and resulting preparation state, so retrying preparation cannot cast or spend twice. Pre-turn HP/MP snapshots continue to drive playback.
 
 Only the content between `<!-- README-RAID:START -->` and `<!-- README-RAID:END -->` is regenerated. Missing or duplicated markers after insertion fail closed. The initial insertion uses the existing technology-section heading as its anchor.
 
@@ -132,7 +133,7 @@ Moves are committed atomically with the scene, README, and event log before feed
 1. Publish the game files and both raid workflows on the repository's default branch. The included game state starts at encounter 1, revision 0.
 2. Ensure Issues and GitHub Actions are enabled. Allow the official `actions/checkout` and `actions/setup-node` actions used by the workflows.
 3. The game workflow requests `contents: write` and `issues: write` through the built-in `GITHUB_TOKEN`. Repository or organization policy must permit these permissions and bot pushes to the default branch. If rules require pull requests for every change, adjust the policy deliberately before enabling the game.
-4. Wait for **README Raid checks** to pass, then choose Charge from the profile README and submit the prefilled issue.
+4. Wait for **README Raid checks** to pass, then choose Focus from the profile README and submit the prefilled issue.
 5. Verify that **README Raid** commits revision 1, posts a result, closes the issue, and updates the profile after refresh.
 
 The check workflow has read-only permissions. No personal token or secret setup is needed under the supported repository policy. Existing profile content and the snake workflow are not modified by the game.
@@ -141,7 +142,7 @@ The check workflow has read-only permissions. No personal token or secret setup 
 
 Local tests and previews do not prove GitHub rendering or repository permissions. After publication, verify:
 
-- Complete a win by charging openings, attacking when charged, and guarding the assault; confirm the victory scene persists.
+- Complete a win by focusing during openings, attacking when focused, and guarding the assault; confirm the victory scene persists.
 - Check mana spending/recovery, ultimate prerequisites and six-turn cooldown, and rejection of consecutive Guards. Confirm unavailable README controls are not links.
 - Restart, then attack repeatedly to reach defeat; verify the defeat scene and restart again.
 - Submit an old turn URL; confirm it closes with a refresh message and makes no game commit.

@@ -11,7 +11,12 @@ export function ultimateIndicator(state, character = 'frieren') {
   const ready = character === 'aura'
     ? state.status === 'active' && enemyIntent(state).kind === 'assault'
     : !actionUnavailable(state, 'ultimate');
-  return { ready, label: ready ? 'ULT READY' : 'ULT NOT READY' };
+  const label = character === 'aura' ? (ready ? 'ULT READY' : 'ULT NOT READY')
+    : state.status !== 'active' ? 'ULT NOT READY'
+    : state.ultimateCooldown ? 'ULT COOLDOWN'
+    : state.ultimatePrepared ? 'ULT CHARGED'
+    : state.heroMana < RULES.ultimateCost ? 'ULT LOW MP' : 'ULT READY';
+  return { ready, label };
 }
 
 export function renderHud(state, { text, swap, playback }) {
@@ -58,32 +63,33 @@ export function renderHud(state, { text, swap, playback }) {
       <defs><clipPath id="${id}"><path d="${frame(x+2,y+2,174,16,2)}"/></clipPath></defs>
       ${swap(key,state[key],fill)}`;
   };
-  const emblem = (ready, character) => {
+  const emblem = ({ready,label}, character) => {
+    const prepared = label === 'ULT CHARGED';
     const isAura = character === 'aura';
     const name = isAura ? 'Aura' : 'Frieren';
-    const label = ready ? 'ULT READY' : 'ULT NOT READY';
-    const trim = ready ? '#e4bd74' : '#646e7d';
+    const trim = prepared ? '#cba0fa' : ready ? '#e4bd74' : '#646e7d';
     const shine = ready ? '#fff0bd' : '#8993a1';
     return `<g data-ultimate-ready="${ready}" data-character="${character}" role="img" aria-label="${name}: ${label}">
       <title>${isAura
         ? (ready ? 'Aura: Army Assault is next and has enough mana.' : 'Aura: Army Assault not ready. Requires the Assault turn, 30 MP, and a completed turn.')
-        : (ready ? 'Frieren: Ultimate ready to cast.' : 'Frieren: Ultimate not ready. Requires charge, 80 MP, no cooldown, and a completed turn.')}</title>
+        : (prepared ? 'Frieren: Ultimate charged. Cast it for no additional mana.' : ready ? 'Frieren: Ready to prepare Ultimate for 80 MP. Aura will respond.' : 'Frieren: Ultimate unavailable until cooldown ends and 80 MP is available, or while this turn resolves.')}</title>
       <path d="${frame(isAura?376:88,82,176,26,2)}" fill="#08111c"/>
       <g transform="translate(${isAura?525:91} 84)" aria-hidden="true">
         <path d="M10 0h4v4h4v4h4v6h-4v4h-4v4h-4v-4H6v-4H2V8h4V4h4z" fill="${trim}"/>
         <path d="M10 3h4v4h3v3h3v2h-3v3h-3v4h-4v-4H7v-3H4v-2h3V7h3z" fill="${ready?(isAura?'#963961':'#71366f'):'#293340'}"/>
         <path d="M11 5h2v5h4v2h-4v5h-2v-5H7v-2h4z" fill="${shine}"/>
+        ${prepared?'<path d="M10 9h4v4h-4z" fill="#ffffff"/>':''}
         ${ready?'<path d="M0 2h2v2H0zM22 18h2v2h-2z" fill="#ffe7a0"/>':''}
       </g>
       ${text(isAura?518:122,101,label,12,ready?ivory:'#919ba8',`${isAura?'text-anchor="end" ':''}letter-spacing=".5"`,132)}
     </g>`;
   };
   const badge = character => {
-    const { ready } = ultimateIndicator(state, character);
+    const indicator = ultimateIndicator(state, character);
     // Both badges settle after playback; pending actions should not look usable.
-    return `<g data-hud="ultimate-badge" data-character="${character}">${ready && playback
-      ? `<g class="raid-before" style="animation-delay:${playback.duration/1000}s">${emblem(false,character)}</g><g class="raid-after" style="animation-delay:${playback.duration/1000}s">${emblem(true,character)}</g>`
-      : emblem(ready,character)}</g>`;
+    return `<g data-hud="ultimate-badge" data-character="${character}">${indicator.ready && playback
+      ? `<g class="raid-before" style="animation-delay:${playback.duration/1000}s">${emblem({ready:false,label:'ULT NOT READY'},character)}</g><g class="raid-after" style="animation-delay:${playback.duration/1000}s">${emblem(indicator,character)}</g>`
+      : emblem(indicator,character)}</g>`;
   };
   return `<g data-hud="pixel-fighter" shape-rendering="crispEdges">
     ${rails(false,'#50cbd1')}${rails(true,'#db73b6')}

@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "encounter": 1,
-  "revision": 0,
+  "revision": 1,
   "status": "active",
   "turn": 0,
   "heroHp": 26,
@@ -15,5 +15,6 @@
   "heroMana": 240,
   "bossMana": 40,
   "guardCooldown": 0,
-  "ultimateCooldown": 0
+  "ultimateCooldown": 0,
+  "ultimatePrepared": false
 }

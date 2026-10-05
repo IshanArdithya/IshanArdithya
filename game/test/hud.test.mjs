@@ -24,15 +24,20 @@ test('mirrored HUD fills match health/mana and keep centered numeric labels', ()
   for (const key of ['heroHp','heroMana','bossHp','bossMana']) assert.equal(fill(full,key).width,174);
 });
 
-test('ultimate badge follows actual action eligibility', () => {
-  const state={...initialState(),charged:true,heroMana:80};
+test('ultimate badge distinguishes prepare, charged, cooldown, and low mana states', () => {
+  const state=initialState();
   assert.deepEqual(ultimateIndicator(state),{ready:true,label:'ULT READY'});
-  for (const changes of [{charged:false},{heroMana:79},{heroMana:0},{ultimateCooldown:1},{status:'victory',bossHp:0},{status:'defeat',heroHp:0}]) {
+  assert.deepEqual(ultimateIndicator({...state,charged:true}),{ready:true,label:'ULT READY'});
+  assert.deepEqual(ultimateIndicator({...state,ultimatePrepared:true,heroMana:0}),{ready:true,label:'ULT CHARGED'});
+  for (const [changes,label] of [[{heroMana:79},'ULT LOW MP'],[{heroMana:0},'ULT LOW MP'],
+    [{ultimateCooldown:1},'ULT COOLDOWN'],[{status:'victory',bossHp:0},'ULT NOT READY'],[{status:'defeat',heroHp:0},'ULT NOT READY']]) {
     const unavailable={...state,...changes};
-    assert.deepEqual(ultimateIndicator(unavailable),{ready:false,label:'ULT NOT READY'});
+    assert.deepEqual(ultimateIndicator(unavailable),{ready:false,label});
     assert.match(renderScene(unavailable),/data-ultimate-ready="false"/);
     assert.doesNotMatch(renderScene(unavailable),/data-ultimate-ready="true"/);
   }
+  assert.match(renderScene(fixtures().prepared,{animate:false}),/data-lettering="ULT CHARGED"/);
+  assert.match(renderScene(fixtures().ultimate,{animate:false}),/data-lettering="ULT COOLDOWN"/);
 });
 
 test('ultimate readiness appears when playback finishes; still images show the final state', () => {

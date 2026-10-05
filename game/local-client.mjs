@@ -65,7 +65,7 @@ function render({ scene = true } = {}) {
     if (busy) later(() => finishPlayback(token, true), 8000);
   }
   element('actions').setAttribute('aria-busy', String(busy));
-  element('scene').alt = `Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; charge ${state.charged ? 'ready' : 'empty'}.`;
+  element('scene').alt = `Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; attack ${state.charged ? 'focused' : 'normal'}.`;
   element('actions').replaceChildren();
   const actions = state.status === 'active' ? ACTIONS : ['restart'];
   for (const action of actions) {
@@ -82,15 +82,15 @@ function render({ scene = true } = {}) {
     element('actions').append(button);
   }
   const shown = busy && state.recent[0]?.before ? { ...state, ...state.recent[0].before } : state;
-  element('stats').textContent = `Frieren ${shown.heroHp}/${RULES.heroHp} HP · Aura ${shown.bossHp}/${RULES.bossHp} HP · Charge ${shown.charged ? 'ready' : 'empty'}\nMana: Frieren ${shown.heroMana}/${RULES.heroMana} MP · Aura ${shown.bossMana}/${RULES.bossMana} MP\n${cooldownSummary(state)}\nEncounter ${shown.encounter} · Turn ${shown.turn} · Victories ${shown.wins} · Defeats ${shown.losses}`;
+  element('stats').textContent = `Frieren ${shown.heroHp}/${RULES.heroHp} HP · Aura ${shown.bossHp}/${RULES.bossHp} HP · Attack ${shown.charged ? 'focused' : 'normal'} · Ultimate ${state.ultimatePrepared ? 'charged' : 'not prepared'}\nMana: Frieren ${shown.heroMana}/${RULES.heroMana} MP · Aura ${shown.bossMana}/${RULES.bossMana} MP\n${cooldownSummary(state)}\nEncounter ${shown.encounter} · Turn ${shown.turn} · Victories ${shown.wins} · Defeats ${shown.losses}`;
   const intent = enemyIntent(state);
   element('availability').textContent = busy ? 'Turn in progress — controls unlock when the animations finish.' : state.status === 'active' ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
   element('intent').textContent = busy ? 'Resolving this turn…' : state.status === 'active'
     ? `Next: ${intent.name} · ${intent.damage} damage. ${intent.message}`
     : state.status === 'victory' ? 'Victory! The forest is safe. Play again for a fresh encounter.' : 'Defeat. Frieren will rise again. Try a new approach!';
   const last = state.recent[0];
-  element('message').textContent = busy ? `Frieren uses ${last.action === 'ultimate' ? 'Unleashed Zoltraak' : last.action}.` : last ? last.summary.replace('@you ', 'You ') : 'Your move. Charge while Aura guards, attack during openings, and guard her assault.';
-  element('roll').textContent = !busy && (last?.action === 'attack' || last?.action === 'ultimate')
+  element('message').textContent = busy ? `Frieren uses ${last.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'Prepare Ultimate' : 'Unleashed Zoltraak') : last.action}.` : last ? last.summary.replace('@you ', 'You ') : 'Your move. Focus or prepare Ultimate while Aura guards, attack during openings, and guard her assault.';
+  element('roll').textContent = !busy && (last?.action === 'attack' || last?.action === 'ultimate' && last.ultimatePhase !== 'prepare')
     ? `${last.action === 'ultimate' ? 'Ultimate damage' : 'Damage roll'}: ${last.baseDamage}${last.critical ? ' × 1.5 (critical, rounded down)' : last.action === 'ultimate' ? ' · fixed damage' : ' · no critical'}${last.enemyBlocked ? ` · Aura blocks ${last.enemyBlocked}` : ''} → ${last.damage} damage` : '';
   element('history').replaceChildren(...(busy ? state.recent.slice(1) : state.recent).map(event => {
     const li = document.createElement('li');

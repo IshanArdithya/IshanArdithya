@@ -8,6 +8,12 @@ function closedEyes(half = false) {
 }
 
 function magic(pose) {
+  if (pose === 'preparing') return `<g class="aura" data-effect="ultimate-preparation">
+    <path d="M12 120h15v-3h63v3h15v3H90v3H27v-3H12z" fill="#bd8de8" opacity=".6"/>
+    <path d="M9 90h3v9H9zM114 72h3v9h-3zM105 36h6v3h-6zM21 57h3v9h-3z" fill="#e8ceff"/>
+    <path d="M134 19h3v9h9v3h-9v9h-3v-9h-9v-3h9z" fill="#fff0d8"/>
+    <path d="M128 22h3v3h-3zM140 34h3v3h-3z" fill="#c995f3"/>
+  </g>`;
   if (pose === 'ultimate') return `<g class="spell-cast" data-effect="unleashed-zoltraak">
     <path d="M150 44h18v-7h40v7h108v5h40v4h-40v5H208v7h-40v-7h-18z" fill="#c6a8fa" opacity=".38"/>
     <path d="M154 49h36v-4h26v4h112v4H216v4h-26v-4h-36z" fill="#fff7dc"/>

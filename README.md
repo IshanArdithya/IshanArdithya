@@ -26,25 +26,23 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 
 **Frieren faces Aura. Everyone takes a turn.** Help protect the forest clearing.
 
-![Frieren 26/26 HP; Aura 100/100 HP; active; uncharged](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=0)
+![Frieren 26/26 HP; Aura 100/100 HP; active; attack normal; ultimate not prepared](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=1)
 
-[![Attack — 5–7 damage, or 14–18 charged; 10 mana](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cattack&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Guard — take at most 1 damage; 15 mana; skip one turn before reusing](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Cguard&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.)<br> [![Charge — restore 40 mana and prepare an attack or ultimate](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/charge.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C0%7Ccharge&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) ![Unleashed Zoltraak — 32 damage; 80 mana; requires Charge; 6 other turns before reuse — unavailable: Charge before casting Unleashed Zoltraak.](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate-disabled.svg)
+[![Attack — 5–7 damage, or 14–18 focused; 10 mana](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cattack&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Guard — take at most 1 damage; 15 mana; skip one turn before reusing](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cguard&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.)<br> [![Focus — restore 40 mana and empower the next normal Attack](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cfocus&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.) [![Prepare Ultimate — spend 80 mana now; Aura responds; cast on a later turn](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate.svg)](https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cultimate&body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again.)
 
-**Frieren:** 26/26 HP · **Aura:** 100/100 HP · **Charge:** empty
+**Frieren:** 26/26 HP · **Aura:** 100/100 HP · **Attack:** normal · **Ultimate:** not prepared
 
 **Mana:** Frieren 240/240 MP · Aura 40/60 MP
 
 **Cooldowns:** CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.
 
-ultimate: Charge before casting Unleashed Zoltraak.
-
 **Next:** Guard · 0 damage. Aura spends 15 mana to guard. Your damage is halved, rounded up.
 
-**Your move:** Charge while Aura guards, Attack during openings, and Guard her assault.
+**Your move:** Focus or prepare Ultimate while Aura guards, Attack during openings, and Guard her assault.
 
 Choose an action → submit the prefilled issue → wait for the result → return and refresh. GitHub sign-in required.
 
-**Victories:** 0 · **Defeats:** 0 · Encounter 1 · Revision 0
+**Victories:** 0 · **Defeats:** 0 · Encounter 1 · Revision 1
 
 <details>
 <summary>How to play / Recent turns</summary>
@@ -53,10 +51,10 @@ Everyone shares the same hero. You may play consecutive turns; nothing happens w
 
 | Action | Effect |
 | --- | --- |
-| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when charged. Consumes charge. 10% critical chance, ×1.5 rounded down. |
-| Guard | 15 mana. Take at most 1 damage and keep charge. Must take one other turn before guarding again. |
-| Charge | Restore up to 40 mana and prepare one charged Attack or Ultimate. May refill mana while charged; cannot stack the damage boost. |
-| Ultimate | Unleashed Zoltraak: 32 fixed damage for 80 mana. Requires and consumes charge. No critical multiplier. Six other accepted turns before reuse. |
+| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when focused. Consumes Focus. 10% critical chance, ×1.5 rounded down. |
+| Guard | 15 mana. Take at most 1 damage and keep Focus and ultimate preparation. Must take one other turn before guarding again. |
+| Focus | Restore up to 40 mana and empower the next normal Attack. May refill mana while focused; cannot stack the damage boost. Does not prepare Ultimate. |
+| Prepare Ult / Cast Ult | First click spends 80 mana to prepare, deals no damage, and lets Aura respond. A later click casts Unleashed Zoltraak for 32 fixed damage with no further mana cost. Preparation persists through other actions. Casting starts a six-turn cooldown and preserves Focus. No critical multiplier. |
 
 Frieren starts with **26 HP / 240 MP**; Aura has **100 HP / 40 MP**, with a **60 MP** limit. These are game balance values, not canon measurements.
 

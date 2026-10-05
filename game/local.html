@@ -14,7 +14,7 @@
     h1 { font-size: clamp(25px, 5vw, 34px); letter-spacing: -1px; margin: 8px 0; line-height: 1.2; }
     p { margin: 8px 0; }
     .muted, small { color: #a5b5c9; }
-    #scene { display: block; width: 100%; height: auto; aspect-ratio: 40/39; border-radius: 12px; }
+    #scene { display: block; width: 100%; height: auto; aspect-ratio: 80/59; border-radius: 12px; }
     #actions { display: grid; grid-template-columns: repeat(2,96px); gap: 8px; margin: 18px 0; }
     #actions button { background: none; padding: 0; border: none; cursor: pointer; max-width: 96px; min-width: 0; flex: 1; border-radius: 5px; }
     #actions img { display: block; width: 100%; height: auto; }
@@ -52,10 +52,10 @@
     <details open>
       <summary>How to play</summary>
       <ul>
-        <li><strong>Attack:</strong> 5–7 damage for 10 mana; 14–18 for 20 mana when charged. 10% critical chance (×1.5, rounded down).</li>
-        <li><strong>Guard:</strong> 15 mana, take at most 1 damage, and preserve charge. Take one other turn before guarding again.</li>
-        <li><strong>Charge:</strong> restore up to 40 mana and prepare an Attack or Ultimate. You can refill mana while already charged.</li>
-        <li><strong>Ultimate — Unleashed Zoltraak:</strong> 32 fixed damage for 80 mana. Requires and consumes charge. Six other accepted turns before reuse; no critical hits.</li>
+        <li><strong>Attack:</strong> 5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</li>
+        <li><strong>Guard:</strong> 15 mana, take at most 1 damage, and preserve Focus and ultimate preparation. Take one other turn before guarding again.</li>
+        <li><strong>Focus:</strong> restore up to 40 mana and empower the next normal Attack. You can refill mana while focused. Focus does not prepare Ultimate.</li>
+        <li><strong>Prepare Ult / Cast Ult:</strong> first spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown; no critical hits.</li>
       </ul>
       <p class="muted">Frieren: 26 HP / 240 MP. Aura: 100 HP, starting with 40/60 MP. Aura cycles Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP). If she cannot afford Guard or Assault, she restores mana instead.</p>
       <p class="muted">Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns tick only when someone plays a valid turn. These numbers and the ultimate form are game adaptations; the full Scales of Obedience contest remains a future feature.</p>

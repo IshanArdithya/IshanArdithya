@@ -29,7 +29,7 @@ test('two submissions from the same revision accept only one', async () => {
   const repo = memory();
   const feedback = [];
   await processIssue(issue(), repo, async (...args) => feedback.push(args), rng);
-  const stale = await processIssue(issue(2, 'raid|1|0|charge'), repo, async (...args) => feedback.push(args), rng);
+  const stale = await processIssue(issue(2, 'raid|1|0|focus'), repo, async (...args) => feedback.push(args), rng);
   assert.equal(stale.rejected, true);
   assert.equal(repo.writes, 1);
   assert.match(feedback[1][1], /Refresh/);
@@ -38,7 +38,7 @@ test('two submissions from the same revision accept only one', async () => {
 test('same visitor can take consecutive refreshed turns', async () => {
   const repo = memory();
   await processIssue(issue(), repo, async () => {}, rng);
-  await processIssue(issue(2, 'raid|1|1|charge'), repo, async () => {}, rng);
+  await processIssue(issue(2, 'raid|1|1|focus'), repo, async () => {}, rng);
   assert.equal(repo.writes, 2);
   assert.equal(repo.state.charged, true);
 });
@@ -120,14 +120,23 @@ test('local execution cannot reset a developer checkout', () => {
   if (process.env.GITHUB_ACTIONS !== 'true') assert.throws(() => gitRepository('/tmp', 'owner/repo', 'main'), /runner/);
 });
 
-test('ultimate receipt retries cannot spend mana or restart cooldown twice', async () => {
-  const repo=memory(); repo.state.charged=true; repo.state.intent=2;
-  const input=issue(1,'raid|1|0|ultimate');
-  await assert.rejects(processIssue(input,repo,async()=>{throw Error('feedback failed')}), /feedback failed/);
+test('prepare and cast retries cannot double spend or turn a retried preparation into a cast', async () => {
+  const repo=memory(); repo.state.intent=2;
+  const prepare=issue(1,'raid|1|0|ultimate');
+  await assert.rejects(processIssue(prepare,repo,async()=>{throw Error('feedback failed')}),/feedback failed/);
   const before=structuredClone(repo.state);
-  const retry=await processIssue(input,repo,async()=>{});
-  assert.equal(retry.duplicate,true); assert.deepEqual(repo.state,before);
-  assert.equal(repo.state.heroMana,160); assert.equal(repo.state.ultimateCooldown,6);
-  const unavailable=await processIssue(issue(2,'raid|1|1|ultimate'),repo,async()=>{});
-  assert.equal(unavailable.rejected,true); assert.deepEqual(repo.state,before);
+  assert.equal((await processIssue(prepare,repo,async()=>{})).duplicate,true);
+  assert.deepEqual(repo.state,before); assert.equal(repo.state.heroMana,160);
+  assert.equal(repo.state.ultimatePrepared,true); assert.equal(repo.state.ultimateCooldown,0);
+  assert.equal(repo.state.bossHp,100);
+  assert.equal((await processIssue(issue(2,'raid|1|0|ultimate'),repo,async()=>{})).rejected,true);
+  const cast=issue(3,'raid|1|1|ultimate');
+  await processIssue(cast,repo,async()=>{});
+  const after=structuredClone(repo.state);
+  assert.equal(after.bossHp,68); assert.equal(after.heroMana,160);
+  assert.equal(after.ultimatePrepared,false); assert.equal(after.ultimateCooldown,6);
+  assert.equal((await processIssue(cast,repo,async()=>{})).duplicate,true);
+  assert.deepEqual(repo.state,after);
+  assert.equal((await processIssue(issue(4,'raid|1|2|ultimate'),repo,async()=>{})).rejected,true);
+  assert.deepEqual(repo.state,after);
 });

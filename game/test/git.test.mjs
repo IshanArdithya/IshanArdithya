@@ -44,7 +44,7 @@ test('real Git adapter saves atomic moves on a non-main branch and survives a co
       }
       return commit(...args);
     };
-    const input = { number: 42, title: 'raid|1|0|charge', user: { login: 'visitor', type: 'User' } };
+    const input = { number: 42, title: 'raid|1|0|focus', user: { login: 'visitor', type: 'User' } };
     let acknowledgments = 0;
     const acknowledge = async () => {
       const persisted = JSON.parse((await git(bare, 'show', 'trunk:game/state.json')).stdout);

@@ -78,3 +78,17 @@ test('Assault renders five soldiers but resolves one paid hit before unlocking',
   assert.equal(turnPlayback(recovered).duration,TURN_TIMING.finish);
   assert.doesNotMatch(renderScene(state,{animate:false}),/data-army-soldier=/);
 });
+
+
+test('ultimate preparation has its own effect and no damage, casting has the beam and hit',()=>{
+  const prepared=take(initialState(),'ultimate').state;
+  assert.equal(turnPlayback(prepared).playerPose,'preparing');
+  const svg=renderScene(prepared);
+  assert.match(svg,/data-effect="ultimate-preparation"/);
+  assert.match(svg,/data-timeline="frieren-ultimate-prepared"/);
+  assert.doesNotMatch(svg,/data-effect="unleashed-zoltraak"|data-timeline="aura-damage"/);
+  const cast=take(prepared,'ultimate').state;
+  assert.equal(turnPlayback(cast).playerPose,'ultimate');
+  assert.match(renderScene(cast),/data-effect="unleashed-zoltraak"/);
+  assert.match(renderScene(cast),/data-timeline="aura-damage"/);
+});

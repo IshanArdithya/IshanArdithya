@@ -12,6 +12,6 @@ export function turnPlayback(state) {
   const heroDamageAt = TURN_TIMING.heroDamage + enemyDuration - TURN_TIMING.actionDuration;
   return { event, enemyActs, enemyDuration, heroDamageAt,
     duration: enemyActs ? heroDamageAt + TURN_TIMING.popupDuration + 100 : TURN_TIMING.victoryFinish,
-    playerPose: { attack: 'attacking', ultimate: 'ultimate', guard: 'guarding', charge: 'charged' }[event.action],
+    playerPose: event.ultimatePhase === 'prepare' ? 'preparing' : { attack: 'attacking', ultimate: 'ultimate', guard: 'guarding', focus: 'charged', charge: 'charged' }[event.action],
     enemyPose: event.enemyAction };
 }
