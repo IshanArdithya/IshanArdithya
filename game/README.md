@@ -24,12 +24,34 @@ node game/preview.mjs
 
 Open `game/preview/index.html` to inspect the ready, charged, attacking, guarding, critical, victory, defeat, Aura charge, and Aura assault, ultimate, and depleted-mana states at 640px and 320px. Preview files are ignored by Git. Browser motion and theme preferences apply to the preview. Rendering never advances the game or rolls damage.
 
-The scene is 640 × 624: a 152-pixel status band, the full 640 × 360 forest battlefield, and a 112-pixel intent/cooldown band. At 320px wide it scales to 320 × 312. The supplied background keeps its original 16:9 proportions; the battlefield is not cropped or stretched into a narrow strip.
+The scene is 640 × 472: the full 640 × 360 forest battlefield with the compact HUD overlaid at the top, followed by a 112-pixel intent/cooldown band. At 320px wide it scales to 320 × 236. The supplied background keeps its original 16:9 proportions; the battlefield is not cropped or stretched into a narrow strip.
 
 `game/generate.mjs` defaults to this repository and `main` for local rendering. For a different repository or default branch:
 
 ```sh
 GITHUB_REPOSITORY=owner/profile DEFAULT_BRANCH=trunk node game/generate.mjs
+```
+
+## Pixel HUD
+
+The HUD occupies about 104 pixels over the top of the forest, with no separate header band. It uses a compact fighting-game layout: inset vector portraits at the outer edges, gold pixel frames, teal/magenta character accents, and a central **TURNS** medallion. HP is green and MP is blue for both characters, with smaller current/max counts centered inside each bar. Portraits have internal padding and a separate gutter before the bars; compact nameplates and resource rows leave breathing room around the turn medallion. The fills mirror each other and update with their numeric values at the existing action-resolution times. Portraits are lossless crops of the current pixel sprites; frames, bars, medallion, and charge badge are SVG geometry. Encounter numbers stay outside the HUD.
+
+Below Frieren's mana bar, a textless badge is grey when uncharged and teal/gold when charge is stored in the resulting active state. The badge indicates charge, including when mana is low or Ultimate is cooling down; action availability still requires enough mana and zero cooldown. The footer and action buttons retain those details. Ended encounters show the grey badge. Accessible descriptions explain its meaning. Aura has no separate ultimate badge.
+
+`hud.mjs` renders the committed state through the same health/mana snapshots as the battle. `hud-source.mjs` stores the cropped vector portraits; regenerate them with `python3 game/tools/prepare-hud.py` followed by the normal scene generator. The forest retains its full 640 × 360 dimensions beneath the HUD.
+
+## Lettering
+
+All visible scene labels and action-button lettering use SVG paths derived from **IM Fell DW Pica** by Igino Marini. This is a Frieren-inspired approximation of the supplied logos' old-style serif lettering, not a verified official Frieren typeface. Character names, HP/MP, charge, cooldowns, turn/encounter numbers, enemy intent, damage, and endings share the same style. Counters remain dynamic: numeric glyphs are aligned to a consistent height and given equal advance widths so values do not jump around as they change.
+
+Glyph definitions are reused within each SVG. No installed font, external font request, embedded font file, or browser font-loading support is required. Text remains available through SVG titles/accessible labels and the existing Markdown summary. The local page's explanatory text and ordinary README prose keep their normal fonts.
+
+The original font and SIL Open Font License are committed under `fonts/`; [font research and regeneration notes](fonts/README.md) document the source and approximation. The runtime uses only committed plain-JavaScript glyph data. Rebuilding that data uses the build-time Python `fonttools` package:
+
+```sh
+python3 game/tools/prepare-font.py
+node game/generate.mjs
+node game/preview.mjs
 ```
 
 ## Turn playback
@@ -87,6 +109,8 @@ These are fixed-policy simulations, not a guarantee about every player strategy.
 - `forest-source.mjs`: the supplied 320 × 180 forest, compacted into lossless pixel paths. `assets/forest-original.svg` preserves the input, and `assets/forest.svg` is the compact standalone version. Regenerate with `python3 game/tools/prepare-forest.py game/assets/forest-original.svg`.
 - `art.mjs` / `render.mjs`: the full forest clearing, character composition, buttons, accessible Markdown, and issue URLs. Leaf highlights sway, sunlight changes gently, and pollen drifts behind the fighters. Frieren breathes, blinks, and sways her hair; turn effects play in sequence and disappear; charged-idle mana effects pulse slowly. Reduced-motion mode displays complete still poses and scenery.
 - `army.mjs` / `sword-knight-source.mjs`: five independently animated army instances reuse two sets of vector layer definitions. Sword artwork is preserved in `assets/sword-knight-original.svg`, with a compact standalone `assets/sword-knight.svg`. Regenerate its 1,953 pixel cells with `python3 game/tools/prepare-sword.py`. The rear halberdiers reuse the normal Attack artwork.
+- `hud.mjs` / `hud-source.mjs`: mirrored resource bars with centered values, vector portraits, the turn counter and an ultimate-readiness indicator.
+- `lettering.mjs` / `font-source.mjs`: per-image glyph definitions, proportional serif labels, aligned numeric counters, SVG-path button labels, and accessible text equivalents. `tools/prepare-font.py` rebuilds the glyph outlines from the committed licensed font.
 - `playback.mjs`: shared turn timings and the recorded-action playback descriptor; presentation never changes battle state.
 - `generate.mjs`: writes the current state, scene, and marked README section; creates initial assets locally.
 - `process.mjs`: persistence-first move handling with durable duplicate detection and up to three commit attempts.

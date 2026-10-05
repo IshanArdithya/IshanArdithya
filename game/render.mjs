@@ -1,3 +1,5 @@
+import { renderHud } from './hud.mjs';
+import { createLettering } from './lettering.mjs';
 import { TURN_TIMING as T, turnPlayback } from './playback.mjs';
 import { RULES, ACTIONS, enemyIntent, actionUnavailable, validateState } from './engine.mjs';
 import { background, heroArt, auraArt, frierenEffects, auraEffects, xml } from './art.mjs';
@@ -6,17 +8,19 @@ export const START = '<!-- README-RAID:START -->';
 export const END = '<!-- README-RAID:END -->';
 export const DEFAULT_REPOSITORY = 'IshanArdithya/IshanArdithya';
 
-const text = (x, y, value, size = 24, color = '#f3e6cb', extra = '') => `<text x="${x}" y="${y}" font-size="${size}" fill="${color}" ${extra}>${xml(value)}</text>`;
+
 
 const seconds = ms => `${ms / 1000}s`;
 const timedEffect = (id, content, start, duration, popup = false) => `<g class="${popup ? 'raid-popup' : 'raid-window'}" data-timeline="${id}" style="animation-delay:${seconds(start)};animation-duration:${seconds(duration)}">${content}</g>`;
-function floatingText(id, x, y, label, start, size = 28, color = '#fff2d6', anchor = 'middle', subtitle = '') {
+function floatingText(text, id, x, y, label, start, size = 28, color = '#fff2d6', anchor = 'middle', subtitle = '') {
   const style = `text-anchor="${anchor}" stroke="#101723" stroke-width="4" stroke-linejoin="round" paint-order="stroke"`;
   return timedEffect(id, text(x,y,label,size,color,style) + (subtitle ? text(x,y-26,subtitle,14,color,style) : ''), start,T.popupDuration,true);
 }
 
 export function renderScene(state, { animate = true } = {}) {
   validateState(state);
+  const lettering = createLettering();
+  const { text } = lettering;
   const last = state.recent[0];
   const playback = animate ? turnPlayback(state) : null;
   const duration = playback?.duration || 0;
@@ -32,8 +36,6 @@ export function renderScene(state, { animate = true } = {}) {
     const style = `style="animation-delay:${seconds(time)}"`;
     return `<g class="raid-before" data-hud="before-${key}" ${style}>${markup(playback.event.before[key])}</g><g class="raid-after" data-hud="after-${key}" ${style}>${markup(value)}</g>`;
   };
-  const bar = (key,x,y,max,color) => swap(key,state[key],value => `<rect x="${x}" y="${y}" width="${Math.round(250*value/max)}" height="6" fill="${color}"/>`);
-  const reading = (key,x,y,max,unit,color,extra='') => swap(key,state[key],value => text(x,y,`${value}/${max} ${unit}`,24,color,extra));
   const heroAction = playback ? timedEffect('frieren-action',frierenEffects(playback.playerPose),T.player,
     playback.playerPose === 'guarding' && playback.enemyActs ? T.enemy+playback.enemyDuration : T.actionDuration) : '';
   const enemyAction = playback?.enemyActs ? timedEffect('aura-action',auraEffects(playback.enemyPose),
@@ -42,24 +44,23 @@ export function renderScene(state, { animate = true } = {}) {
   let popups = '';
   if (playback) {
     const e = playback.event;
-    if (e.damage > 0) popups += floatingText('aura-damage',582,366,`−${e.damage}`,T.bossDamage,28,e.critical ? '#ffd279' : '#fff2d6','middle',e.critical ? 'CRITICAL' : '');
-    if (e.action === 'guard') popups += floatingText('frieren-guard',212,342,'GUARD',50,18,'#a6ece5','start');
-    if (e.action === 'charge') popups += floatingText('frieren-charge',212,342,'CHARGE',T.bossDamage,18,'#a6ece5','start');
+    if (e.damage > 0) popups += floatingText(text, 'aura-damage',582,214,`−${e.damage}`,T.bossDamage,28,e.critical ? '#ffd279' : '#fff2d6','middle',e.critical ? 'CRITICAL' : '');
+    if (e.action === 'guard') popups += floatingText(text, 'frieren-guard',212,190,'GUARD',50,18,'#a6ece5','start');
+    if (e.action === 'charge') popups += floatingText(text, 'frieren-charge',212,190,'CHARGE',T.bossDamage,18,'#a6ece5','start');
     if (playback.enemyActs) {
-      if (e.enemyAction === 'guard') popups += floatingText('aura-guard',444,303,'GUARD',T.enemy,18,'#d9b8ff','end');
-      if (e.enemyAction === 'charge') popups += floatingText('aura-charge',444,303,'CHARGE',T.enemy,18,'#d9b8ff','end');
-      if (e.incoming > 0) popups += floatingText('frieren-damage',65,390,`−${e.incoming}`,playback.heroDamageAt,28,'#ffb5b5');
+      if (e.enemyAction === 'guard') popups += floatingText(text, 'aura-guard',444,151,'GUARD',T.enemy,18,'#d9b8ff','end');
+      if (e.enemyAction === 'charge') popups += floatingText(text, 'aura-charge',444,151,'CHARGE',T.enemy,18,'#d9b8ff','end');
+      if (e.incoming > 0) popups += floatingText(text, 'frieren-damage',65,238,`−${e.incoming}`,playback.heroDamageAt,28,'#ffb5b5');
     }
   }
   const auraPose = state.status === 'victory' ? 'defeated' : intent.kind;
   const label = ended ? (state.status === 'victory' ? 'VICTORY · FOREST PROTECTED' : 'DEFEAT · RISE AGAIN')
     : intent.kind === 'guard' ? 'GUARD · HALF DAMAGE TAKEN'
     : `${intent.name.toUpperCase()} · ${intent.damage} DAMAGE`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="624" viewBox="0 0 640 624" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="472" viewBox="0 0 640 472" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
   <title id="title">README Raid: Frieren vs Aura</title>
   <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. ${ended ? state.status : intent.message} ${state.charged ? 'Charged attack ready.' : 'Not charged.'}`)}</desc>
   <style>
-    text { font-family: ui-monospace, 'DejaVu Sans Mono', monospace; font-weight: 700; }
     .hair-left { animation: hair-left 3.8s steps(1,end) infinite; }
     .hair-right { animation: hair-right 4.2s steps(1,end) infinite; }
     .frieren-idle { animation: breathe 3.2s steps(1,end) infinite; }
@@ -185,27 +186,20 @@ export function renderScene(state, { animate = true } = {}) {
     }
   </style>
   <g shape-rendering="crispEdges">${background()}
-    <path d="M24 90h250v6H24zM366 90h250v6H366zM24 130h250v6H24zM366 130h250v6H366z" fill="#303a4b"/>
-    ${bar('heroHp',24,90,RULES.heroHp,'#55d7c3')}${bar('bossHp',366,90,RULES.bossHp,'#e66870')}
-    ${bar('heroMana',24,130,RULES.heroMana,'#85b9ef')}${bar('bossMana',366,130,RULES.bossMana,'#c597ef')}
-    <g transform="translate(35 242) scale(.8)">
+    <g transform="translate(35 90) scale(.8)">
       <g class="${playback && ['attack','ultimate'].includes(last.action) ? 'raid-caster' : ''}">${heroArt(pose, { effects: false })}</g>${heroAction}
       <g class="raid-settled">${frierenEffects(state.status === 'victory' ? 'victorious' : state.status === 'active' && state.charged ? 'charged' : 'ready')}</g>
     </g>
-    <g transform="translate(0 180)">${auraArt(auraPose, { effects: false })}${enemyAction}</g>
+    <g transform="translate(0 28)">${auraArt(auraPose, { effects: false })}${enemyAction}</g>
   </g>
-  ${text(24, 31, 'README RAID', 16, '#a5b5c9', 'letter-spacing="3"')}
-  ${text(616, 31, `ENCOUNTER ${String(state.encounter).padStart(3, '0')}`, 14, '#a5b5c9', 'text-anchor="end"')}
-  ${text(24, 54, 'FRIEREN')}${text(616, 54, 'AURA', 24, '#f3e6cb', 'text-anchor="end"')}
-  ${reading('heroHp',24,82,RULES.heroHp,'HP','#55d7c3')}${reading('bossHp',616,82,RULES.bossHp,'HP','#e66870','text-anchor="end"')}
-  ${reading('heroMana',24,120,RULES.heroMana,'MP','#85b9ef')}${reading('bossMana',616,120,RULES.bossMana,'MP','#c597ef','text-anchor="end"')}
+  ${renderHud(state, { text, swap, playback })}
 ${popups}
-  ${text(24, 543, state.charged ? 'CHARGE: READY' : 'CHARGE: EMPTY', 24, state.charged ? '#55d7c3' : '#a5b5c9')}
-  ${text(616, 543, `TURN ${state.turn}`, 16, '#a5b5c9', 'text-anchor="end"')}
-  ${text(24, 575, cooldownSummary(state), 24, '#c5b3e8')}
-  ${text(24, 608, ended ? label : `NEXT: ${label}`, 24, ended ? '#ebbb76' : '#f3e6cb')}
-  <rect x=".5" y=".5" width="639" height="623" rx="12" fill="none" stroke="#364458"/>
+  ${text(24, 391, state.charged ? 'CHARGE: READY' : 'CHARGE: EMPTY', 24, state.charged ? '#55d7c3' : '#a5b5c9')}
+  ${text(24, 423, cooldownSummary(state), 24, '#c5b3e8')}
+  ${text(24, 456, ended ? label : `NEXT: ${label}`, 24, ended ? '#ebbb76' : '#f3e6cb')}
+  <rect x=".5" y=".5" width="639" height="471" rx="12" fill="none" stroke="#364458"/>
 </svg>\n`;
+  return svg.replace('  <style>', `${lettering.definitions()}\n  <style>`);
 }
 
 export function cooldownSummary(state) {
@@ -232,7 +226,9 @@ export function renderButton(action) {
   }[base];
   if (!config) throw new Error('Unknown button');
   const color = disabled ? '#667285' : config[1];
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="44" viewBox="0 0 96 44" role="img" aria-label="${xml(config[0])}${disabled ? ' unavailable' : ''}"><rect x="1" y="1" width="94" height="42" rx="5" fill="#172234" stroke="${color}"/><path d="M10 35h76" stroke="${color}" opacity=".3"/><text x="48" y="26" text-anchor="middle" font-family="ui-monospace,monospace" font-size="${base === 'restart' || base === 'charged' ? 12 : 14}" font-weight="700" fill="${color}">${xml(config[0])}</text></svg>\n`;
+  const lettering = createLettering();
+  const label = lettering.text(48,27,config[0],14,color,'text-anchor="middle"',82);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="44" viewBox="0 0 96 44" role="img" aria-label="${xml(config[0])}${disabled ? ' unavailable' : ''}"><rect x="1" y="1" width="94" height="42" rx="5" fill="#172234" stroke="${color}"/><path d="M10 35h76" stroke="${color}" opacity=".3"/>${lettering.definitions()}${label}</svg>\n`;
 }
 
 export function issueUrl(state, action, repository = DEFAULT_REPOSITORY) {

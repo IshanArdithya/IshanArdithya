@@ -10,13 +10,13 @@ export function heroArt(pose, options) {
 }
 
 export function background() {
-  return `<rect width="640" height="624" rx="12" fill="#101723"/>
+  return `<rect width="640" height="472" rx="12" fill="#101723"/>
     <defs>
-      <clipPath id="forest-bounds"><path d="M0 152h640v360H0z"/></clipPath>
+      <clipPath id="forest-bounds"><path d="M0 0h640v360H0z"/></clipPath>
       <filter id="forest-tone" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values=".5"/></filter>
     </defs>
     <g clip-path="url(#forest-bounds)" data-background="forest-clearing">
-      <g transform="translate(0 152) scale(2)" filter="url(#forest-tone)">
+      <g transform="scale(2)" filter="url(#forest-tone)">
         ${FOREST_SHAPES}
         <g class="forest-leaves">${FOREST_LEAVES}</g>
         <g class="forest-light" fill="#fff1b5" opacity=".08">
@@ -29,9 +29,9 @@ export function background() {
           <path d="M37 120h1v1h-1zM144 104h1v1h-1zM192 73h1v1h-1zM257 125h1v1h-1z"/>
         </g>
       </g>
-      <path d="M0 152h640v360H0z" fill="#101923" opacity=".38" data-effect="background-dimming"/>
+      <path d="M0 0h640v360H0z" fill="#101923" opacity=".38" data-effect="background-dimming"/>
     </g>
     <g fill="#122b31" opacity=".35" data-effect="ground-shadows">
-      <path d="M133 455h10v-3h61v3h10v4h-10v3h-61v-3h-10zM445 453h12v-3h59v3h20v4h-20v3h-59v-3h-12z"/>
+      <path d="M133 303h10v-3h61v3h10v4h-10v3h-61v-3h-10zM445 301h12v-3h59v3h20v4h-20v3h-59v-3h-12z"/>
     </g>`;
 }

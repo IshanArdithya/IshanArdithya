@@ -41,7 +41,7 @@ test('charged state has no charge link and terminal state only offers restart', 
 test('fixtures contain self-contained accessible SVG with reduced-motion and still fallbacks', () => {
   for (const [name, state] of Object.entries(fixtures())) {
     const svg = renderScene(state);
-    assert.match(svg, /viewBox="0 0 640 624"/);
+    assert.match(svg, /viewBox="0 0 640 472"/);
     assert.match(svg, /<title id="title">/);
     assert.match(svg, /prefers-reduced-motion: reduce/);
     assert.doesNotMatch(svg, /<script|<foreignObject|<image\b|data:image|@import|\son\w+=/i);
@@ -50,7 +50,7 @@ test('fixtures contain self-contained accessible SVG with reduced-motion and sti
       assert.ok(href.startsWith('#'));
     for (const [, target] of svg.matchAll(/url\(([^)]+)\)/g)) assert.ok(target.startsWith('#'));
     assert.equal(svg, renderScene(state));
-    assert.ok(svg.length < 700_000, `${name} should contain compact forest and character paths`);
+    assert.ok(svg.length < 850_000, `${name} should contain compact art, HUD portraits and reusable lettering paths`);
   }
 });
 
