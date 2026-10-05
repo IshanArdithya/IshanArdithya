@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initialState } from '../engine.mjs';
+import { initialState, transition } from '../engine.mjs';
 import { ultimateIndicator } from '../hud.mjs';
 import { renderScene } from '../render.mjs';
 import { fixtures } from '../preview.mjs';
@@ -24,28 +24,48 @@ test('mirrored HUD fills match health/mana and keep centered numeric labels', ()
   for (const key of ['heroHp','heroMana','bossHp','bossMana']) assert.equal(fill(full,key).width,174);
 });
 
-test('charge badge follows stored charge independently of ultimate mana and cooldown', () => {
-  const state=initialState();
-  assert.deepEqual(ultimateIndicator(state),{charged:false});
-  for (const changes of [{heroMana:80},{heroMana:0},{ultimateCooldown:2}]) {
-    const charged={...state,...changes,charged:true};
-    assert.deepEqual(ultimateIndicator(charged),{charged:true});
-    assert.match(renderScene(charged),/data-charge-badge="charged"/);
+test('ultimate badge follows actual action eligibility', () => {
+  const state={...initialState(),charged:true,heroMana:80};
+  assert.deepEqual(ultimateIndicator(state),{ready:true,label:'ULT READY'});
+  for (const changes of [{charged:false},{heroMana:79},{heroMana:0},{ultimateCooldown:1},{status:'victory',bossHp:0},{status:'defeat',heroHp:0}]) {
+    const unavailable={...state,...changes};
+    assert.deepEqual(ultimateIndicator(unavailable),{ready:false,label:'ULT NOT READY'});
+    assert.match(renderScene(unavailable),/data-ultimate-ready="false"/);
+    assert.doesNotMatch(renderScene(unavailable),/data-ultimate-ready="true"/);
   }
-  for(const status of ['victory','defeat']) assert.equal(ultimateIndicator({...state,charged:true,status}).charged,false);
 });
 
-test('HUD uses a textless charge badge, omits encounters, and retains resource playback', () => {
+test('ultimate readiness appears when playback finishes; still images show the final state', () => {
   for (const state of Object.values(fixtures())) {
     const svg=renderScene(state);
-    assert.doesNotMatch(svg,/data-lettering="(?:ULT |ENCOUNTER)/);
+    assert.doesNotMatch(svg,/data-lettering="ENCOUNTER/);
     assert.match(svg,/data-hud="turn-counter"/);
-    assert.equal((svg.match(/data-charge-badge=/g)||[]).length,1);
+    assert.equal((svg.match(/data-hud="ultimate-badge"/g)||[]).length,2);
   }
-  assert.match(renderScene(fixtures().charged),/data-charge-badge="charged"/);
-  assert.match(renderScene(fixtures().charged,{animate:false}),/data-charge-badge="charged"/);
+  const charged=renderScene(fixtures().charged);
+  assert.match(charged,/class="raid-before" style="animation-delay:3.4s"><g data-ultimate-ready="false"/);
+  assert.match(charged,/class="raid-after" style="animation-delay:3.4s"><g data-ultimate-ready="true"/);
+  const still=renderScene(fixtures().charged,{animate:false});
+  assert.match(still,/data-lettering="ULT READY"/);
+  assert.doesNotMatch(still,/data-ultimate-ready="false" data-character="frieren"/);
   const hit=renderScene(fixtures().attacking);
-  assert.match(hit,/data-charge-badge="empty"/);
+  assert.match(hit,/data-lettering="ULT NOT READY"/);
   assert.match(hit,/data-hud="before-heroHp"/);
   assert.match(hit,/data-hud="after-heroHp"/);
+});
+
+test('Aura badge requires an affordable upcoming Assault and an active fight', () => {
+  const ready={...initialState(),intent:3,bossMana:30};
+  assert.deepEqual(ultimateIndicator(ready,'aura'),{ready:true,label:'ULT READY'});
+  assert.match(renderScene(ready),/data-ultimate-ready="true" data-character="aura"/);
+  for (const changes of [{intent:0},{intent:1},{intent:2},{bossMana:29},{bossMana:0},{status:'victory',bossHp:0},{status:'defeat',heroHp:0}]) {
+    const state={...ready,...changes};
+    assert.deepEqual(ultimateIndicator(state,'aura'),{ready:false,label:'ULT NOT READY'});
+    assert.match(renderScene(state),/data-ultimate-ready="false" data-character="aura"/);
+  }
+  // Guarding Aura's Charge leaves Assault next; readiness waits for playback.
+  const state=transition({...initialState(),intent:2,bossMana:0},
+    {encounter:1,revision:0,action:'guard'}, {issue:1,login:'visitor'},()=>1).state;
+  assert.match(renderScene(state),/class="raid-after" style="animation-delay:3.4s"><g data-ultimate-ready="true" data-character="aura"/);
+  assert.doesNotMatch(renderScene(fixtures()['aura-assault']),/data-ultimate-ready="true" data-character="aura"/);
 });

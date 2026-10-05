@@ -1,4 +1,4 @@
-import { RULES } from './engine.mjs';
+import { RULES, actionUnavailable, enemyIntent } from './engine.mjs';
 import { HUD_PORTRAITS } from './hud-source.mjs';
 
 const frame = (x,y,w,h,c=4) => `M${x+c} ${y}h${w-2*c}v${c}h${c}v${h-2*c}h-${c}v${c}H${x+c}v-${c}h-${c}V${y+c}h${c}z`;
@@ -6,12 +6,15 @@ const center = 'text-anchor="middle"';
 const gold = '#c8a76a';
 const ivory = '#fff0cb';
 
-// Stored charge is distinct from ultimate eligibility (mana and cooldown).
-export function ultimateIndicator(state) {
-  return { charged: state.status === 'active' && state.charged };
+// Share the action eligibility rules so the badge never promises an unusable ultimate.
+export function ultimateIndicator(state, character = 'frieren') {
+  const ready = character === 'aura'
+    ? state.status === 'active' && enemyIntent(state).kind === 'assault'
+    : !actionUnavailable(state, 'ultimate');
+  return { ready, label: ready ? 'ULT READY' : 'ULT NOT READY' };
 }
 
-export function renderHud(state, { text, swap }) {
+export function renderHud(state, { text, swap, playback }) {
   const portrait = (name,x,accent) => `<g data-hud-portrait="${name}">
     <path d="${frame(x-2,16,64,64,6)}" fill="#070d15"/>
     <path d="${frame(x,18,60,60,4)}" fill="${gold}"/>
@@ -31,7 +34,6 @@ export function renderHud(state, { text, swap }) {
     <path d="${frame(88,28,184,50,2)}" fill="${gold}"/>
     <path d="${frame(90,30,180,46,2)}" fill="#111b28"/>
     <path d="M92 28h176v2H92zM92 76h176v2H92z" fill="${ivory}"/>
-    <path d="M106 88h48v2h-48zM210 88h48v2h-48z" fill="${accent}"/>
     <path d="${frame(90,4,144,20,4)}" fill="#070f1b"/>
     <path d="M94 4h132v2H94z" fill="${gold}"/>
     <path d="M96 22h132v2H96z" fill="${accent}"/>
@@ -56,18 +58,33 @@ export function renderHud(state, { text, swap }) {
       <defs><clipPath id="${id}"><path d="${frame(x+2,y+2,174,16,2)}"/></clipPath></defs>
       ${swap(key,state[key],fill)}`;
   };
-  const { charged } = ultimateIndicator(state);
-  const badgeLabel = charged ? 'Charge stored. Ultimate also requires enough mana and no cooldown.' : 'No charge stored.';
-  const badge = `<g data-charge-badge="${charged?'charged':'empty'}" role="img" aria-label="${badgeLabel}">
-    <title>${badgeLabel}</title>
-    <g transform="translate(172 84) scale(.75)">
-      <path d="M6 -2h12v2h4v4h2v16h-2v4h-4v2H6v-2H2v-4H0V4h2V0h4z" fill="#080e19"/>
-      <path d="M6 0h12v2h4v4h2v12h-2v4h-4v2H6v-2H2v-4H0V6h2V2h4z" fill="${charged?'#f3d68a':'#626978'}"/>
-      <path d="M6 3h12v2h3v13h-3v3H6v-3H3V6h3z" fill="${charged?'#247b83':'#202936'}"/>
-      <path d="M10 4h4v4h3v3h3v2h-3v3h-3v4h-4v-4H7v-3H4v-2h3V8h3z" fill="${charged?'#c9fff1':'#6c7584'}"/>
-      ${charged?'<path d="M-6 10h3v3h-3zM27 10h3v3h-3z" fill="#f3d68a"/>':''}
-    </g>
-  </g>`;
+  const emblem = (ready, character) => {
+    const isAura = character === 'aura';
+    const name = isAura ? 'Aura' : 'Frieren';
+    const label = ready ? 'ULT READY' : 'ULT NOT READY';
+    const trim = ready ? '#e4bd74' : '#646e7d';
+    const shine = ready ? '#fff0bd' : '#8993a1';
+    return `<g data-ultimate-ready="${ready}" data-character="${character}" role="img" aria-label="${name}: ${label}">
+      <title>${isAura
+        ? (ready ? 'Aura: Army Assault is next and has enough mana.' : 'Aura: Army Assault not ready. Requires the Assault turn, 30 MP, and a completed turn.')
+        : (ready ? 'Frieren: Ultimate ready to cast.' : 'Frieren: Ultimate not ready. Requires charge, 80 MP, no cooldown, and a completed turn.')}</title>
+      <path d="${frame(isAura?376:88,82,176,26,2)}" fill="#08111c"/>
+      <g transform="translate(${isAura?525:91} 84)" aria-hidden="true">
+        <path d="M10 0h4v4h4v4h4v6h-4v4h-4v4h-4v-4H6v-4H2V8h4V4h4z" fill="${trim}"/>
+        <path d="M10 3h4v4h3v3h3v2h-3v3h-3v4h-4v-4H7v-3H4v-2h3V7h3z" fill="${ready?(isAura?'#963961':'#71366f'):'#293340'}"/>
+        <path d="M11 5h2v5h4v2h-4v5h-2v-5H7v-2h4z" fill="${shine}"/>
+        ${ready?'<path d="M0 2h2v2H0zM22 18h2v2h-2z" fill="#ffe7a0"/>':''}
+      </g>
+      ${text(isAura?518:122,101,label,12,ready?ivory:'#919ba8',`${isAura?'text-anchor="end" ':''}letter-spacing=".5"`,132)}
+    </g>`;
+  };
+  const badge = character => {
+    const { ready } = ultimateIndicator(state, character);
+    // Both badges settle after playback; pending actions should not look usable.
+    return `<g data-hud="ultimate-badge" data-character="${character}">${ready && playback
+      ? `<g class="raid-before" style="animation-delay:${playback.duration/1000}s">${emblem(false,character)}</g><g class="raid-after" style="animation-delay:${playback.duration/1000}s">${emblem(true,character)}</g>`
+      : emblem(ready,character)}</g>`;
+  };
   return `<g data-hud="pixel-fighter" shape-rendering="crispEdges">
     ${rails(false,'#50cbd1')}${rails(true,'#db73b6')}
     ${portrait('frieren',12,'#50cbd1')}${portrait('aura',568,'#db73b6')}
@@ -88,6 +105,6 @@ export function renderHud(state, { text, swap }) {
       ${text(320,49,String(state.turn),26,'#ffe0a0',center,44)}
       ${text(320,69,'TURNS',12,ivory,center,46)}
     </g>
-    ${badge}
+    ${badge('frieren')}${badge('aura')}
   </g>`.replace(/[ \t]+\n/g, '\n');
 }
