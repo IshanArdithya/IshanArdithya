@@ -25,11 +25,12 @@ The new **Unleashed Zoltraak** button adapts her ordinary offensive magic and re
 | Frieren / Focus | Restore up to 40 MP and empower the next normal Attack. Can refill while focused; separate from Ultimate. | A resource-recovery adaptation, not a claim that revealing hidden mana creates more energy. |
 | Frieren / Unleashed Zoltraak | First click spends 80 MP and a turn preparing. A later click casts for 32 fixed damage without further mana cost. Preparation persists through other actions. Casting preserves Focus and starts a six-turn cooldown. Aura's guard halves it. | A stronger Zoltraak presentation, without a canonical “ultimate form” claim. |
 | Aura / Guard | 15 MP, halve incoming damage (rounded up), no outgoing damage. | Army-based protection is a game adaptation. |
-| Aura / Attack | One controlled soldier deals 4 damage, no MP cost. | Inspired by her use of the controlled army. |
-| Aura / Charge | Recover up to 35 MP, deal 0 damage. | A game windup/recovery mechanic using her scales visually. |
-| Aura / Assault | 30 MP, army deals 10 damage. | A stronger army command, not obedience magic repurposed into a damage beam. |
+| Aura / Attack | One controlled soldier deals 4 damage, or 8 after Focus, with no MP cost. | Inspired by her use of the controlled army. |
+| Aura / Focus | Restore up to 35 MP and empower her next Attack. Separate from her ultimate. | A resource-recovery adaptation, parallel to Frieren's Focus. |
+| Aura / Prepare Ultimate | Spend 30 MP and deal no damage. The next turn always casts. | The old Charge windup, now a real preparation step. |
+| Aura / Cast Ultimate | The prepared army command deals 10 damage at no further MP cost. | A stronger army command, not obedience magic repurposed into a damage beam. |
 
-Aura cycles Guard → Attack → Charge → Assault. An unaffordable Guard/Assault becomes a visibly announced mana recovery turn instead; it deals no damage and offers no damage reduction. The enemy pattern then advances normally. This makes her mana availability matter before the player acts.
+Aura's next move stays hidden. She reads the last few turns and cannot see the move played this turn. Under 15 MP she uses Focus. After Prepare, she casts on the next turn. She Guards a focused Attack or a ready Ultimate when she can pay. A string of Attacks draws Guard more often. Other turns she picks among Attack, Guard, Focus, and Prepare.
 
 Both cooldowns belong to the shared encounter. Invalid requests and retries do not advance them. The ultimate cannot critically hit, gain a Focus multiplier, or bypass guard. These limits prevent an automatic victory while allowing tactical players to finish faster. See the [simulation results](README.md#balance-validation).
 

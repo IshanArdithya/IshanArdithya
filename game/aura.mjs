@@ -37,11 +37,15 @@ export function auraEffects(pose) {
       </g>
     </g></g>
   </g>`;
-  if (pose === 'assault') return armyArt();
-  if (pose === 'charge') return `<g data-effect="aura-mana-recovery" fill="#d69cf4">
+  if (pose === 'cast') return armyArt();
+  if (pose === 'focus') return `<g data-effect="aura-focus" fill="#d69cf4">
     <path d="M420 273h14v-2h92v2h14v4h-14v2h-92v-2h-14z" opacity=".4"/>
     <path d="M406 251v-49h3v49zM551 247v-53h3v53zM419 181h3v9h-3zM544 167h3v9h-3z" opacity=".7"/>
     <g transform="translate(352 94) scale(2)" fill="#fff2b3"><path d="M32 56h2v1h-2zM46 56h2v1h-2zM40 46h2v2h-2z"/></g>
+  </g>`;
+  if (pose === 'prepare') return `<g data-effect="aura-ultimate-preparation" fill="#e5c5ff">
+    <path d="M470 248v-42h3v42zM500 244v-50h3v50z" opacity=".8"/>
+    <g transform="translate(352 94) scale(2)" fill="#fff2b3"><path d="M40 44h2v4h-2z"/></g>
   </g>`;
   return '';
 }

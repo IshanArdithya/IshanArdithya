@@ -1,7 +1,7 @@
 import { renderHud } from './hud.mjs';
 import { createLettering } from './lettering.mjs';
 import { TURN_TIMING as T, turnPlayback } from './playback.mjs';
-import { RULES, ACTIONS, enemyIntent, actionUnavailable, validateState } from './engine.mjs';
+import { RULES, ACTIONS, actionUnavailable, validateState } from './engine.mjs';
 import { background, heroArt, auraArt, frierenEffects, auraEffects, xml } from './art.mjs';
 
 export const START = '<!-- README-RAID:START -->';
@@ -24,7 +24,6 @@ export function renderScene(state, { animate = true } = {}) {
   const last = state.recent[0];
   const playback = animate ? turnPlayback(state) : null;
   const duration = playback?.duration || 0;
-  const intent = enemyIntent(state);
   const ended = state.status !== 'active';
   const pose = state.status === 'defeat' ? 'defeated' : state.status === 'victory' ? 'victorious'
     : last?.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'preparing' : 'ultimate') : last?.action === 'guard' ? 'guarding' : state.charged ? 'charged' : last?.action === 'attack' ? 'attacking' : 'ready';
@@ -50,14 +49,15 @@ export function renderScene(state, { animate = true } = {}) {
     if (e.ultimatePhase === 'prepare') popups += floatingText(text, 'frieren-ultimate-prepared',212,190,'ULT CHARGED',T.bossDamage,14,'#d6a8f3','start');
     if (playback.enemyActs) {
       if (e.enemyAction === 'guard') popups += floatingText(text, 'aura-guard',444,151,'GUARD',T.enemy,18,'#d9b8ff','end');
-      if (e.enemyAction === 'charge') popups += floatingText(text, 'aura-charge',444,151,'CHARGE',T.enemy,18,'#d9b8ff','end');
+      if (e.enemyAction === 'focus') popups += floatingText(text, 'aura-focus',444,151,'FOCUS',T.enemy,18,'#d9b8ff','end');
+      if (e.enemyAction === 'prepare') popups += floatingText(text, 'aura-prepare',444,151,'PREPARE',T.enemy,16,'#d9b8ff','end');
       if (e.incoming > 0) popups += floatingText(text, 'frieren-damage',65,238,`−${e.incoming}`,playback.heroDamageAt,28,'#ffb5b5');
     }
   }
-  const auraPose = state.status === 'victory' ? 'defeated' : intent.kind;
+  const auraPose = state.status === 'victory' ? 'defeated' : 'ready';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
   <title id="title">README Raid: Frieren vs Aura</title>
-  <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. Ultimate ${state.ultimatePrepared ? 'prepared; mana already paid' : 'not prepared'}. ${ended ? state.status : intent.message} ${state.charged ? 'Attack focused.' : 'Attack normal.'}`)}</desc>
+  <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. Ultimate ${state.ultimatePrepared ? 'prepared; mana already paid' : 'not prepared'}. ${ended ? state.status : 'Battle in progress.'} ${state.charged ? 'Attack focused.' : 'Attack normal.'}`)}</desc>
   <style>
     .hair-left { animation: hair-left 3.8s steps(1,end) infinite; }
     .hair-right { animation: hair-right 4.2s steps(1,end) infinite; }
@@ -261,14 +261,12 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   const buttonFile = action => `${action === 'restart' ? action : buttonKind(state, action)}.svg`;
   const button = (action, alt) => `<a href="${xml(issueUrl(state, action, repository))}"><img src="${raw}/${buttonFile(action)}" width="${action === 'restart' ? '96' : '23%'}" alt="${xml(alt)}"></a>`;
   const active = state.status === 'active';
-  const intent = enemyIntent(state);
   const controls = active ? ACTIONS.map(action => {
     const reason = actionUnavailable(state, action);
     return reason ? `<img src="${raw}/${buttonFile(action)}" width="23%" alt="${xml(`${actionDescription(state, action)} — unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
   }).join(' ') : button('restart', 'Play Again — start a new encounter');
   const unavailable = active ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
-  const next = active ? `<strong>Next:</strong> ${xml(intent.name)} · ${intent.damage} damage. ${xml(intent.message)}`
-    : `<strong>${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}</strong> Choose Play Again for a fresh encounter.`;
+  const outcome = active ? '' : `<p><strong>${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}</strong> Choose Play Again for a fresh encounter.</p>\n`;
   const moves = state.recent.filter(event => event.encounter === state.encounter);
   const history = moves.length ? moves.map(event => {
     const label = event.action === 'restart' ? 'New encounter' : `Turn ${event.turn}`;
@@ -278,7 +276,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   }).join('\n') : '<p>Starts with the first move.</p>';
   const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} · ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
   const ability = (icon, name, effect) => `<tr><td width="44" valign="top"><img src="${raw}/${icon}.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
-  const pattern = (index, name, first, second) => `<td width="25%" valign="top"><p><strong>${index} ${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
+  const pattern = (name, first, second) => `<td width="25%" valign="top"><p><strong>${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
   return `${START}
 ## README Raid
 
@@ -300,7 +298,7 @@ ${controls}
 <p><strong>Frieren:</strong> ${state.heroHp}/${RULES.heroHp} HP · <strong>Aura:</strong> ${state.bossHp}/${RULES.bossHp} HP · <strong>Attack:</strong> ${state.charged ? 'focused' : 'normal'} · <strong>Ultimate:</strong> ${state.ultimatePrepared ? 'charged; mana paid' : 'not prepared'}</p>
 <p><strong>Mana:</strong> Frieren ${state.heroMana}/${RULES.heroMana} MP · Aura ${state.bossMana}/${RULES.bossMana} MP</p>
 <p><strong>Cooldowns:</strong> ${cooldownSummary(state)}. Counts decrease only on accepted turns.</p>
-${unavailable ? `<p>${xml(unavailable)}</p>\n` : ''}<p>${next}</p>
+${unavailable ? `<p>${xml(unavailable)}</p>\n` : ''}${outcome}
 ${state.previousResult ? `<p>Previous result: encounter ${state.previousResult.encounter}, ${state.previousResult.status}, ${state.previousResult.turns} turns. Revision ${state.revision}.</p>` : `<p>Revision ${state.revision}.</p>`}
 </td>
 <td width="50%" valign="top">
@@ -321,18 +319,18 @@ ${ability('ultimate', 'Prepare Ult / Cast Ult', 'First spend 80 mana to prepare;
 
 ### Enemy pattern
 
-<p>Aura repeats this four-move cycle:</p>
+<p>Aura's next move stays hidden. She reads your last few turns, then chooses. She cannot see the move you play this turn.</p>
 <table>
 <tr>
-${pattern('01', 'Guard', 'Costs 15 MP', 'Halves incoming damage')}
-${pattern('02', 'Attack', '4 damage', 'No mana cost')}
-${pattern('03', 'Charge', 'Restores 35 MP', 'No damage')}
-${pattern('04', 'Assault', '10 damage', 'Costs 30 MP')}
+${pattern('Attack', '4 damage, or 8 after Focus', 'Costs nothing')}
+${pattern('Guard', '15 MP', 'Halves damage taken')}
+${pattern('Focus', 'Restores up to 35 MP', 'Next Attack deals 8')}
+${pattern('Ultimate', 'Prepare for 30 MP', 'Casts next turn for 10')}
 </tr>
 </table>
-<p>If she cannot afford Guard or Assault, she restores mana instead, then continues to the next move in the cycle.</p>
-<p>Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns advance only when a valid move is played.</p>
-<p>These combat numbers and the ultimate form are game adaptations. The full Scales of Obedience contest is planned for a future phase. <a href="game/ABILITIES.md">Character abilities and next-phase notes</a>.</p>
+<p>Under 15 MP, she uses Focus. After Prepare, she casts on the next turn. If your Attack is focused or your Ultimate is ready, she Guards when she has the MP. A string of Attacks draws Guard more often.</p>
+<p>Her Guard halves the hit, Ultimate included. Land the last blow and she does not strike back. Cooldowns advance only on a move that goes through.</p>
+<p>The numbers in this fight are original. Scales of Obedience is coming in a future update. <a href="game/ABILITIES.md">Ability notes</a>.</p>
 
 <details>
 <summary>How a shared turn works</summary>

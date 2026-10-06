@@ -1,5 +1,5 @@
 import { TURN_TIMING as T, turnPlayback } from './playback.mjs';
-import { initialState, RULES, ACTIONS, enemyIntent, actionUnavailable, transition } from './engine.mjs';
+import { initialState, RULES, ACTIONS, actionUnavailable, transition } from './engine.mjs';
 import { renderScene, renderButton, buttonKind, actionDescription } from './render.mjs';
 import { HUD_PORTRAITS } from './hud-source.mjs';
 
@@ -78,8 +78,7 @@ function render({ scene = true } = {}) {
   }
   element('actions').setAttribute('aria-busy', String(busy));
   const shown = busy && state.recent[0]?.before ? { ...state, ...state.recent[0].before } : state;
-  const intent = enemyIntent(state);
-  element('scene').alt = `Frieren ${shown.heroHp}/${RULES.heroHp} HP, ${shown.heroMana}/${RULES.heroMana} MP; Aura ${shown.bossHp}/${RULES.bossHp} HP, ${shown.bossMana}/${RULES.bossMana} MP.${busy ? ' Turn in progress.' : state.status === 'active' ? ` Next: ${intent.name}, ${intent.damage} damage.` : ` ${state.status}.`}`;
+  element('scene').alt = `Frieren ${shown.heroHp}/${RULES.heroHp} HP, ${shown.heroMana}/${RULES.heroMana} MP; Aura ${shown.bossHp}/${RULES.bossHp} HP, ${shown.bossMana}/${RULES.bossMana} MP.${busy ? ' Turn in progress.' : state.status === 'active' ? '' : ` ${state.status}.`}`;
   element('actions').replaceChildren();
   const actions = state.status === 'active' ? ACTIONS : ['restart'];
   for (const action of actions) {
@@ -107,7 +106,7 @@ function render({ scene = true } = {}) {
   const losses = state.losses - Number(busy && state.status === 'defeat');
   element('record').textContent = `${wins} ${wins === 1 ? 'victory' : 'victories'} · ${losses} ${losses === 1 ? 'defeat' : 'defeats'}`;
   const last = state.recent[0];
-  element('message').textContent = busy ? `Frieren uses ${last.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'Prepare Ultimate' : 'Unleashed Zoltraak') : last.action}.` : last ? last.summary.replace('@you ', 'You ') : 'Your move. Focus or prepare Ultimate while Aura guards, attack during openings, and guard her assault.';
+  element('message').textContent = busy ? `Frieren uses ${last.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'Prepare Ultimate' : 'Unleashed Zoltraak') : last.action}.` : last ? last.summary.replace('@you ', 'You ') : 'Your move. Aura answers from the earlier turns when this one resolves.';
   const moves = (busy ? state.recent.slice(1) : state.recent)
     .filter(event => event.encounter === state.encounter && event.action !== 'restart').slice(0, 5);
   element('history').replaceChildren(...moves.map(event => {

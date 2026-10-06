@@ -133,7 +133,7 @@ test('prepare and cast retries cannot double spend or turn a retried preparation
   const cast=issue(3,'raid|1|1|ultimate');
   await processIssue(cast,repo,async()=>{});
   const after=structuredClone(repo.state);
-  assert.equal(after.bossHp,68); assert.equal(after.heroMana,160);
+  assert.equal(after.bossHp,84); assert.equal(after.heroMana,160);
   assert.equal(after.ultimatePrepared,false); assert.equal(after.ultimateCooldown,6);
   assert.equal((await processIssue(cast,repo,async()=>{})).duplicate,true);
   assert.deepEqual(repo.state,after);

@@ -1,6 +1,6 @@
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
-import { initialState, transition, actionUnavailable, enemyIntent } from './engine.mjs';
+import { initialState, transition, actionUnavailable } from './engine.mjs';
 
 export function simulate(policy, encounters = 10000) {
   let wins = 0, minTurns = Infinity, maxTurns = 0, turnTotal = 0, minHp = Infinity;
@@ -10,16 +10,15 @@ export function simulate(policy, encounters = 10000) {
     let state = initialState();
     while (state.status === 'active' && state.turn < 100) {
       const can = a => !actionUnavailable(state,a);
-      const intent = enemyIntent(state);
+      const threatened = state.bossUltimatePrepared || state.bossCharged || state.heroHp <= 8;
       let action;
       if (policy === 'attack') action = can('attack') ? 'attack' : 'focus';
       else if (policy === 'reckless') action = can('ultimate') ? 'ultimate' : !state.charged ? 'focus' : can('attack') ? 'attack' : 'focus';
-      else if (intent.damage === 10 && can('guard')) action = 'guard';
-      else if (policy !== 'no-ultimate' && intent.kind === 'guard' && !state.ultimatePrepared && can('ultimate')) action = 'ultimate';
-      else if (intent.kind === 'guard') action = can('focus') ? 'focus' : can('attack') ? 'attack' : 'guard';
-      else if (policy !== 'no-ultimate' && can('ultimate')) action = 'ultimate';
+      else if (threatened && can('guard')) action = 'guard';
+      else if (policy !== 'no-ultimate' && !state.ultimatePrepared && can('ultimate')) action = 'ultimate';
       else if (state.charged && can('attack')) action = 'attack';
-      else action = 'focus';
+      else if (can('focus')) action = 'focus';
+      else action = can('attack') ? 'attack' : 'guard';
       state = transition(state, { encounter: state.encounter, revision: state.revision, action },
         { issue: state.revision+1, login: 'simulation' }, random).state;
     }

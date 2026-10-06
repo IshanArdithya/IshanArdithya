@@ -42,7 +42,7 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 <p><strong>Frieren:</strong> 26/26 HP · <strong>Aura:</strong> 100/100 HP · <strong>Attack:</strong> normal · <strong>Ultimate:</strong> not prepared</p>
 <p><strong>Mana:</strong> Frieren 240/240 MP · Aura 40/60 MP</p>
 <p><strong>Cooldowns:</strong> CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.</p>
-<p><strong>Next:</strong> Guard · 0 damage. Aura spends 15 mana to guard. Your damage is halved, rounded up.</p>
+
 <p>Revision 1.</p>
 </td>
 <td width="50%" valign="top">
@@ -63,18 +63,18 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 
 ### Enemy pattern
 
-<p>Aura repeats this four-move cycle:</p>
+<p>Aura's next move stays hidden. She reads your last few turns, then chooses. She cannot see the move you play this turn.</p>
 <table>
 <tr>
-<td width="25%" valign="top"><p><strong>01 Guard</strong></p><p>Costs 15 MP</p><p>Halves incoming damage</p></td>
-<td width="25%" valign="top"><p><strong>02 Attack</strong></p><p>4 damage</p><p>No mana cost</p></td>
-<td width="25%" valign="top"><p><strong>03 Charge</strong></p><p>Restores 35 MP</p><p>No damage</p></td>
-<td width="25%" valign="top"><p><strong>04 Assault</strong></p><p>10 damage</p><p>Costs 30 MP</p></td>
+<td width="25%" valign="top"><p><strong>Attack</strong></p><p>4 damage, or 8 after Focus</p><p>Costs nothing</p></td>
+<td width="25%" valign="top"><p><strong>Guard</strong></p><p>15 MP</p><p>Halves damage taken</p></td>
+<td width="25%" valign="top"><p><strong>Focus</strong></p><p>Restores up to 35 MP</p><p>Next Attack deals 8</p></td>
+<td width="25%" valign="top"><p><strong>Ultimate</strong></p><p>Prepare for 30 MP</p><p>Casts next turn for 10</p></td>
 </tr>
 </table>
-<p>If she cannot afford Guard or Assault, she restores mana instead, then continues to the next move in the cycle.</p>
-<p>Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns advance only when a valid move is played.</p>
-<p>These combat numbers and the ultimate form are game adaptations. The full Scales of Obedience contest is planned for a future phase. <a href="game/ABILITIES.md">Character abilities and next-phase notes</a>.</p>
+<p>Under 15 MP, she uses Focus. After Prepare, she casts on the next turn. If your Attack is focused or your Ultimate is ready, she Guards when she has the MP. A string of Attacks draws Guard more often.</p>
+<p>Her Guard halves the hit, Ultimate included. Land the last blow and she does not strike back. Cooldowns advance only on a move that goes through.</p>
+<p>The numbers in this fight are original. Scales of Obedience is coming in a future update. <a href="game/ABILITIES.md">Ability notes</a>.</p>
 
 <details>
 <summary>How a shared turn works</summary>

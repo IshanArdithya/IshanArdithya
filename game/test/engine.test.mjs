@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initialState, transition, parseCommand, validateState, migrateState, MoveError, RULES, enemyIntent, actionUnavailable } from '../engine.mjs';
+import { initialState, transition, parseCommand, validateState, migrateState, MoveError, RULES, chooseBossIntent } from '../engine.mjs';
 
 const move = (state, action, random = (min, max) => max === 10 ? 1 : min) => transition(state,
   { encounter: state.encounter, revision: state.revision, action }, { issue: state.revision + 1, login: 'visitor' }, random);
@@ -19,33 +19,39 @@ test('transitions preserve the input and advance the intent, revision, and histo
   const state = initialState(), before = structuredClone(state);
   const result = move(state, 'attack');
   assert.deepEqual(state, before);
-  assert.equal(result.state.bossHp, 97);
-  assert.equal(result.state.heroHp, 26);
-  assert.equal(result.state.intent, 1);
+  assert.equal(result.state.bossHp, 95);
+  assert.equal(result.state.heroHp, 22);
+  assert.equal(result.event.enemyAction, 'attack');
+  assert.equal(result.state.bossIntent, 'attack');
+  let rolled = false;
+  move(result.state, 'focus', () => { rolled = true; return 0; });
+  assert.equal(rolled, true);
   assert.equal(result.state.revision, 1);
   assert.equal(result.state.recent[0].issue, 1);
 });
 
 test('Focus persists through guard, then is consumed by attack', () => {
-  let state = move(initialState(), 'focus').state;
-  state = move(state, 'guard').state;
-  assert.equal(state.charged, true);
-  assert.equal(state.heroHp, 25);
-  assert.equal(state.intent, 2);
-  const result = move(state, 'attack');
-  assert.equal(result.event.damage, 14);
+  const focused = move(initialState(), 'focus');
+  assert.equal(focused.event.enemyAction, 'attack');
+  assert.equal(focused.state.charged, true);
+  const guarded = move(focused.state, 'guard');
+  assert.equal(guarded.event.enemyAction, 'guard');
+  assert.equal(guarded.state.charged, true);
+  assert.equal(guarded.state.heroHp, focused.state.heroHp);
+  const result = move(guarded.state, 'attack');
+  assert.equal(result.event.enemyAction, 'guard');
+  assert.equal(result.event.damage, 7);
   assert.equal(result.state.charged, false);
-  assert.equal(result.state.heroHp, 25);
-  assert.equal(result.state.intent, 3);
 });
 
 test('guard only protects this turn and never heals', () => {
-  const guarded = move({ ...initialState(), intent: 3, heroHp: 20 }, 'guard');
+  const casting = { ...initialState(), bossUltimatePrepared: true };
+  const guarded = move({ ...casting, heroHp: 20 }, 'guard');
   assert.equal(guarded.event.incoming, 1);
   assert.equal(guarded.event.blocked, 9);
   assert.equal(guarded.state.heroHp, 19);
-  assert.equal(move(initialState(), 'guard').event.incoming, 0);
-  const next = move({ ...guarded.state, intent: 3, bossMana: 30 }, 'attack');
+  assert.equal(move({ ...initialState(), bossMana: 0 }, 'guard').event.incoming, 0);
+  const next = move({ ...guarded.state, bossUltimatePrepared: true, bossMana: 30 }, 'attack');
   assert.equal(next.event.incoming, 10);
 });
 
@@ -53,10 +59,13 @@ test('normal and focused damage boundaries; critical rounds down', () => {
   for (const charged of [false, true]) {
     for (const high of [false, true]) {
       for (const critical of [false, true]) {
-        const result = move({ ...initialState(), charged, intent: 2 }, 'attack', (min, max) => max === 10 ? (critical ? 0 : 9) : high ? max - 1 : min);
+        const result = move({ ...initialState(), charged }, 'attack', (min, max) => max === 10 ? (critical ? 0 : 9) : min === 0 ? 0 : high ? max - 1 : min);
         const base = charged ? (high ? 18 : 14) : (high ? 7 : 5);
+        const rolled = critical ? Math.floor(base * 1.5) : base;
         assert.equal(result.event.baseDamage, base);
-        assert.equal(result.event.damage, critical ? Math.floor(base * 1.5) : base);
+        assert.equal(result.event.rolledDamage, rolled);
+        assert.equal(result.event.damage, charged ? rolled - Math.floor(rolled / 2) : rolled);
+        assert.equal(result.event.enemyAction, charged ? 'guard' : 'attack');
         assert.equal(result.event.critical, critical);
       }
     }
@@ -74,32 +83,42 @@ test('Aura guard halves the final critical damage, rounded up, and only lasts on
   assert.equal(hit.event.rolledDamage, 27);
   assert.equal(hit.event.enemyBlocked, 13);
   assert.equal(hit.event.damage, 14);
+  assert.equal(hit.event.enemyAction, 'guard');
   assert.equal(hit.state.charged, false);
   assert.equal(hit.state.bossHp, 86);
-  assert.equal(hit.state.intent, 1);
   const next = move(hit.state, 'attack');
   assert.equal(next.event.damage, 5);
   assert.equal(next.event.enemyBlocked, 0);
 });
 
-test('Aura charge exposes an opening followed by the announced assault', () => {
-  const opening = move({ ...initialState(), intent: 2 }, 'attack');
+test('preparing an ultimate deals nothing and the next turn always casts it', () => {
+  const opening = move(initialState(), 'attack', (min, max) => max === 10 ? 1 : min === 0 ? 6 : min);
   assert.equal(opening.event.damage, 5);
   assert.equal(opening.event.incoming, 0);
-  assert.equal(opening.event.enemyAction, 'charge');
-  assert.equal(opening.state.intent, 3);
-  const blocked = move(opening.state, 'guard');
+  assert.equal(opening.event.enemyAction, 'prepare');
+  assert.equal(opening.event.enemyManaSpent, 30);
+  assert.equal(opening.state.bossMana, 10);
+  assert.equal(opening.state.bossUltimatePrepared, true);
+  assert.equal(opening.state.bossIntent, 'prepare');
+  const blocked = move(opening.state, 'guard', () => { throw new Error('A prepared ultimate does not roll'); });
   assert.equal(blocked.event.incoming, 1);
   assert.equal(blocked.event.blocked, 9);
-  assert.equal(blocked.state.intent, 0);
+  assert.equal(blocked.state.bossUltimatePrepared, false);
   assert.equal(move(opening.state, 'attack').event.incoming, 10);
+  const low = { ...initialState(), bossMana: 10 };
+  assert.equal(chooseBossIntent(low, () => { throw new Error('Low mana does not roll'); }), 'focus');
+  const prepared = { ...initialState(), bossUltimatePrepared: true, bossMana: 0, charged: true };
+  assert.equal(chooseBossIntent(prepared, () => { throw new Error('A prepared ultimate does not roll'); }), 'cast');
+  const threatened = { ...initialState(), charged: true };
+  assert.equal(chooseBossIntent(threatened, () => { throw new Error('A heavy hit does not roll'); }), 'guard');
 });
 
 test('legacy state migration preserves progress and maps the old heavy attack to assault', () => {
   const old = { ...initialState(), version: 1, intent: 2, revision: 7, heroHp: 9, bossHp: 21, wins: 2 };
   const next = migrateState(old);
-  assert.equal(next.version, 5);
-  assert.equal(next.intent, 3);
+  assert.equal(next.version, 6);
+  assert.equal(next.bossIntent, null);
+  assert.equal(next.bossUltimatePrepared, false);
   assert.equal(next.revision, 8);
   assert.equal(next.heroHp, 10);
   assert.equal(next.bossHp, 35);
@@ -120,7 +139,7 @@ test('invalid actions and stale commands never consume randomness or change stat
 });
 
 test('killing blow clamps HP, wins once, and prevents retaliation', () => {
-  const result = move({ ...initialState(), bossHp: 1, heroHp: 1, intent: 3 }, 'attack');
+  const result = move({ ...initialState(), bossHp: 1, heroHp: 1 }, 'attack');
   assert.equal(result.state.status, 'victory');
   assert.equal(result.state.bossHp, 0);
   assert.equal(result.state.heroHp, 1);
@@ -130,7 +149,7 @@ test('killing blow clamps HP, wins once, and prevents retaliation', () => {
 });
 
 test('defeat, restart, previous result, and encounter/revision continuity', () => {
-  const lost = move({ ...initialState(), heroHp: 1, intent: 3 }, 'focus').state;
+  const lost = move({ ...initialState(), heroHp: 1 }, 'focus').state;
   assert.equal(lost.status, 'defeat');
   assert.equal(lost.heroHp, 0);
   assert.equal(lost.losses, 1);
@@ -139,7 +158,8 @@ test('defeat, restart, previous result, and encounter/revision continuity', () =
   assert.equal(replay.revision, 2);
   assert.equal(replay.heroHp, 26);
   assert.equal(replay.bossHp, 100);
-  assert.equal(replay.intent, 0);
+  assert.equal(replay.bossIntent, null);
+  assert.equal(replay.bossUltimatePrepared, false);
   assert.equal(replay.turn, 0);
   assert.equal(replay.charged, false);
   assert.deepEqual(replay.previousResult, { encounter: 1, status: 'defeat', turns: 1 });
@@ -149,10 +169,13 @@ test('defeat, restart, previous result, and encounter/revision continuity', () =
 });
 
 test('corrupt state fails closed and recent turns remain bounded', () => {
-  for (const patch of [{ version: 6 }, { heroHp: -1 }, { intent: 4 }, { status: 'victory' }, { charged: 1 }, { players: [] }, { players: { visitor: 0 } }])
+  for (const patch of [{ version: 7 }, { heroHp: -1 }, { bossIntent: 'sleep' }, { status: 'victory' }, { charged: 1 }, { players: [] }, { players: { visitor: 0 } }, { bossCharged: 'yes' }])
     assert.throws(() => validateState({ ...initialState(), ...patch }));
   let state = initialState();
-  for (let i = 0; i < 10; i++) state = move(state, enemyIntent(state).damage ? 'guard' : 'focus').state;
+  for (let i = 0; i < 10; i++) {
+    const action = !state.charged || state.heroMana < RULES.heroMana ? 'focus' : 'attack';
+    state = move(state, action).state;
+  }
   assert.equal(state.recent.length, 5);
   assert.equal(state.recent[0].revision, 10);
 });
@@ -181,8 +204,9 @@ test('Guard requires a different accepted turn before reuse', () => {
 });
 
 test('ultimate preparation spends mana, deals no damage, and gives Aura a turn', () => {
-  const before={...initialState(),intent:1};
-  const result=move(before,'ultimate',()=>{throw Error('No roll during preparation')});
+  const before=initialState();
+  const result=move(before,'ultimate');
+  assert.equal(result.event.enemyAction,'attack');
   assert.equal(result.event.ultimatePhase,'prepare');
   assert.equal(result.event.damage,0); assert.equal(result.event.manaSpent,80);
   assert.equal(result.state.bossHp,100); assert.equal(result.state.heroHp,22);
@@ -193,13 +217,14 @@ test('ultimate preparation spends mana, deals no damage, and gives Aura a turn',
 });
 
 test('casting prepaid ultimate preserves Focus, costs no mana, never crits, and respects guard', () => {
-  const prepared={...initialState(),ultimatePrepared:true,charged:true,heroMana:0,intent:2};
+  const prepared={...initialState(),ultimatePrepared:true,charged:true,heroMana:0,bossMana:0};
   const hit=move(prepared,'ultimate',()=>{throw Error('No roll for ultimate')});
   assert.equal(hit.event.ultimatePhase,'cast'); assert.equal(hit.event.damage,32);
+  assert.equal(hit.event.enemyAction,'focus');
   assert.equal(hit.event.critical,false); assert.equal(hit.event.manaSpent,0);
   assert.equal(hit.state.heroMana,0); assert.equal(hit.state.charged,true);
   assert.equal(hit.state.ultimatePrepared,false); assert.equal(hit.state.ultimateCooldown,6);
-  assert.equal(move({...prepared,intent:0},'ultimate').event.damage,16);
+  assert.equal(move({...prepared,bossMana:40},'ultimate').event.damage,16);
 });
 
 test('Focus and ultimate preparation persist independently through other actions', () => {
@@ -215,13 +240,14 @@ test('Focus and ultimate preparation persist independently through other actions
 });
 
 test('ultimate cooldown starts on casting, requires six other turns, and cannot be bypassed by Focus', () => {
-  let s=move({...initialState(),ultimatePrepared:true,heroMana:160,intent:2},'ultimate').state;
+  let s=move({...initialState(),ultimatePrepared:true,heroMana:160,bossMana:0},'ultimate').state;
   for(let remaining=6;remaining>0;remaining--) {
     assert.equal(s.ultimateCooldown,remaining);
     const before=structuredClone(s);
     assert.throws(()=>move(s,'ultimate'),/cooling down/);
     assert.deepEqual(s,before);
-    s=move(s,enemyIntent(s).damage===10?'guard':'focus').state;
+    const action = !s.charged || s.heroMana < RULES.heroMana ? 'focus' : 'attack';
+    s=move(s,action).state;
   }
   assert.equal(s.ultimateCooldown,0);
   s=move(s,'ultimate').state;
@@ -231,7 +257,7 @@ test('ultimate cooldown starts on casting, requires six other turns, and cannot 
 });
 
 test('preparation can be interrupted by defeat, and restart clears both boosts', () => {
-  const lost=move({...initialState(),heroHp:1,intent:3},'ultimate').state;
+  const lost=move({...initialState(),heroHp:1},'ultimate').state;
   assert.equal(lost.status,'defeat'); assert.equal(lost.heroMana,160);
   assert.throws(()=>move(lost,'ultimate'),/ended/);
   const reset=move(lost,'restart').state;
@@ -250,24 +276,34 @@ test('insufficient mana rejects before randomness; mana/cooldown ranges fail clo
     assert.throws(() => validateState({...initialState(),...patch}));
 });
 
-test('Aura spends guard/assault mana, charges to cap, and announces affordable fallback', () => {
-  assert.equal(move(initialState(),'attack').state.bossMana,25);
-  const assault = move({...initialState(),intent:3},'guard');
-  assert.equal(assault.state.bossMana,10); assert.equal(assault.event.enemyManaSpent,30);
-  const charge = move({...initialState(),intent:2},'attack');
-  assert.equal(charge.state.bossMana,60); assert.equal(charge.event.enemyManaRestored,20);
-  for(const intent of [0,3]) {
-    const s = {...initialState(),intent,bossMana:0};
-    assert.equal(enemyIntent(s).name,'Recover mana');
-    const result = move(s,'attack');
-    assert.equal(result.event.damage,5); assert.equal(result.event.incoming,0);
-    assert.equal(result.state.bossMana,35); assert.equal(result.event.enemyBlocked,0);
-    assert.equal(result.state.intent,(intent+1)%4);
-  }
+test('Aura focuses when low, empowers the next attack, and pays to prepare', () => {
+  const guarded = move({ ...initialState(), ultimatePrepared: true }, 'attack');
+  assert.equal(guarded.event.enemyAction, 'guard');
+  assert.equal(guarded.state.bossMana, 25);
+  assert.equal(guarded.event.enemyManaSpent, 15);
+  const focused = move({ ...initialState(), bossMana: 0 }, 'attack');
+  assert.equal(focused.event.incoming, 0);
+  assert.equal(focused.event.enemyManaRestored, 35);
+  assert.equal(focused.state.bossCharged, true);
+  assert.equal(focused.state.bossMana, 35);
+  const empowered = move(focused.state, 'guard');
+  assert.equal(empowered.event.enemyAction, 'attack');
+  assert.equal(empowered.event.incoming, 1);
+  assert.equal(empowered.event.blocked, 7);
+  assert.equal(empowered.state.bossCharged, false);
+  const preparing = move(initialState(), 'focus', (min, max) => max === 10 ? 1 : min === 0 ? 6 : min);
+  assert.equal(preparing.event.enemyManaSpent, 30);
+  assert.equal(preparing.state.bossUltimatePrepared, true);
+  assert.equal(preparing.state.bossIntent, 'prepare');
+  const pressing = { ...initialState(), recent: [{ encounter: 1, action: 'attack' }, { encounter: 1, action: 'attack' }] };
+  assert.equal(chooseBossIntent(initialState(), () => 4), 'focus');
+  assert.equal(chooseBossIntent(pressing, () => 4), 'guard');
+  const opening = { ...initialState(), recent: [{ encounter: 1, action: 'guard' }] };
+  assert.equal(chooseBossIntent(opening, () => 4), 'attack');
 });
 
 test('ultimate victory skips retaliation and enemy mana recovery; replay resets resources', () => {
-  const won = move({...initialState(), ultimatePrepared:true, bossHp:10, intent:2, bossMana:0},'ultimate');
+  const won = move({...initialState(), ultimatePrepared:true, bossHp:10, bossMana:0},'ultimate');
   assert.equal(won.state.status,'victory'); assert.equal(won.state.bossMana,0);
   assert.equal(won.event.enemyManaRestored,0);
   const replay = move(won.state,'restart').state;
@@ -278,7 +314,7 @@ test('ultimate victory skips retaliation and enemy mana recovery; replay resets 
 test('accepted moves add to each player total and a new encounter keeps them', () => {
   const first = move(initialState(), 'attack');
   assert.deepEqual(first.state.players, { visitor: 1 });
-  const second = transition(first.state, { encounter: 1, revision: 1, action: 'focus' }, { issue: 2, login: 'ally' });
+  const second = transition(first.state, { encounter: 1, revision: 1, action: 'focus' }, { issue: 2, login: 'ally' }, (min, max) => max === 10 ? 1 : min);
   assert.deepEqual(second.state.players, { visitor: 1, ally: 1 });
   const again = move(second.state, 'guard');
   assert.equal(again.state.players.visitor, 2);
@@ -305,7 +341,7 @@ test('version 3 migration preserves battle and receipts, clears ultimate prepara
     recent:[{issue:17,revision:12,action:'ultimate',summary:'previous result'}]};
   delete old.ultimatePrepared;
   const snapshot=structuredClone(old), current=migrateState(old);
-  assert.equal(current.version,5); assert.equal(current.revision,13);
+  assert.equal(current.version,6); assert.equal(current.revision,13);
   assert.equal(current.charged,true); assert.equal(current.ultimatePrepared,false);
   assert.equal(current.ultimateCooldown,4); assert.equal(current.wins,3);
   assert.deepEqual(current.recent,old.recent); assert.deepEqual(old,snapshot);

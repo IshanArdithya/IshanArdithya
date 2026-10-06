@@ -33,8 +33,8 @@ test('ultimate badge distinguishes prepare, charged, cooldown, and low mana stat
     [{ultimateCooldown:1},'ULT COOLDOWN'],[{status:'victory',bossHp:0},'ULT NOT READY'],[{status:'defeat',heroHp:0},'ULT NOT READY']]) {
     const unavailable={...state,...changes};
     assert.deepEqual(ultimateIndicator(unavailable),{ready:false,label});
-    assert.match(renderScene(unavailable),/data-ultimate-ready="false"/);
-    assert.doesNotMatch(renderScene(unavailable),/data-ultimate-ready="true"/);
+    assert.match(renderScene(unavailable),/data-ultimate-ready="false" data-character="frieren"/);
+    assert.doesNotMatch(renderScene(unavailable),/data-ultimate-ready="true" data-character="frieren"/);
   }
   assert.match(renderScene(fixtures().prepared,{animate:false}),/data-lettering="ULT CHARGED"/);
   assert.match(renderScene(fixtures().ultimate,{animate:false}),/data-lettering="ULT COOLDOWN"/);
@@ -59,18 +59,17 @@ test('ultimate readiness appears when playback finishes; still images show the f
   assert.match(hit,/data-hud="after-heroHp"/);
 });
 
-test('Aura badge requires an affordable upcoming Assault and an active fight', () => {
-  const ready={...initialState(),intent:3,bossMana:30};
-  assert.deepEqual(ultimateIndicator(ready,'aura'),{ready:true,label:'ULT READY'});
-  assert.match(renderScene(ready),/data-ultimate-ready="true" data-character="aura"/);
-  for (const changes of [{intent:0},{intent:1},{intent:2},{bossMana:29},{bossMana:0},{status:'victory',bossHp:0},{status:'defeat',heroHp:0}]) {
-    const state={...ready,...changes};
-    assert.deepEqual(ultimateIndicator(state,'aura'),{ready:false,label:'ULT NOT READY'});
+test('Aura badge shows a charged ultimate, enough mana to prepare, or too little mana', () => {
+  const charged={...initialState(),bossIntent:'cast',bossUltimatePrepared:true,bossMana:10};
+  assert.deepEqual(ultimateIndicator(charged,'aura'),{ready:true,label:'ULT CHARGED'});
+  assert.match(renderScene(charged),/data-ultimate-ready="true" data-character="aura"/);
+  assert.deepEqual(ultimateIndicator(initialState(),'aura'),{ready:true,label:'ULT READY'});
+  for (const [changes,label] of [[{bossMana:29,bossIntent:'focus',bossUltimatePrepared:false},'ULT LOW MP'],[{bossMana:0,bossIntent:'focus',bossUltimatePrepared:false},'ULT LOW MP'],[{status:'victory',bossHp:0},'ULT NOT READY'],[{status:'defeat',heroHp:0},'ULT NOT READY']]) {
+    const state={...charged,...changes};
+    assert.deepEqual(ultimateIndicator(state,'aura'),{ready:false,label});
     assert.match(renderScene(state),/data-ultimate-ready="false" data-character="aura"/);
   }
-  // Guarding Aura's Charge leaves Assault next; readiness waits for playback.
-  const state=transition({...initialState(),intent:2,bossMana:0},
-    {encounter:1,revision:0,action:'guard'}, {issue:1,login:'visitor'},()=>1).state;
-  assert.match(renderScene(state),/class="raid-after" style="animation-delay:3.4s"><g data-ultimate-ready="true" data-character="aura"/);
-  assert.doesNotMatch(renderScene(fixtures()['aura-assault']),/data-ultimate-ready="true" data-character="aura"/);
+  const state=transition({...initialState(),bossIntent:'focus',bossMana:0},
+    {encounter:1,revision:0,action:'guard'}, {issue:1,login:'visitor'},()=>0).state;
+  assert.match(renderScene(state),/data-ultimate-ready="true" data-character="aura"/);
 });

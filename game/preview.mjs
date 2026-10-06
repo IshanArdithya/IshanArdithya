@@ -9,14 +9,14 @@ export function fixtures() {
   const take = (state, action, critical = false) => transition(state, { encounter: state.encounter, revision: state.revision, action },
     { issue: state.revision + 1, login: 'visitor' }, (min, max) => max === 10 ? (critical ? 0 : 1) : min).state;
   const ready = initialState();
-  const charged = take(ready, 'focus');
-  const attacking = take(charged, 'attack');
-  const guarding = take({ ...charged, intent: 3 }, 'guard');
+  const charged = take({ ...ready, charged: true, heroMana: 200 }, 'focus');
+  const attacking = take({ ...charged, charged: false }, 'attack');
+  const guarding = take({ ...charged, bossUltimatePrepared: true }, 'guard');
   const critical = take(charged, 'attack', true);
   const victory = take({ ...ready, bossHp: 1 }, 'attack');
-  const defeat = take({ ...ready, heroHp: 1, intent: 3 }, 'attack');
-  const auraCharge = { ...ready, intent: 2 };
-  const auraAssault = take({ ...ready, intent: 3 }, 'attack');
+  const defeat = take({ ...ready, heroHp: 1, bossUltimatePrepared: true }, 'attack');
+  const auraCharge = take({ ...ready, bossMana: 0 }, 'focus');
+  const auraAssault = take({ ...ready, bossUltimatePrepared: true }, 'attack');
   const prepared = take(ready, 'ultimate');
   const ultimate = take(prepared, 'ultimate');
   const lowMana = { ...ready, heroMana: 79 };

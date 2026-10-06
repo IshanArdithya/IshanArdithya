@@ -1,4 +1,4 @@
-import { RULES, actionUnavailable, enemyIntent } from './engine.mjs';
+import { RULES, actionUnavailable } from './engine.mjs';
 import { HUD_PORTRAITS } from './hud-source.mjs';
 
 const frame = (x,y,w,h,c=4) => `M${x+c} ${y}h${w-2*c}v${c}h${c}v${h-2*c}h-${c}v${c}H${x+c}v-${c}h-${c}V${y+c}h${c}z`;
@@ -9,9 +9,10 @@ const ivory = '#fff0cb';
 // Share the action eligibility rules so the badge never promises an unusable ultimate.
 export function ultimateIndicator(state, character = 'frieren') {
   const ready = character === 'aura'
-    ? state.status === 'active' && enemyIntent(state).kind === 'assault'
+    ? state.status === 'active' && (state.bossUltimatePrepared || state.bossMana >= RULES.bossAssaultCost)
     : !actionUnavailable(state, 'ultimate');
-  const label = character === 'aura' ? (ready ? 'ULT READY' : 'ULT NOT READY')
+  const label = character === 'aura'
+    ? state.status !== 'active' ? 'ULT NOT READY' : state.bossUltimatePrepared ? 'ULT CHARGED' : state.bossMana < RULES.bossAssaultCost ? 'ULT LOW MP' : 'ULT READY'
     : state.status !== 'active' ? 'ULT NOT READY'
     : state.ultimateCooldown ? 'ULT COOLDOWN'
     : state.ultimatePrepared ? 'ULT CHARGED'
@@ -71,7 +72,7 @@ export function renderHud(state, { text, swap, playback }) {
     const shine = ready ? '#fff0bd' : '#8993a1';
     return `<g data-ultimate-ready="${ready}" data-character="${character}" role="img" aria-label="${name}: ${label}">
       <title>${isAura
-        ? (ready ? 'Aura: Army Assault is next and has enough mana.' : 'Aura: Army Assault not ready. Requires the Assault turn, 30 MP, and a completed turn.')
+        ? (label === 'ULT CHARGED' ? 'Aura: Ultimate charged. She casts it next turn.' : ready ? 'Aura: Enough mana to prepare her ultimate.' : 'Aura: Ultimate unavailable until she has 30 MP.')
         : (prepared ? 'Frieren: Ultimate charged. Cast it for no additional mana.' : ready ? 'Frieren: Ready to prepare Ultimate for 80 MP. Aura will respond.' : 'Frieren: Ultimate unavailable until cooldown ends and 80 MP is available, or while this turn resolves.')}</title>
       <path d="${frame(isAura?376:88,82,176,26,2)}" fill="#08111c"/>
       <g transform="translate(${isAura?525:91} 84)" aria-hidden="true">

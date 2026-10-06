@@ -3,23 +3,54 @@ export const RULES = Object.freeze({ heroHp: 26, bossHp: 100, heroMana: 240, bos
   ultimateCost: 80, ultimateDamage: 32, ultimateCooldown: 6, bossGuardCost: 15,
   bossAssaultCost: 30, bossChargeRestore: 35 });
 export const ACTIONS = Object.freeze(['attack', 'guard', 'focus', 'ultimate']);
-export const INTENTS = Object.freeze([
-  { kind: 'guard', name: 'Guard', damage: 0, cost: RULES.bossGuardCost, message: 'Aura spends 15 mana to guard. Your damage is halved, rounded up.' },
-  { kind: 'attack', name: 'Attack', damage: 4, cost: 0, message: 'Aura commands a soldier to attack. Incoming: 4 damage; no mana cost.' },
-  { kind: 'charge', name: 'Charge', damage: 0, cost: 0, message: 'Aura restores 35 mana. A 10-damage assault follows.' },
-  { kind: 'assault', name: 'Assault', damage: 10, cost: RULES.bossAssaultCost, message: 'Aura spends 30 mana on an army assault. Incoming: 10 damage!' },
-]);
+const BOSS_INTENTS = Object.freeze(['attack', 'guard', 'focus', 'prepare', 'cast']);
 export class MoveError extends Error {}
 export function initialState() {
-  return { version: 5, encounter: 1, revision: 0, status: 'active', turn: 0,
+  return { version: 6, encounter: 1, revision: 0, status: 'active', turn: 0,
     heroHp: RULES.heroHp, bossHp: RULES.bossHp, heroMana: RULES.heroMana, bossMana: RULES.bossStartMana,
-    guardCooldown: 0, ultimateCooldown: 0, ultimatePrepared: false, charged: false, intent: 0,
+    guardCooldown: 0, ultimateCooldown: 0, ultimatePrepared: false, charged: false,
+    bossIntent: null, bossCharged: false, bossUltimatePrepared: false,
     wins: 0, losses: 0, previousResult: null, recent: [], players: {} };
 }
-export function enemyIntent(state) {
-  const planned = INTENTS[state.intent];
-  return state.bossMana < planned.cost ? { kind: 'charge', name: 'Recover mana', damage: 0, cost: 0,
-    message: `Aura cannot afford ${planned.name}. She restores 35 mana instead; no incoming damage.` } : planned;
+export function enemyIntent(state, kind = state.bossIntent) {
+  if (kind === 'guard') return { kind, name: 'Guard', damage: 0, cost: RULES.bossGuardCost, message: 'Aura spends 15 mana to guard. Your damage is halved, rounded up.' };
+  if (kind === 'focus') return { kind, name: 'Focus', damage: 0, cost: 0, message: 'Aura focuses, restoring mana and empowering her next Attack.' };
+  if (kind === 'prepare') return { kind, name: 'Prepare Ultimate', damage: 0, cost: RULES.bossAssaultCost, message: 'Aura spends 30 mana to prepare her ultimate. She casts it next turn.' };
+  if (kind === 'cast') return { kind, name: 'Cast Ultimate', damage: 10, cost: 0, message: 'Aura casts her prepared ultimate. Incoming: 10 damage.' };
+  const damage = state.bossCharged ? 8 : 4;
+  return { kind: 'attack', name: state.bossCharged ? 'Focused Attack' : 'Attack', damage, cost: 0,
+    message: state.bossCharged ? 'Aura spends Focus on an empowered attack. Incoming: 8 damage; no mana cost.' : 'Aura commands a soldier to attack. Incoming: 4 damage; no mana cost.' };
+}
+// Called on the state from before this issue's action. A prepared ultimate is always cast.
+// Low mana recovers first. An earlier Focus or prepared ultimate is guarded. Recent attacks
+// make Guard more likely, and a recent Guard is an opening. Otherwise she rolls.
+function previousActions(state) {
+  return state.recent
+    .filter(event => event.encounter === state.encounter && event.action !== 'restart')
+    .slice(0, 3)
+    .map(event => event.ultimatePhase === 'prepare' ? 'prepare' : event.ultimatePhase === 'cast' ? 'cast' : event.action);
+}
+export function chooseBossIntent(state, randomInt) {
+  if (state.bossUltimatePrepared) return 'cast';
+  if (state.bossMana < RULES.bossGuardCost) return 'focus';
+  if ((state.ultimatePrepared || state.charged) && state.bossMana >= RULES.bossGuardCost) return 'guard';
+  const previous = previousActions(state);
+  const options = [['attack', state.bossCharged ? 5 : 3], ['guard', 1]];
+  if (!(state.bossCharged && state.bossMana === RULES.bossMana)) options.push(['focus', state.bossMana < RULES.bossAssaultCost ? 3 : 2]);
+  if (state.bossMana >= RULES.bossAssaultCost) options.push(['prepare', 3]);
+  const weight = (kind, amount) => {
+    const option = options.find(([name]) => name === kind);
+    if (option) option[1] += amount;
+  };
+  if (previous.filter(action => action === 'attack').length >= 2) weight('guard', 4);
+  if (previous[0] === 'guard') { weight('attack', 2); weight('prepare', 2); }
+  const total = options.reduce((sum, [, amount]) => sum + amount, 0);
+  let roll = randomInt(0, total);
+  if (!Number.isInteger(roll) || roll < 0 || roll >= total) throw new Error('Random source returned an invalid roll');
+  for (const [kind, amount] of options) {
+    if (roll < amount) return kind;
+    roll -= amount;
+  }
 }
 // A non-null reason is shared by the engine, README links, and local controls.
 export function actionUnavailable(state, action) {
@@ -36,12 +67,13 @@ export function validateState(state) {
   const integer = (key, min, max = Number.MAX_SAFE_INTEGER) => {
     if (!Number.isSafeInteger(state[key]) || state[key] < min || state[key] > max) throw new Error(`Invalid game state: ${key}`);
   };
-  if (state.version !== 5) throw new Error('Unsupported game state version');
+  if (state.version !== 6) throw new Error('Unsupported game state version');
   for (const key of ['revision','turn','wins','losses']) integer(key,0);
   integer('encounter',1); integer('heroHp',0,RULES.heroHp); integer('bossHp',0,RULES.bossHp);
   integer('heroMana',0,RULES.heroMana); integer('bossMana',0,RULES.bossMana);
-  integer('guardCooldown',0,1); integer('ultimateCooldown',0,RULES.ultimateCooldown); integer('intent',0,INTENTS.length-1);
-  if (!['active','victory','defeat'].includes(state.status) || typeof state.charged !== 'boolean' || typeof state.ultimatePrepared !== 'boolean' || !Array.isArray(state.recent) || state.recent.length > 5)
+  integer('guardCooldown',0,1); integer('ultimateCooldown',0,RULES.ultimateCooldown);
+  if (state.bossIntent !== null && !BOSS_INTENTS.includes(state.bossIntent) || typeof state.bossCharged !== 'boolean' || typeof state.bossUltimatePrepared !== 'boolean'
+    || !['active','victory','defeat'].includes(state.status) || typeof state.charged !== 'boolean' || typeof state.ultimatePrepared !== 'boolean' || !Array.isArray(state.recent) || state.recent.length > 5)
     throw new Error('Invalid game state');
   if ((state.status === 'active' && (!state.heroHp || !state.bossHp)) || (state.status === 'victory' && (state.bossHp !== 0 || !state.heroHp))
     || (state.status === 'defeat' && (state.heroHp !== 0 || !state.bossHp))) throw new Error('Inconsistent battle status');
@@ -70,6 +102,11 @@ export function migrateState(state) {
     state = { ...state, version: 4, ultimatePrepared: false, revision: state.revision + 1 };
   }
   if (state.version === 4) state = { ...state, version: 5, players: state.players ?? {} };
+  if (state.version === 5) {
+    state = { ...state, version: 6, bossIntent: null, bossCharged: false, bossUltimatePrepared: false };
+    delete state.intent;
+  }
+  if (state.version === 6 && state.turn === 0 && Array.isArray(state.recent) && state.recent.length === 0) state = { ...state, bossIntent: null };
   return validateState(state);
 }
 export function parseCommand(title) {
@@ -85,13 +122,14 @@ export function transition(current, command, actor, randomInt) {
   if (command.action === 'restart' && current.status === 'active') throw new MoveError('This encounter is still in progress.');
   if (command.action !== 'restart') { const reason = actionUnavailable(current,command.action); if (reason) throw new MoveError(reason); }
   if (!Number.isSafeInteger(actor.issue) || actor.issue < 1 || !/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})$/.test(actor.login)) throw new Error('Invalid issue actor');
-  const intent = enemyIntent(current);
+  // Decide from the board and recent moves before this action changes either.
+  const intent = command.action === 'restart' ? null : enemyIntent(current, chooseBossIntent(current, randomInt));
   const ultimatePhase = command.action === 'ultimate' ? (current.ultimatePrepared ? 'cast' : 'prepare') : null;
   let next = structuredClone(current);
   const event = { issue: actor.issue, player: actor.login, encounter: current.encounter, revision: current.revision+1,
     action: command.action, turn: current.turn+1, baseDamage: 0, critical: false, rolledDamage: 0, damage: 0,
-    incoming: 0, blocked: 0, enemyBlocked: 0, enemyAction: intent.kind, manaSpent: 0, manaRestored: 0,
-    enemyManaSpent: 0, enemyManaRestored: 0 };
+    incoming: 0, blocked: 0, enemyBlocked: 0, manaSpent: 0, manaRestored: 0,
+    enemyManaSpent: 0, enemyManaRestored: 0, enemyAction: intent ? intent.kind : null };
   if (ultimatePhase) event.ultimatePhase = ultimatePhase;
   if (command.action !== 'restart') event.before = { heroHp: current.heroHp, bossHp: current.bossHp, heroMana: current.heroMana, bossMana: current.bossMana };
   if (command.action === 'restart') {
@@ -133,16 +171,19 @@ export function transition(current, command, actor, randomInt) {
     }
     if (!next.bossHp) { next.status = 'victory'; next.wins++; }
     else {
-      if (intent.kind !== 'guard') { event.enemyManaSpent = intent.cost; next.bossMana -= intent.cost; }
-      if (intent.kind === 'charge') {
+      if (intent.kind === 'focus') {
         event.enemyManaRestored = Math.min(RULES.bossChargeRestore,RULES.bossMana-next.bossMana);
         next.bossMana += event.enemyManaRestored;
-      }
+        next.bossCharged = true;
+      } else if (intent.kind === 'prepare') {
+        event.enemyManaSpent = intent.cost; next.bossMana -= intent.cost; next.bossUltimatePrepared = true;
+      } else if (intent.kind === 'cast') next.bossUltimatePrepared = false;
+      else if (intent.kind === 'attack') next.bossCharged = false;
       event.incoming = command.action === 'guard' ? Math.min(1,intent.damage) : intent.damage;
       event.blocked = intent.damage-event.incoming;
       next.heroHp = Math.max(0,current.heroHp-event.incoming);
       if (!next.heroHp) { next.status = 'defeat'; next.losses++; }
-      else next.intent = (current.intent+1)%INTENTS.length;
+      else next.bossIntent = intent.kind;
     }
     const hit = `dealt ${event.damage} damage${event.critical ? ' (critical!)' : ''}${event.enemyBlocked ? ` (Aura guarded ${event.enemyBlocked})` : ''}`;
     const actionText = ultimatePhase === 'prepare' ? 'prepared Unleashed Zoltraak' : ultimatePhase === 'cast' ? `cast Unleashed Zoltraak and ${hit}` : command.action === 'attack' ? hit

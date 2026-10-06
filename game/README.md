@@ -38,7 +38,7 @@ GITHUB_REPOSITORY=owner/profile DEFAULT_BRANCH=trunk node game/generate.mjs
 
 The HUD occupies about 108 pixels over the top of the forest, with no separate header band. It uses a compact fighting-game layout: inset vector portraits at the outer edges, gold pixel frames, teal/magenta character accents, and a central **TURNS** medallion. HP is green and MP is blue for both characters, with smaller current/max counts centered inside each bar. Portraits have internal padding and a separate gutter before the bars; compact nameplates and resource rows leave breathing room around the turn medallion. The fills mirror each other and update with their numeric values at the existing action-resolution times. Portraits are lossless crops of the current pixel sprites; frames, bars, medallion, and ultimate badge are SVG geometry. Encounter numbers stay outside the HUD.
 
-Below Frieren's mana bar, the borderless pixel nameplate separates Ultimate from Focus. **ULT READY** (gold) means the spell can be prepared: at least 80 MP, no cooldown, and an active battle. **ULT CHARGED** (violet with a bright center) means preparation has been paid for and the spell can be cast without spending more mana. **ULT COOLDOWN** and **ULT LOW MP** are grey; ended encounters show **ULT NOT READY**. The button changes from **PREPARE ULT** to **CAST ULT**. Ready/charged badges settle when the turn finishes; still images and reduced-motion mode show the resulting state immediately. The Markdown summary and local demo text show whether normal Attack is focused. Aura's mirrored badge continues to represent her existing Army Assault: ready only when Assault is next and she has 30 MP. Her combat rules are unchanged.
+Below Frieren's mana bar, the borderless pixel nameplate separates Ultimate from Focus. **ULT READY** (gold) means the spell can be prepared: at least 80 MP, no cooldown, and an active battle. **ULT CHARGED** (violet with a bright center) means preparation has been paid for and the spell can be cast without spending more mana. **ULT COOLDOWN** and **ULT LOW MP** are grey; ended encounters show **ULT NOT READY**. The button changes from **PREPARE ULT** to **CAST ULT**. Ready/charged badges settle when the turn finishes; still images and reduced-motion mode show the resulting state immediately. The Markdown summary and local demo text show whether normal Attack is focused. Aura's mirrored badge uses the same words for her own ultimate: **ULT READY** at 30 MP or more, **ULT CHARGED** after she prepares, and **ULT LOW MP** below 30 MP.
 
 `hud.mjs` renders the committed state through the same health/mana snapshots as the battle. `hud-source.mjs` stores the cropped vector portraits; regenerate them with `python3 game/tools/prepare-hud.py` followed by the normal scene generator. The forest retains its full 640 × 360 dimensions beneath the HUD.
 
@@ -82,7 +82,7 @@ Frieren starts with **26 HP and 240/240 MP**. Aura starts with **100 HP and 40/6
 
 The ultimate is an adaptation of Zoltraak and Frieren's mana revelation, not an official named ultimate form. [Research and ability notes](ABILITIES.md) separate canonical abilities from game rules.
 
-Aura's cycle is **Guard → Attack → Charge → Assault**. Guard costs 15 MP and halves all player damage, including the ultimate, rounded up. Attack deals 4 damage for free. Charge restores up to 35 MP. Assault costs 30 MP and deals 10 damage. If Aura cannot afford Guard or Assault, the announced action becomes **Recover mana**: restore 35 MP, no damage and no guard. After recovery the pattern advances normally. The UI shows the effective intent before the player acts.
+Aura's next move stays hidden until the turn resolves. She reads the last few turns, and she cannot see the move played this turn. Attack deals 4 damage, or 8 after Focus, and costs nothing. Guard costs 15 MP and halves the hit, rounded up, including Ultimate. Focus restores up to 35 MP and makes her next Attack deal 8. Prepare costs 30 MP and deals nothing; the next turn casts for 10. Under 15 MP she uses Focus. If your Attack is focused or your Ultimate is ready, she Guards when she can pay. A string of Attacks draws Guard more often.
 
 Aura pays for Guard before the player's hit, because it protects that hit. Other enemy effects and costs resolve only if Aura survives. Killing blows prevent retaliation and mana recovery. Invalid moves, unavailable actions, stale links, rendering, and duplicate issue retries spend nothing and never tick cooldowns. A cooldown of 6 means six other accepted turns, with reuse possible on the following turn. Guard's cooldown is 1 under the same rule.
 
@@ -94,12 +94,12 @@ Run `node game/balance.mjs` for reproducible seeded simulations (10,000 encounte
 
 | Policy | Wins | Winning turn range | Mean winning turns |
 | --- | ---: | --- | ---: |
-| Prepare under Guard, cast in openings, guard assaults | 10,000 | 11–14 | 13.35 |
-| Same defensive approach without ultimate | 10,000 | 15–22 | 19.91 |
-| Attack repeatedly, Focus only when necessary | 0 | — | — |
-| Rush Focus/Attack/Ultimate without guarding | 40 | 8 | 8.00 |
+| Guard her prepared ultimate and empowered attack, then cast | 10,000 | 27–49 | 36.90 |
+| Same approach without the ultimate | 2,137 | 20–51 | 32.77 |
+| Attack repeatedly, Focus only when necessary | 42 | 17–23 | 20.07 |
+| Rush Focus/Attack/Ultimate without guarding | 4,282 | 10–20 | 16.30 |
 
-These are fixed-policy simulations, not a guarantee about every player strategy. They establish that the ultimate saves turns, remains optional, and does not make ignoring defense reliable.
+These are fixed-policy simulations, not a guarantee about every player strategy. They establish that answering her prepared ultimate and empowered attack makes the fight reliable, the ultimate is what carries those wins, and ignoring defense is unreliable. The policies cannot see her unannounced choice.
 
 ## Architecture
 
@@ -120,7 +120,7 @@ These are fixed-policy simulations, not a guarantee about every player strategy.
 - `github.mjs`: GitHub API feedback and Git persistence in a disposable Actions checkout only.
 - `state.json`: current versioned state. `events.jsonl`: append-only accepted-move receipts, including issue number, actor, random outcomes, and resulting revision.
 
-State version 5 adds `players`, a login-to-count map of accepted moves, including Play Again. Older saves gain an empty map and keep their revision, so current links stay valid. Counts start from the upgrade. State version 4 adds `ultimatePrepared`. The legacy `charged` field now means only the Focus boost for normal Attack. Upgrading a version 3 save preserves HP, MP, Focus, cooldowns, results, and history, sets `ultimatePrepared: false`, and increments the revision once so links from the old rules must refresh. Versions 1/2 first migrate mana/HP as before. The migration is idempotent and does not rewrite event receipts or apply a battle turn. New ultimate receipts include `ultimatePhase: prepare|cast`, resource changes, and resulting preparation state, so retrying preparation cannot cast or spend twice. Pre-turn HP/MP snapshots continue to drive playback.
+State version 6 replaces Aura's fixed intent index with `bossIntent`, `bossCharged`, and `bossUltimatePrepared`. Older saves start her on Attack with both boosts clear and keep their revision. State version 5 adds `players`, a login-to-count map of accepted moves, including Play Again. Older saves gain an empty map and keep their revision, so current links stay valid. Counts start from the upgrade. State version 4 adds `ultimatePrepared`. The legacy `charged` field now means only the Focus boost for normal Attack. Upgrading a version 3 save preserves HP, MP, Focus, cooldowns, results, and history, sets `ultimatePrepared: false`, and increments the revision once so links from the old rules must refresh. Versions 1/2 first migrate mana/HP as before. The migration is idempotent and does not rewrite event receipts or apply a battle turn. New ultimate receipts include `ultimatePhase: prepare|cast`, resource changes, and resulting preparation state, so retrying preparation cannot cast or spend twice. Pre-turn HP/MP snapshots continue to drive playback.
 
 Only the content between `<!-- README-RAID:START -->` and `<!-- README-RAID:END -->` is regenerated. Missing or duplicated markers after insertion fail closed. The initial insertion uses the existing technology-section heading as its anchor.
 

@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "encounter": 1,
   "revision": 1,
   "status": "active",
@@ -7,7 +7,6 @@
   "heroHp": 26,
   "bossHp": 100,
   "charged": false,
-  "intent": 0,
   "wins": 0,
   "losses": 0,
   "previousResult": null,
@@ -17,5 +16,8 @@
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": false,
-  "players": {}
+  "players": {},
+  "bossIntent": null,
+  "bossCharged": false,
+  "bossUltimatePrepared": false
 }

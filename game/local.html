@@ -161,17 +161,17 @@
     </section>
     <section class="panel guide" aria-labelledby="enemy-title">
       <h2 class="panel-title" id="enemy-title"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 2v5m0 6v5M2 10h5m6 0h5"/></svg>Enemy pattern</h2>
-      <p class="pattern-intro">Aura repeats this four-move cycle:</p>
+      <p class="pattern-intro">Aura's next move stays hidden. She reads your last few turns, then chooses. She cannot see the move you play this turn.</p>
       <ol class="pattern">
-        <li><strong><span>01</span>Guard</strong><small>Costs 15 MP</small><small>Halves your damage</small></li>
-        <li><strong><span>02</span>Attack</strong><small>4 damage</small><small>No mana cost</small></li>
-        <li><strong><span>03</span>Charge</strong><small>Restores 35 MP</small><small>No damage</small></li>
-        <li><strong><span>04</span>Assault</strong><small>10 damage</small><small>Costs 30 MP</small></li>
+        <li><strong>Attack</strong><small>4 damage, or 8 after Focus</small><small>Costs nothing</small></li>
+        <li><strong>Guard</strong><small>15 MP</small><small>Halves damage taken</small></li>
+        <li><strong>Focus</strong><small>Restores up to 35 MP</small><small>Next Attack deals 8</small></li>
+        <li><strong>Ultimate</strong><small>Prepare for 30 MP</small><small>Casts next turn for 10</small></li>
       </ol>
-      <p class="pattern-note">If she cannot afford Guard or Assault, she restores mana instead, then continues to the next move in the cycle.</p>
+      <p class="pattern-note">Under 15 MP, she uses Focus. After Prepare, she casts on the next turn. If your Attack is focused or your Ultimate is ready, she Guards when she has the MP. A string of Attacks draws Guard more often.</p>
       <div class="battle-notes">
-        <p>Aura’s Guard halves every attack, including your ultimate. A killing blow prevents retaliation. Cooldowns advance only when a valid move is played.</p>
-        <p>These combat numbers and the ultimate form are game adaptations. The full Scales of Obedience contest is planned for a future phase.</p>
+        <p>Her Guard halves the hit, Ultimate included. Land the last blow and she does not strike back. Cooldowns advance only on a move that goes through.</p>
+        <p>The numbers in this fight are original. Scales of Obedience is coming in a future update.</p>
       </div>
     </section>
     <div class="foot"><small>Only this tab. Refreshing resets the demo.</small><button id="reset" type="button">Reset demo</button></div>

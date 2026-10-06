@@ -8,7 +8,7 @@ export function turnPlayback(state) {
   const enemyActs = state.status !== 'victory';
   const enemyDuration = !enemyActs ? TURN_TIMING.actionDuration
     : event.enemyAction === 'attack' ? TURN_TIMING.knightDuration
-    : event.enemyAction === 'assault' ? TURN_TIMING.assaultDuration : TURN_TIMING.actionDuration;
+    : event.enemyAction === 'cast' ? TURN_TIMING.assaultDuration : TURN_TIMING.actionDuration;
   const heroDamageAt = TURN_TIMING.heroDamage + enemyDuration - TURN_TIMING.actionDuration;
   return { event, enemyActs, enemyDuration, heroDamageAt,
     duration: enemyActs ? heroDamageAt + TURN_TIMING.popupDuration + 100 : TURN_TIMING.victoryFinish,

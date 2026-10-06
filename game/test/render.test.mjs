@@ -97,7 +97,7 @@ test('mana, ultimate effects, fallback intent, and unavailable actions appear in
   assert.match(renderScene(all.ultimate), /data-effect="unleashed-zoltraak"/);
   assert.match(renderScene(all.ultimate), /ULT: 6T/);
   assert.match(renderScene(all.depleted), /0\/240 MP/);
-  assert.match(renderSection(all.depleted), /Recover mana/);
+  assert.match(renderSection(all.depleted), /Focus/);
   const section=renderSection(all.depleted);
   for(const action of ['attack','guard','ultimate']) {
     assert.match(section,new RegExp(`${action}-disabled.svg`));

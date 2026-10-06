@@ -7,10 +7,10 @@ const take = (state,action) => transition(state,{encounter:state.encounter,revis
   {issue:state.revision+1,login:'visitor'},(min,max)=>max===10?1:min);
 
 test('playback uses the resolved enemy action, not the next announced intent',()=>{
-  const before={...initialState(),intent:1};
+  const before=initialState();
   const {state,event}=take(before,'attack');
   assert.deepEqual(event.before,{heroHp:26,bossHp:100,heroMana:240,bossMana:40});
-  assert.equal(state.intent,2); assert.equal(turnPlayback(state).enemyPose,'attack');
+  assert.equal(state.bossIntent,'attack'); assert.equal(turnPlayback(state).enemyPose,'attack');
   const svg=renderScene(state);
   assert.match(svg,/data-effect="aura-attack"/);
   assert.doesNotMatch(svg,/data-effect="aura-mana-recovery"/);
@@ -23,25 +23,25 @@ test('playback uses the resolved enemy action, not the next announced intent',()
   assert.equal(playback.heroDamageAt,5150);
   assert.equal(playback.duration,6100);
   assert.match(svg,/data-timeline="frieren-damage" style="animation-delay:5.15s/);
-  assert.equal(turnPlayback(take({...initialState(),intent:1,bossHp:1},'attack').state).duration,TURN_TIMING.victoryFinish);
+  assert.equal(turnPlayback(take({...initialState(),bossHp:1},'attack').state).duration,TURN_TIMING.victoryFinish);
 });
 
 test('winning blows skip Aura response and losing blows still play the full turn',()=>{
-  const win=take({...initialState(),bossHp:1,intent:3},'attack').state;
+  const win=take({...initialState(),bossHp:1,bossUltimatePrepared:true},'attack').state;
   assert.equal(turnPlayback(win).enemyActs,false);
   assert.equal(turnPlayback(win).duration,TURN_TIMING.victoryFinish);
   assert.doesNotMatch(renderScene(win),/data-timeline="aura-action"|data-timeline="frieren-damage"/);
-  const lose=take({...initialState(),heroHp:1,intent:3},'attack').state;
+  const lose=take({...initialState(),heroHp:1,bossUltimatePrepared:true},'attack').state;
   assert.equal(turnPlayback(lose).enemyActs,true);
   assert.match(renderScene(lose),/data-timeline="frieren-damage"/);
   assert.equal(turnPlayback(lose).duration,6700);
 });
 
 test('guard feedback is separate from damage; zero damage does not create a popup',()=>{
-  const heroGuard=take({...initialState(),intent:3},'guard').state;
+  const heroGuard=take({...initialState(),bossUltimatePrepared:true},'guard').state;
   assert.match(renderScene(heroGuard),/data-timeline="frieren-guard"/);
   assert.doesNotMatch(renderScene(heroGuard),/data-timeline="aura-damage"/);
-  const auraGuard=take(initialState(),'attack').state;
+  const auraGuard=take({...initialState(),charged:true},'attack').state;
   assert.match(renderScene(auraGuard),/data-timeline="aura-guard"/);
   assert.doesNotMatch(renderScene(auraGuard),/data-timeline="frieren-damage"/);
 });
@@ -58,10 +58,10 @@ test('restart, still renders, and initial state have no turn replay',()=>{
 
 
 test('Assault renders five soldiers but resolves one paid hit before unlocking',()=>{
-  const {state,event}=take({...initialState(),intent:3},'attack');
+  const {state,event}=take({...initialState(),bossUltimatePrepared:true},'attack');
   const svg=renderScene(state);
   assert.equal(state.heroHp,16);
-  assert.equal(state.bossMana,10);
+  assert.equal(state.bossMana,40);
   assert.equal(event.incoming,10);
   assert.equal((svg.match(/data-army-soldier="sword"/g)||[]).length,3);
   assert.equal((svg.match(/data-army-soldier="halberd"/g)||[]).length,2);
@@ -70,10 +70,10 @@ test('Assault renders five soldiers but resolves one paid hit before unlocking',
   const ids=[...svg.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(new Set(ids).size,ids.length);
   for (const [,id] of svg.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(id));
-  const guarded=take({...initialState(),intent:3},'guard').state;
+  const guarded=take({...initialState(),bossUltimatePrepared:true},'guard').state;
   assert.equal(guarded.heroHp,25);
   assert.equal(turnPlayback(guarded).duration,6700);
-  const recovered=take({...initialState(),intent:3,bossMana:0},'attack').state;
+  const recovered=take({...initialState(),bossMana:0},'attack').state;
   assert.doesNotMatch(renderScene(recovered),/data-army-soldier=/);
   assert.equal(turnPlayback(recovered).duration,TURN_TIMING.finish);
   assert.doesNotMatch(renderScene(state,{animate:false}),/data-army-soldier=/);
