@@ -15,16 +15,35 @@
     p { margin: 8px 0; }
     .muted, small { color: #a5b5c9; }
     #scene { display: block; width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 12px; }
-    #actions { display: grid; grid-template-columns: repeat(2,96px); gap: 8px; margin: 18px 0; }
-    #actions button { background: none; padding: 0; border: none; cursor: pointer; max-width: 96px; min-width: 0; flex: 1; border-radius: 5px; }
-    #actions img { display: block; width: 100%; height: auto; }
+    #actions { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; max-width: 536px; margin: 18px auto; }
+    #actions button { background: none; padding: 0; border: none; cursor: pointer; min-width: 0; border-radius: 5px; aspect-ratio: 1; }
+    #actions img { display: block; width: 100%; height: auto; aspect-ratio: 1; }
     button:focus-visible, summary:focus-visible { outline: 2px solid #f3e6cb; outline-offset: 4px; }
     #actions button:hover:not(:disabled) { filter: brightness(1.25); }
-    #actions button:disabled { cursor: default; opacity: .65; }
-    #stats { font: 13px/1.7 ui-monospace, monospace; color: #a5b5c9; }
-    #intent { margin-top: 14px; font-weight: 650; }
-    #result { border-left: 2px solid #55d7c3; padding: 4px 0 4px 14px; margin-top: 18px; min-height: 60px; }
-    #roll { color: #ebbb76; font: 13px/1.7 ui-monospace, monospace; }
+    #actions button:disabled { cursor: default; }
+    #actions[aria-busy="true"] button { opacity: .6; }
+    .encounter { background: #141d28; border: 1px solid #364458; border-radius: 8px; overflow: hidden; }
+    .encounter-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border-bottom: 1px solid #364458; }
+    .encounter-label { display: block; color: #a5b5c9; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    #encounter-number { font: 24px/1.3 ui-monospace, monospace; color: #ebbb76; }
+    .encounter-meta { text-align: right; }
+    #encounter-status { display: inline-block; padding: 2px 9px; border: 1px solid #526174; border-radius: 4px; color: #a5b5c9; font-size: 12px; }
+    #encounter-status[data-status="active"], #encounter-status[data-status="victory"] { color: #55d7c3; border-color: #34766f; }
+    #encounter-status[data-status="defeat"] { color: #f6a4ad; border-color: #965565; }
+    #record { display: block; margin-top: 4px; font-size: 12px; }
+    .recent { padding: 16px; }
+    .recent-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; margin-bottom: 12px; }
+    h2 { font-size: 14px; margin: 0; }
+    .recent-heading small { font-size: 11px; }
+    #history { list-style: none; padding: 0; margin: 0; }
+    #history li { display: grid; grid-template-columns: 54px minmax(0,1fr); gap: 12px; margin: 0; padding: 12px 0; border-top: 1px solid #263345; font-size: 13px; }
+    #history li:first-child { border-top: 0; padding-top: 0; }
+    #history li:last-child { padding-bottom: 0; }
+    .turn-number { color: #a5b5c9; font: 11px/1.9 ui-monospace, monospace; }
+    #history-empty { color: #a5b5c9; font-size: 13px; margin: 0; }
+    #actions button.next-encounter { grid-column: 1 / -1; aspect-ratio: auto; justify-self: start; padding: 10px 16px; border: 1px solid #bfa06c; background: #222d38; color: #f3e6cb; font: inherit; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    #notice { color: #ebbb76; font-size: 13px; }
     .foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 24px 0; }
     #reset { background: transparent; border: 1px solid #364458; border-radius: 5px; color: #a5b5c9; padding: 8px 12px; cursor: pointer; }
     details { border-top: 1px solid #263345; padding: 16px 0; }
@@ -32,7 +51,17 @@
     li { margin: 8px 0; }
     ul, ol { padding-left: 20px; }
     @media (max-width: 400px) { main { padding: 0 16px; margin-top: 24px; } }
-    @media (prefers-color-scheme: light) { body { background: #f6f8fa; color: #182334; } .muted, small, summary, #stats, #reset { color: #526174; } .eyebrow { color: #17796f; } #roll { color: #876028; } }
+    @media (prefers-color-scheme: light) {
+      body { background: #f6f8fa; color: #182334; }
+      .muted, small, summary, #reset, .encounter-label, .turn-number, #history-empty { color: #526174; }
+      .eyebrow { color: #17796f; }
+      .encounter { background: #fff; border-color: #c3ccd5; }
+      .encounter-heading, #history li { border-color: #dce2e8; }
+      #encounter-number, #notice { color: #876028; }
+      #encounter-status { color: #526174; }
+      #encounter-status[data-status="active"], #encounter-status[data-status="victory"] { color: #17796f; }
+      #encounter-status[data-status="defeat"] { color: #a2314c; }
+    }
   </style>
 </head>
 <body>
@@ -44,12 +73,21 @@
     </header>
     <img id="scene" alt="Frieren versus Aura in a forest clearing" width="640" height="360">
     <div id="actions" aria-label="Battle actions"></div>
-    <div id="stats" style="white-space:pre-line"></div>
-    <p id="availability" class="muted"></p>
-    <p id="intent"></p>
-    <div id="result" role="status" aria-live="polite"><p id="message"></p><p id="roll"></p></div>
+    <p id="message" class="sr-only" role="status" aria-live="polite"></p>
+    <p id="notice" role="alert" hidden></p>
+    <section class="encounter" aria-label="Current encounter">
+      <div class="encounter-heading">
+        <div><span class="encounter-label">Encounter</span><strong id="encounter-number">001</strong></div>
+        <div class="encounter-meta"><span id="encounter-status">In progress</span><small id="record"></small></div>
+      </div>
+      <div class="recent">
+        <div class="recent-heading"><h2>Recent moves</h2><small>Current encounter · newest first</small></div>
+        <ol id="history" aria-label="Last five completed moves"></ol>
+        <p id="history-empty">Your story starts with the first move.</p>
+      </div>
+    </section>
     <div class="foot"><small>Only this tab. Refreshing resets the demo.</small><button id="reset" type="button">Reset demo</button></div>
-    <details open>
+    <details>
       <summary>How to play</summary>
       <ul>
         <li><strong>Attack:</strong> 5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</li>
@@ -60,7 +98,6 @@
       <p class="muted">Frieren: 26 HP / 240 MP. Aura: 100 HP, starting with 40/60 MP. Aura cycles Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP). If she cannot afford Guard or Assault, she restores mana instead.</p>
       <p class="muted">Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns tick only when someone plays a valid turn. These numbers and the ultimate form are game adaptations; the full Scales of Obedience contest remains a future feature.</p>
     </details>
-    <details><summary>Recent turns</summary><ol id="history"></ol></details>
     <p class="muted"><small>This demo tests combat and artwork. GitHub issue handling and Actions need a separate GitHub test.</small></p>
     <noscript>Enable JavaScript to play this local demo.</noscript>
   </main>

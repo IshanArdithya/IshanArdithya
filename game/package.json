@@ -7,6 +7,6 @@
     "test": "node --test test/*.test.mjs",
     "render": "node generate.mjs",
     "preview": "node preview.mjs",
-    "play": "node local.mjs"
+    "play": "node --watch local.mjs"
   }
 }

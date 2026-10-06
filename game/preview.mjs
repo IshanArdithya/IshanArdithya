@@ -2,6 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { ROOT } from './generate.mjs';
+import { loadButtonIcons } from './button-icons.mjs';
 import { initialState, transition, ACTIONS } from './engine.mjs';
 import { renderButton, renderScene, BUTTON_ASSETS, buttonKind } from './render.mjs';
 
@@ -28,10 +29,11 @@ export async function preview() {
   const dir = resolve(ROOT, 'game/preview');
   await mkdir(dir, { recursive: true });
   for (const [name, state] of Object.entries(fixtures())) await writeFile(resolve(dir, `${name}.svg`), renderScene(state));
-  for (const action of BUTTON_ASSETS) await writeFile(resolve(dir, `button-${action}.svg`), renderButton(action));
-  const buttons = state => (state.status !== 'active' ? ['restart'] : ACTIONS.map(a => buttonKind(state,a))).map(action => `<img src="button-${action}.svg" width="96" height="44" alt="${action}">`).join(' ');
+  const icons = await loadButtonIcons();
+  for (const action of BUTTON_ASSETS) await writeFile(resolve(dir, `button-${action}.svg`), renderButton(action, icons[action.replace(/-disabled$/, '')]));
+  const buttons = state => (state.status !== 'active' ? ['restart'] : ACTIONS.map(a => buttonKind(state,a))).map(action => `<img src="button-${action}.svg" width="${action === 'restart' ? 96 : 128}" height="${action === 'restart' ? 44 : 128}" alt="${action}">`).join(' ');
   const cards = Object.entries(fixtures()).map(([name, state]) => `<section id="${name}"><h2>${name}</h2><div class="sizes"><div class="wide"><img class="scene" src="${name}.svg" alt="${name}"><p>${buttons(state)}</p></div><div class="narrow"><img class="scene" src="${name}.svg" alt="${name} mobile"><p>${buttons(state)}</p></div></div></section>`).join('');
-  await writeFile(resolve(dir, 'index.html'), `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>README Raid — art previews</title><style>body{margin:0;background:#f6f8fa;color:#1f2937;font:16px system-ui}main{max-width:1040px;margin:auto;padding:24px}h1{font-size:26px}h2{text-transform:capitalize;font-size:18px}.sizes{display:flex;gap:24px;align-items:start;flex-wrap:wrap}.wide{width:640px}.narrow{width:320px;background:#0d1117;padding-bottom:8px;color:#f3e6cb}.scene{display:block;width:100%;height:auto}p{display:flex;gap:8px;flex-wrap:wrap}section{padding:16px 0 24px;border-bottom:1px solid #ccd1d9}section:target{outline:2px solid #239e9d}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#f3e6cb}.narrow{background:#f6f8fa}}</style><main><h1>README Raid · SVG fixtures</h1><p>640px / 320px · Change your system motion preference to check the still fallback.</p>${cards}</main></html>`);
+  await writeFile(resolve(dir, 'index.html'), `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>README Raid — art previews</title><style>body{margin:0;background:#f6f8fa;color:#1f2937;font:16px system-ui}main{max-width:1040px;margin:auto;padding:24px}h1{font-size:26px}h2{text-transform:capitalize;font-size:18px}.sizes{display:flex;gap:24px;align-items:start;flex-wrap:wrap}.wide{width:640px}.narrow{width:320px;background:#0d1117;padding-bottom:8px;color:#f3e6cb}.scene{display:block;width:100%;height:auto}p{display:flex;gap:8px}p img{width:calc((100% - 24px)/4);max-width:128px;height:auto;align-self:start}section{padding:16px 0 24px;border-bottom:1px solid #ccd1d9}section:target{outline:2px solid #239e9d}@media(prefers-color-scheme:dark){body{background:#0d1117;color:#f3e6cb}.narrow{background:#f6f8fa}}</style><main><h1>README Raid · SVG fixtures</h1><p>640px / 320px · Change your system motion preference to check the still fallback.</p>${cards}</main></html>`);
   console.log(`Preview: ${resolve(dir, 'index.html')}`);
 }
 

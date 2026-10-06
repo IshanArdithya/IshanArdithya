@@ -7,10 +7,12 @@ A shared, asynchronous Frieren-versus-Aura battle for this GitHub profile. The g
 Use Node.js 24 or later, from the repository root:
 
 ```sh
-node game/local.mjs
+node --watch game/local.mjs
 ```
 
-Open **http://127.0.0.1:4173** to play immediately. Attack, Guard, Focus, Prepare Ult / Cast Ult, mana, cooldowns, critical hits, endings, and Play Again use the real battle engine and SVG renderer. Each attack gets fresh random rolls; the result also shows its damage calculation. The demo keeps its state only in the browser tab. Refresh or choose Reset demo to start over. It never writes the saved game, makes commits, or contacts GitHub. Stop the server with Ctrl+C. If the port is busy, use `PORT=4174 node game/local.mjs`.
+Open **http://127.0.0.1:4173** to play immediately. Attack, Guard, Focus, Zoltraak (Prep / Cast), mana, cooldowns, critical hits, endings, and Next encounter use the real battle engine and SVG renderer. Each attack gets fresh random rolls; recent moves show the current encounter's last five completed turns. The demo keeps its state only in the browser tab. Refresh or choose Reset demo to start over. It never writes the saved game, makes commits, or contacts GitHub. Stop the server with Ctrl+C. If the port is busy, use `PORT=4174 node --watch game/local.mjs`.
+
+Watch mode restarts the server when its code changes, including new asset routes. Refresh the browser to load client changes. If an older server was started without `--watch`, stop it and run the command above; refreshing alone cannot update that server's routes.
 
 This tests gameplay and artwork locally; GitHub issue handling and Actions still need separate live verification.
 

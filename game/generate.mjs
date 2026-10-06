@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { initialState, validateState, migrateState } from './engine.mjs';
+import { loadButtonIcons } from './button-icons.mjs';
 import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS } from './render.mjs';
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
@@ -26,8 +27,9 @@ export async function generate() {
     repository: process.env.GITHUB_REPOSITORY || DEFAULT_REPOSITORY,
     branch: process.env.DEFAULT_BRANCH || 'main',
   });
+  const icons = await loadButtonIcons();
   for (const action of BUTTON_ASSETS)
-    await writeFile(resolve(ROOT, `game/assets/${action}.svg`), renderButton(action));
+    await writeFile(resolve(ROOT, `game/assets/${action}.svg`), renderButton(action, icons[action.replace(/-disabled$/, '')]));
   await writeFile(resolve(ROOT, 'game/events.jsonl'), '', { flag: 'a' });
 }
 

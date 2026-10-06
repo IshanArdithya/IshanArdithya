@@ -207,8 +207,8 @@ export function actionDescription(state, action) {
     guard: `Guard — take at most 1 damage; ${RULES.guardCost} mana; skip one turn before reusing`,
     focus: `Focus — restore ${RULES.chargeRestore} mana and empower the next normal Attack`,
     ultimate: state.ultimatePrepared
-      ? `Cast Ultimate — ${RULES.ultimateDamage} damage; mana already paid; starts a ${RULES.ultimateCooldown}-turn cooldown`
-      : `Prepare Ultimate — spend ${RULES.ultimateCost} mana now; Aura responds; cast on a later turn`,
+      ? `Zoltraak (Cast) — ${RULES.ultimateDamage} damage; mana already paid; starts a ${RULES.ultimateCooldown}-turn cooldown`
+      : `Zoltraak (Prep) — spend ${RULES.ultimateCost} mana now; Aura responds; cast on a later turn`,
   }[action];
 }
 export function buttonKind(state, action) {
@@ -216,18 +216,32 @@ export function buttonKind(state, action) {
   return actionUnavailable(state, action) ? `${kind}-disabled` : kind;
 }
 export const BUTTON_ASSETS = [...ACTIONS, ...ACTIONS.map(a => `${a}-disabled`), 'ultimate-cast', 'ultimate-cast-disabled', 'restart'];
-export function renderButton(action) {
+export function renderButton(action, iconSvg) {
   const disabled = action.endsWith('-disabled');
   const base = disabled ? action.slice(0, -9) : action;
   const config = {
     attack: ['ATTACK', '#e66870'], guard: ['GUARD', '#82b5d5'], focus: ['FOCUS', '#55d7c3'],
-    ultimate: ['PREPARE ULT', '#d6a8f3'], 'ultimate-cast': ['CAST ULT', '#e5c5ff'], restart: ['PLAY AGAIN', '#ebbb76'],
+    ultimate: ['ZOLTRAAK', '#d6a8f3', 'PREP'], 'ultimate-cast': ['ZOLTRAAK', '#e5c5ff', 'CAST'], restart: ['PLAY AGAIN', '#ebbb76'],
   }[base];
   if (!config) throw new Error('Unknown button');
   const color = disabled ? '#667285' : config[1];
   const lettering = createLettering();
-  const label = lettering.text(48,27,config[0],14,color,'text-anchor="middle"',82);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="44" viewBox="0 0 96 44" role="img" aria-label="${xml(config[0])}${disabled ? ' unavailable' : ''}"><rect x="1" y="1" width="94" height="42" rx="5" fill="#172234" stroke="${color}"/><path d="M10 35h76" stroke="${color}" opacity=".3"/>${lettering.definitions()}${label}</svg>\n`;
+  if (base === 'restart') {
+    const label = lettering.text(48,27,config[0],14,color,'text-anchor="middle"',82);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="44" viewBox="0 0 96 44" role="img" aria-label="PLAY AGAIN"><rect x="1" y="1" width="94" height="42" rx="5" fill="#172234" stroke="${color}"/>${lettering.definitions()}${label}</svg>\n`;
+  }
+  if (!iconSvg?.includes('id="arcane-frame"')) throw new Error(`Missing shared-frame vector icon for ${base}`);
+  const artwork = iconSvg.replace(/^[\s\S]*?<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '')
+    .replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').trim();
+  const label = lettering.text(64,config[2] ? 108 : 115,config[0],18,disabled ? '#9aa5b5' : '#f3e6cb','text-anchor="middle"',112)
+    + (config[2] ? lettering.text(64,122,config[2],13,color,'text-anchor="middle"',100) : '');
+  const title = `${config[0]}${config[2] ? ` (${config[2]})` : ''}${disabled ? ' unavailable' : ''}`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="${xml(title)}" data-action-card="${base}">
+<title>${xml(title)}</title><rect x="1" y="1" width="126" height="126" rx="5" fill="#131d2a" stroke="${disabled ? '#435063' : '#897754'}"/>
+<path d="M8 3h112" stroke="${color}" opacity=".7"/>
+${disabled ? '<defs><filter id="muted-icon" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/></filter></defs>' : ''}
+<g${disabled ? ' filter="url(#muted-icon)" opacity=".45"' : ''}><svg x="18" y="5" width="92" height="92" viewBox="18 18 284 284" shape-rendering="crispEdges" aria-hidden="true">${artwork}</svg></g>
+${lettering.definitions()}${label}</svg>\n`;
 }
 
 export function issueUrl(state, action, repository = DEFAULT_REPOSITORY) {
@@ -242,13 +256,12 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   validateState(state);
   if (!/^[\w.-]+\/[\w.-]+$/.test(repository)) throw new Error('Invalid repository');
   const raw = `https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets`;
-  const button = (action, alt) => `[![${alt}](${raw}/${action === 'restart' ? action : buttonKind(state, action)}.svg)](${issueUrl(state, action, repository)})`;
+  const button = (action, alt) => `<a href="${xml(issueUrl(state, action, repository))}"><img src="${raw}/${action === 'restart' ? action : buttonKind(state, action)}.svg" width="${action === 'restart' ? '96' : '23%'}" alt="${xml(alt)}"></a>`;
   const active = state.status === 'active';
   const intent = enemyIntent(state);
-  const controls = active ? ACTIONS.map((action, i) => {
+  const controls = active ? ACTIONS.map(action => {
     const reason = actionUnavailable(state, action);
-    const control = reason ? `![${actionDescription(state, action)} — unavailable: ${reason}](${raw}/${buttonKind(state, action)}.svg)` : button(action, actionDescription(state, action));
-    return control + (i === 1 ? '<br>' : '');
+    return reason ? `<img src="${raw}/${buttonKind(state, action)}.svg" width="23%" alt="${xml(`${actionDescription(state, action)} — unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
   }).join(' ') : button('restart', 'Play Again — start a new encounter');
   const unavailable = active ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
   const next = active ? `**Next:** ${intent.name} · ${intent.damage} damage. ${intent.message}`

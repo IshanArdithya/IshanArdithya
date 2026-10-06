@@ -2,8 +2,10 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
+import { BUTTON_ASSETS } from './render.mjs';
 
 const files = new Map([
+  ...BUTTON_ASSETS.map(action => [`/assets/${action}.svg`, [`assets/${action}.svg`, 'image/svg+xml']]),
   ['/', ['local.html', 'text/html']],
   ['/local-client.mjs', ['local-client.mjs', 'text/javascript']],
   ['/engine.mjs', ['engine.mjs', 'text/javascript']],

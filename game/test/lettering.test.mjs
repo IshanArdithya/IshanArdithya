@@ -3,9 +3,11 @@ import assert from 'node:assert/strict';
 import { createLettering } from '../lettering.mjs';
 import { renderScene, renderButton, BUTTON_ASSETS } from '../render.mjs';
 import { fixtures } from '../preview.mjs';
+import { loadButtonIcons } from '../button-icons.mjs';
 
-test('game and buttons use accessible path lettering without font loading', () => {
-  const svgs = [...Object.values(fixtures()).map(state => renderScene(state)), ...BUTTON_ASSETS.map(renderButton)];
+test('game and buttons use accessible path lettering without font loading', async () => {
+  const icons = await loadButtonIcons();
+  const svgs = [...Object.values(fixtures()).map(state => renderScene(state)), ...BUTTON_ASSETS.map(action => renderButton(action, icons[action.replace(/-disabled$/, '')]))];
   for (const svg of svgs) {
     assert.doesNotMatch(svg, /<text\b|@font-face|font-family|https?:\/\/(?!www.w3.org)/);
     assert.match(svg, /data-font="IM Fell DW Pica"/);

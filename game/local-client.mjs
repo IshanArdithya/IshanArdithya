@@ -1,6 +1,6 @@
 import { TURN_TIMING as T, turnPlayback } from './playback.mjs';
 import { initialState, RULES, ACTIONS, enemyIntent, actionUnavailable, transition } from './engine.mjs';
-import { renderScene, renderButton, buttonKind, actionDescription, cooldownSummary } from './render.mjs';
+import { renderScene, buttonKind, actionDescription } from './render.mjs';
 
 let state = initialState();
 let busy = false, sequenceToken = 0, started = false;
@@ -10,6 +10,10 @@ const later = (fn, ms) => { const timer = setTimeout(() => { timers.delete(timer
 const clearTimers = () => { for (const timer of timers) clearTimeout(timer); timers.clear(); };
 const element = id => document.getElementById(id);
 const svgUrl = svg => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+function showNotice(text = '') {
+  element('notice').textContent = text;
+  element('notice').hidden = !text;
+}
 
 // Uniform cryptographic integer draws, matching the production engine's randomInt contract.
 function randomInt(min, max) {
@@ -29,7 +33,7 @@ function finishPlayback(token, failed = false) {
   if (token !== sequenceToken || !busy) return;
   clearTimers(); busy = false;
   render({ scene: false });
-  if (failed) element('message').textContent += ' The animation could not load; the result above is saved in this tab.';
+  if (failed) showNotice('The animation could not load. Your move is saved in the recent moves below.');
   focusAction();
 }
 function beginPlayback(token) {
@@ -45,6 +49,7 @@ function beginPlayback(token) {
 }
 function play(action) {
   if (busy) return;
+  showNotice();
   try {
     state = transition(state, { encounter: state.encounter, revision: state.revision, action },
       { issue: state.revision + 1, login: 'you' }, randomInt).state;
@@ -52,7 +57,7 @@ function play(action) {
     busy = Boolean(turnPlayback(state) && !reducedMotion.matches);
     render();
     if (!busy) focusAction();
-  } catch (error) { element('message').textContent = error.message; }
+  } catch (error) { showNotice(error.message); }
 }
 
 function render({ scene = true } = {}) {
@@ -65,7 +70,9 @@ function render({ scene = true } = {}) {
     if (busy) later(() => finishPlayback(token, true), 8000);
   }
   element('actions').setAttribute('aria-busy', String(busy));
-  element('scene').alt = `Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; attack ${state.charged ? 'focused' : 'normal'}.`;
+  const shown = busy && state.recent[0]?.before ? { ...state, ...state.recent[0].before } : state;
+  const intent = enemyIntent(state);
+  element('scene').alt = `Frieren ${shown.heroHp}/${RULES.heroHp} HP, ${shown.heroMana}/${RULES.heroMana} MP; Aura ${shown.bossHp}/${RULES.bossHp} HP, ${shown.bossMana}/${RULES.bossMana} MP.${busy ? ' Turn in progress.' : state.status === 'active' ? ` Next: ${intent.name}, ${intent.damage} damage.` : ` ${state.status}.`}`;
   element('actions').replaceChildren();
   const actions = state.status === 'active' ? ACTIONS : ['restart'];
   for (const action of actions) {
@@ -73,34 +80,46 @@ function render({ scene = true } = {}) {
     button.type = 'button'; button.dataset.action = action;
     const reason = busy ? 'Wait for this turn to finish.' : action === 'restart' ? null : actionUnavailable(state, action);
     button.disabled = Boolean(reason);
-    button.title = reason || actionDescription(state, action) || 'Play Again';
+    button.title = reason || (action === 'restart' ? 'Start the next encounter' : actionDescription(state, action));
     button.setAttribute('aria-label', button.title);
-    const image = document.createElement('img');
-    image.src = svgUrl(renderButton(action === 'restart' ? 'restart' : buttonKind(state, action)));
-    image.width = 96; image.height = 44; image.alt = '';
-    button.append(image); button.addEventListener('click', () => play(action));
+    if (action === 'restart') {
+      button.className = 'next-encounter';
+      button.textContent = 'Next encounter →';
+    } else {
+      const image = document.createElement('img');
+      image.src = `/assets/${buttonKind(state, action)}.svg`;
+      image.width = 128; image.height = 128; image.alt = '';
+      button.append(image);
+    }
+    button.addEventListener('click', () => play(action));
     element('actions').append(button);
   }
-  const shown = busy && state.recent[0]?.before ? { ...state, ...state.recent[0].before } : state;
-  element('stats').textContent = `Frieren ${shown.heroHp}/${RULES.heroHp} HP · Aura ${shown.bossHp}/${RULES.bossHp} HP · Attack ${shown.charged ? 'focused' : 'normal'} · Ultimate ${state.ultimatePrepared ? 'charged' : 'not prepared'}\nMana: Frieren ${shown.heroMana}/${RULES.heroMana} MP · Aura ${shown.bossMana}/${RULES.bossMana} MP\n${cooldownSummary(state)}\nEncounter ${shown.encounter} · Turn ${shown.turn} · Victories ${shown.wins} · Defeats ${shown.losses}`;
-  const intent = enemyIntent(state);
-  element('availability').textContent = busy ? 'Turn in progress — controls unlock when the animations finish.' : state.status === 'active' ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
-  element('intent').textContent = busy ? 'Resolving this turn…' : state.status === 'active'
-    ? `Next: ${intent.name} · ${intent.damage} damage. ${intent.message}`
-    : state.status === 'victory' ? 'Victory! The forest is safe. Play again for a fresh encounter.' : 'Defeat. Frieren will rise again. Try a new approach!';
+  element('encounter-number').textContent = String(state.encounter).padStart(3, '0');
+  element('encounter-status').dataset.status = busy ? 'resolving' : state.status;
+  element('encounter-status').textContent = busy ? 'Resolving turn…' : { active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status];
+  // The engine commits the result before playback; reveal the lifetime result only after it ends.
+  const wins = state.wins - Number(busy && state.status === 'victory');
+  const losses = state.losses - Number(busy && state.status === 'defeat');
+  element('record').textContent = `${wins} ${wins === 1 ? 'victory' : 'victories'} · ${losses} ${losses === 1 ? 'defeat' : 'defeats'}`;
   const last = state.recent[0];
   element('message').textContent = busy ? `Frieren uses ${last.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'Prepare Ultimate' : 'Unleashed Zoltraak') : last.action}.` : last ? last.summary.replace('@you ', 'You ') : 'Your move. Focus or prepare Ultimate while Aura guards, attack during openings, and guard her assault.';
-  element('roll').textContent = !busy && (last?.action === 'attack' || last?.action === 'ultimate' && last.ultimatePhase !== 'prepare')
-    ? `${last.action === 'ultimate' ? 'Ultimate damage' : 'Damage roll'}: ${last.baseDamage}${last.critical ? ' × 1.5 (critical, rounded down)' : last.action === 'ultimate' ? ' · fixed damage' : ' · no critical'}${last.enemyBlocked ? ` · Aura blocks ${last.enemyBlocked}` : ''} → ${last.damage} damage` : '';
-  element('history').replaceChildren(...(busy ? state.recent.slice(1) : state.recent).map(event => {
+  const moves = (busy ? state.recent.slice(1) : state.recent)
+    .filter(event => event.encounter === state.encounter && event.action !== 'restart').slice(0, 5);
+  element('history').replaceChildren(...moves.map(event => {
     const li = document.createElement('li');
-    li.textContent = `Turn ${event.turn}: ${event.summary.replace('@you ', 'You ')}`;
+    const turn = document.createElement('span');
+    turn.className = 'turn-number'; turn.textContent = `TURN ${event.turn}`;
+    const summary = document.createElement('span');
+    summary.textContent = event.summary.replace('@you ', 'You ');
+    li.append(turn, summary);
     return li;
   }));
+  element('history-empty').hidden = moves.length > 0;
+  element('history-empty').textContent = busy ? 'Your first move is playing out…' : 'Your story starts with the first move.';
 }
 
 element('reset').addEventListener('click', () => {
-  clearTimers(); sequenceToken++; started = false; busy = false; state = initialState(); render();
+  clearTimers(); sequenceToken++; started = false; busy = false; state = initialState(); showNotice(); render();
 });
 reducedMotion.addEventListener('change', event => {
   if (event.matches && busy) {

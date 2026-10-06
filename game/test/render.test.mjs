@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { initialState } from '../engine.mjs';
 import { renderScene, renderSection, renderButton, updateReadme, issueUrl, START, END } from '../render.mjs';
 import { fixtures } from '../preview.mjs';
+import { loadButtonIcons } from '../button-icons.mjs';
 
 test('README insertion preserves all existing content and subsequent rendering is idempotent', () => {
   const before = 'intro\ncontact links\n\n## Things I code with:\nexisting content\n';
@@ -70,8 +71,25 @@ test('each battle state has its intended character pose and readable health', ()
     assert.ok(attacker.includes(`data-knight-layer="${layer}"`));
 });
 
-test('button geometry and generated image revision are stable', () => {
-  for (const action of ['attack', 'guard', 'focus', 'ultimate', 'guard-disabled', 'ultimate-disabled', 'ultimate-cast', 'restart']) assert.match(renderButton(action), /width="96" height="44"/);
+test('square ability cards embed the correct vector art and keep four README controls in one row', async () => {
+  const icons = await loadButtonIcons();
+  for (const [action, art] of Object.entries({ attack: 'blast', guard: 'defense', focus: 'focus', ultimate: 'prepare', 'ultimate-cast': 'cast' })) {
+    for (const kind of [action, `${action}-disabled`]) {
+      const svg = renderButton(kind, icons[action]);
+      assert.match(svg, /width="128" height="128" viewBox="0 0 128 128"/);
+      assert.ok(svg.includes(`id="arcane-${art}-artwork"`));
+      assert.match(svg, /id="arcane-frame"/);
+      assert.doesNotMatch(svg, /<image\b|<script|data:image/);
+      for (const [, href] of svg.matchAll(/\bhref="([^"]+)"/g)) assert.ok(href.startsWith('#'));
+      assert.equal(svg.includes('filter="url(#muted-icon)"'), kind.endsWith('-disabled'));
+    }
+  }
+  assert.match(renderButton('ultimate', icons.ultimate), /ZOLTRAAK \(PREP\)/);
+  assert.match(renderButton('ultimate-cast', icons['ultimate-cast']), /ZOLTRAAK \(CAST\)/);
+  assert.match(renderButton('restart'), /width="96" height="44"/);
+  const section = renderSection(initialState());
+  assert.equal([...section.matchAll(/width="23%"/g)].length, 4);
+  assert.doesNotMatch(section, /<br>/);
   assert.match(renderSection(initialState()), /battle.svg\?v=0/);
   assert.match(renderSection(initialState(), { repository: 'owner/repo', branch: 'trunk' }), /owner\/repo\/trunk\/game\/assets/);
 });

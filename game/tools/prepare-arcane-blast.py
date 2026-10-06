@@ -2,7 +2,7 @@
 """Rebuild arcane icons with detailed vector artwork and one shared frame.
 
 Build-time dependency: Pillow. Output contains only integer-coordinate paths.
-For defense, pass the attack PNG as --frame-reference to match both borders.
+For other icons, pass the attack PNG as --frame-reference to match all borders.
 """
 
 import argparse
@@ -65,13 +65,13 @@ def vector_paths(pixels, include):
 
 
 def vectorize(source, destination, artwork='attack', frame_reference=None):
-    if artwork == 'defense' and frame_reference is None:
-        raise ValueError('Defense requires the attack PNG as --frame-reference')
+    if artwork != 'attack' and frame_reference is None:
+        raise ValueError('Non-attack icons require the attack PNG as --frame-reference')
     original = read_reference(source)
     border = read_reference(frame_reference or source).resize((SIZE, SIZE), Image.Resampling.NEAREST)
-    # Quantize the frame separately so red/blue artwork cannot alter its golds.
+    # Quantize the frame separately so artwork colors cannot alter its golds.
     frame = '<g id="arcane-frame">\n' + vector_paths(palette_image(border), frame_pixel) + '\n  </g>'
-    if artwork == 'defense':
+    if artwork in ('defense', 'focus'):
         # The references have slightly different frame insets. Align only the
         # artwork opening; reuse the exact same border geometry and palette.
         box = tuple(round(v * original.width / 1254) for v in (140, 161, 1113, 1093))
@@ -88,6 +88,15 @@ def vectorize(source, destination, artwork='attack', frame_reference=None):
         'defense': ('Pixel scepter arcane defense',
                     'A sapphire-tipped gold staff projects a cyan defensive barrier with concentric rings, diamond runes, and icy sparks.',
                     'arcane-defense-artwork'),
+        'focus': ('Pixel scepter arcane focus',
+                  'A sapphire-tipped gold staff gathers swirling blue and cyan mana ribbons amid concentric magic rings, floating crystals, and bright star-shaped sparks.',
+                  'arcane-focus-artwork'),
+        'prepare': ('Pixel scepter prepare ultimate',
+                    'A gold staff with a violet gemstone gathers spiraling lavender energy into a bright ivory core, surrounded by magical rings and diamond-shaped sparks.',
+                    'arcane-prepare-artwork'),
+        'cast': ('Pixel scepter cast ultimate',
+                 'A gold staff with a violet gemstone releases an intense ivory-white beam edged in purple, with radiant shards, magical rings, and violet sparks.',
+                 'arcane-cast-artwork'),
     }[artwork]
     opening = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320" role="img" aria-labelledby="title desc" shape-rendering="crispEdges">'
     svg = '\n'.join([
@@ -110,7 +119,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('source', type=Path)
     parser.add_argument('destination', type=Path)
-    parser.add_argument('--artwork', choices=['attack', 'defense'], default='attack')
+    parser.add_argument('--artwork', choices=['attack', 'defense', 'focus', 'prepare', 'cast'], default='attack')
     parser.add_argument('--frame-reference', type=Path)
     args = parser.parse_args()
     vectorize(args.source, args.destination, args.artwork, args.frame_reference)
