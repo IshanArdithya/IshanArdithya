@@ -1,6 +1,7 @@
 import { TURN_TIMING as T, turnPlayback } from './playback.mjs';
 import { initialState, RULES, ACTIONS, enemyIntent, actionUnavailable, transition } from './engine.mjs';
-import { renderScene, buttonKind, actionDescription } from './render.mjs';
+import { renderScene, renderButton, buttonKind, actionDescription } from './render.mjs';
+import { HUD_PORTRAITS } from './hud-source.mjs';
 
 let state = initialState();
 let busy = false, sequenceToken = 0, started = false;
@@ -10,6 +11,12 @@ const later = (fn, ms) => { const timer = setTimeout(() => { timers.delete(timer
 const clearTimers = () => { for (const timer of timers) clearTimeout(timer); timers.clear(); };
 const element = id => document.getElementById(id);
 const svgUrl = svg => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+// Reference stats describe the beginning of every encounter, never the live battle.
+element('starting-frieren').textContent = `${RULES.heroHp} HP / ${RULES.heroMana} MP`;
+element('starting-aura').textContent = `${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP`;
+for (const name of ['frieren', 'aura']) {
+  element(`starting-${name}-portrait`).src = svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">${HUD_PORTRAITS[name]}</svg>`);
+}
 function showNotice(text = '') {
   element('notice').textContent = text;
   element('notice').hidden = !text;
@@ -40,7 +47,7 @@ function beginPlayback(token) {
   if (token !== sequenceToken || !busy || started) return;
   started = true; clearTimers();
   const playback = turnPlayback(state), e = playback.event;
-  later(() => { if (e.damage) element('message').textContent = `Frieren dealt ${e.damage} damage${e.critical ? ' — critical!' : '.'}`; }, T.bossDamage);
+  later(() => { if (e.damage) element('message').textContent = `Frieren dealt ${e.damage} damage${e.critical ? ', critical!' : '.'}`; }, T.bossDamage);
   if (playback.enemyActs) {
     later(() => { element('message').textContent = `Aura uses ${e.enemyAction}.`; }, T.enemy);
     later(() => { element('message').textContent = e.incoming ? `Frieren took ${e.incoming} damage.` : 'Frieren took no damage.'; }, playback.heroDamageAt);
@@ -80,16 +87,14 @@ function render({ scene = true } = {}) {
     button.type = 'button'; button.dataset.action = action;
     const reason = busy ? 'Wait for this turn to finish.' : action === 'restart' ? null : actionUnavailable(state, action);
     button.disabled = Boolean(reason);
-    button.title = reason || (action === 'restart' ? 'Start the next encounter' : actionDescription(state, action));
+    button.title = reason || (action === 'restart' ? 'Start the next encounter' : actionDescription(state, action).replaceAll(' — ', ': '));
     button.setAttribute('aria-label', button.title);
     if (action === 'restart') {
       button.className = 'next-encounter';
       button.textContent = 'Next encounter →';
     } else {
-      const image = document.createElement('img');
-      image.src = `/assets/${buttonKind(state, action)}.svg`;
-      image.width = 128; image.height = 128; image.alt = '';
-      button.append(image);
+      const kind = buttonKind(state, action);
+      button.insertAdjacentHTML('beforeend', renderButton(kind, `/assets/${kind.replace(/-disabled$/, '')}.png`));
     }
     button.addEventListener('click', () => play(action));
     element('actions').append(button);
@@ -115,7 +120,8 @@ function render({ scene = true } = {}) {
     return li;
   }));
   element('history-empty').hidden = moves.length > 0;
-  element('history-empty').textContent = busy ? 'Your first move is playing out…' : 'Your story starts with the first move.';
+  element('history').parentElement.scrollTop = 0;
+  element('history-empty').textContent = busy ? 'The first move is playing out…' : 'Starts with the first move.';
 }
 
 element('reset').addEventListener('click', () => {

@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "encounter": 1,
   "revision": 1,
   "status": "active",
@@ -16,5 +16,6 @@
   "bossMana": 40,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
-  "ultimatePrepared": false
+  "ultimatePrepared": false,
+  "players": {}
 }

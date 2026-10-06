@@ -11,10 +11,10 @@ export const INTENTS = Object.freeze([
 ]);
 export class MoveError extends Error {}
 export function initialState() {
-  return { version: 4, encounter: 1, revision: 0, status: 'active', turn: 0,
+  return { version: 5, encounter: 1, revision: 0, status: 'active', turn: 0,
     heroHp: RULES.heroHp, bossHp: RULES.bossHp, heroMana: RULES.heroMana, bossMana: RULES.bossStartMana,
     guardCooldown: 0, ultimateCooldown: 0, ultimatePrepared: false, charged: false, intent: 0,
-    wins: 0, losses: 0, previousResult: null, recent: [] };
+    wins: 0, losses: 0, previousResult: null, recent: [], players: {} };
 }
 export function enemyIntent(state) {
   const planned = INTENTS[state.intent];
@@ -36,7 +36,7 @@ export function validateState(state) {
   const integer = (key, min, max = Number.MAX_SAFE_INTEGER) => {
     if (!Number.isSafeInteger(state[key]) || state[key] < min || state[key] > max) throw new Error(`Invalid game state: ${key}`);
   };
-  if (state.version !== 4) throw new Error('Unsupported game state version');
+  if (state.version !== 5) throw new Error('Unsupported game state version');
   for (const key of ['revision','turn','wins','losses']) integer(key,0);
   integer('encounter',1); integer('heroHp',0,RULES.heroHp); integer('bossHp',0,RULES.bossHp);
   integer('heroMana',0,RULES.heroMana); integer('bossMana',0,RULES.bossMana);
@@ -46,6 +46,11 @@ export function validateState(state) {
   if ((state.status === 'active' && (!state.heroHp || !state.bossHp)) || (state.status === 'victory' && (state.bossHp !== 0 || !state.heroHp))
     || (state.status === 'defeat' && (state.heroHp !== 0 || !state.bossHp))) throw new Error('Inconsistent battle status');
   if (state.ultimatePrepared && state.ultimateCooldown) throw new Error('Prepared ultimate cannot be cooling down');
+  if (!state.players || typeof state.players !== 'object' || Array.isArray(state.players)) throw new Error('Invalid game state: players');
+  for (const [login, count] of Object.entries(state.players)) {
+    if (!/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})$/.test(login) || !Number.isSafeInteger(count) || count < 1)
+      throw new Error('Invalid game state: players');
+  }
   return state;
 }
 export function migrateState(state) {
@@ -64,6 +69,7 @@ export function migrateState(state) {
     // refresh because the same command now prepares before it can cast.
     state = { ...state, version: 4, ultimatePrepared: false, revision: state.revision + 1 };
   }
+  if (state.version === 4) state = { ...state, version: 5, players: state.players ?? {} };
   return validateState(state);
 }
 export function parseCommand(title) {
@@ -89,7 +95,7 @@ export function transition(current, command, actor, randomInt) {
   if (ultimatePhase) event.ultimatePhase = ultimatePhase;
   if (command.action !== 'restart') event.before = { heroHp: current.heroHp, bossHp: current.bossHp, heroMana: current.heroMana, bossMana: current.bossMana };
   if (command.action === 'restart') {
-    next = { ...initialState(), encounter: current.encounter+1, wins: current.wins, losses: current.losses, previousResult: current.previousResult };
+    next = { ...initialState(), encounter: current.encounter+1, wins: current.wins, losses: current.losses, previousResult: current.previousResult, players: current.players };
     event.encounter = next.encounter; event.turn = 0;
     event.summary = `@${actor.login} began encounter ${next.encounter}.`;
   } else {
@@ -150,6 +156,7 @@ export function transition(current, command, actor, randomInt) {
     }
   }
   next.revision = event.revision;
+  next.players = { ...next.players, [actor.login]: (next.players[actor.login] ?? 0) + 1 };
   Object.assign(event,{ status: next.status, heroHp: next.heroHp, bossHp: next.bossHp, heroMana: next.heroMana, bossMana: next.bossMana,
     guardCooldown: next.guardCooldown, ultimateCooldown: next.ultimateCooldown, ultimatePrepared: next.ultimatePrepared, charged: next.charged });
   next.recent = [event,...next.recent].slice(0,5);

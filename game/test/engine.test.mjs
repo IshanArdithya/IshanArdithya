@@ -98,7 +98,7 @@ test('Aura charge exposes an opening followed by the announced assault', () => {
 test('legacy state migration preserves progress and maps the old heavy attack to assault', () => {
   const old = { ...initialState(), version: 1, intent: 2, revision: 7, heroHp: 9, bossHp: 21, wins: 2 };
   const next = migrateState(old);
-  assert.equal(next.version, 4);
+  assert.equal(next.version, 5);
   assert.equal(next.intent, 3);
   assert.equal(next.revision, 8);
   assert.equal(next.heroHp, 10);
@@ -149,7 +149,7 @@ test('defeat, restart, previous result, and encounter/revision continuity', () =
 });
 
 test('corrupt state fails closed and recent turns remain bounded', () => {
-  for (const patch of [{ version: 5 }, { heroHp: -1 }, { intent: 4 }, { status: 'victory' }, { charged: 1 }])
+  for (const patch of [{ version: 6 }, { heroHp: -1 }, { intent: 4 }, { status: 'victory' }, { charged: 1 }, { players: [] }, { players: { visitor: 0 } }])
     assert.throws(() => validateState({ ...initialState(), ...patch }));
   let state = initialState();
   for (let i = 0; i < 10; i++) state = move(state, enemyIntent(state).damage ? 'guard' : 'focus').state;
@@ -275,6 +275,21 @@ test('ultimate victory skips retaliation and enemy mana recovery; replay resets 
   assert.equal(replay.guardCooldown,0); assert.equal(replay.ultimateCooldown,0);
 });
 
+test('accepted moves add to each player total and a new encounter keeps them', () => {
+  const first = move(initialState(), 'attack');
+  assert.deepEqual(first.state.players, { visitor: 1 });
+  const second = transition(first.state, { encounter: 1, revision: 1, action: 'focus' }, { issue: 2, login: 'ally' });
+  assert.deepEqual(second.state.players, { visitor: 1, ally: 1 });
+  const again = move(second.state, 'guard');
+  assert.equal(again.state.players.visitor, 2);
+  const replay = move({ ...again.state, status: 'victory', bossHp: 0 }, 'restart');
+  assert.deepEqual(replay.state.players, { visitor: 3, ally: 1 });
+  const saved = { ...initialState(), version: 4 };
+  delete saved.players;
+  assert.deepEqual(migrateState(saved).players, {});
+  assert.equal(migrateState(saved).revision, 0);
+});
+
 test('version 2 upgrade preserves fractional health, history, counters, and endings', () => {
   const old = {...initialState(),version:2,heroHp:12,bossHp:30,revision:9,turn:9,wins:2};
   const upgraded=migrateState(old);
@@ -290,7 +305,7 @@ test('version 3 migration preserves battle and receipts, clears ultimate prepara
     recent:[{issue:17,revision:12,action:'ultimate',summary:'previous result'}]};
   delete old.ultimatePrepared;
   const snapshot=structuredClone(old), current=migrateState(old);
-  assert.equal(current.version,4); assert.equal(current.revision,13);
+  assert.equal(current.version,5); assert.equal(current.revision,13);
   assert.equal(current.charged,true); assert.equal(current.ultimatePrepared,false);
   assert.equal(current.ultimateCooldown,4); assert.equal(current.wins,3);
   assert.deepEqual(current.recent,old.recent); assert.deepEqual(old,snapshot);

@@ -2,10 +2,9 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
-import { BUTTON_ASSETS } from './render.mjs';
-
 const files = new Map([
-  ...BUTTON_ASSETS.map(action => [`/assets/${action}.svg`, [`assets/${action}.svg`, 'image/svg+xml']]),
+  ...['attack', 'guard', 'focus', 'ultimate', 'ultimate-cast'].map(name => [`/assets/${name}.png`, [`assets/${name}.png`, 'image/png']]),
+  ['/assets/restart.svg', ['assets/restart.svg', 'image/svg+xml']],
   ['/', ['local.html', 'text/html']],
   ['/local-client.mjs', ['local-client.mjs', 'text/javascript']],
   ['/engine.mjs', ['engine.mjs', 'text/javascript']],
@@ -38,8 +37,9 @@ export function createLocalServer() {
     if (!file) { response.writeHead(404); response.end('Not found'); return; }
     try {
       const body = await readFile(fileURLToPath(new URL(file[0], import.meta.url)));
+      const type = file[1] === 'image/png' ? file[1] : `${file[1]}; charset=utf-8`;
       response.writeHead(200, {
-        'Content-Type': `${file[1]}; charset=utf-8`, 'Cache-Control': 'no-store',
+        'Content-Type': type, 'Cache-Control': 'no-store',
         'X-Content-Type-Options': 'nosniff',
         'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
       });

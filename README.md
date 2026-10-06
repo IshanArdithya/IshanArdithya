@@ -24,47 +24,64 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 <!-- README-RAID:START -->
 ## README Raid
 
-**Frieren faces Aura. Everyone takes a turn.** Help protect the forest clearing.
+**Protect the forest clearing.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
 ![Frieren 26/26 HP; Aura 100/100 HP; active; attack normal; ultimate not prepared](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=1)
 
 <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cattack&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg" width="23%" alt="Attack — 5–7 damage, or 14–18 focused; 10 mana"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cguard&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg" width="23%" alt="Guard — take at most 1 damage; 15 mana; skip one turn before reusing"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cfocus&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.svg" width="23%" alt="Focus — restore 40 mana and empower the next normal Attack"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C1%7Cultimate&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate.svg" width="23%" alt="Zoltraak (Prep) — spend 80 mana now; Aura responds; cast on a later turn"></a>
 
-**Frieren:** 26/26 HP · **Aura:** 100/100 HP · **Attack:** normal · **Ultimate:** not prepared
+<table>
+<tr>
+<td width="50%" valign="top">
+<h3>Encounter</h3>
+<p><strong>001</strong> · In progress</p>
+<p>0 victories · 0 defeats</p>
+<h3>Starting stats</h3>
+<p><strong>Frieren</strong> · 26 HP / 240 MP</p>
+<p><strong>Aura</strong> · 100 HP / 40/60 MP</p>
+<p><strong>Frieren:</strong> 26/26 HP · <strong>Aura:</strong> 100/100 HP · <strong>Attack:</strong> normal · <strong>Ultimate:</strong> not prepared</p>
+<p><strong>Mana:</strong> Frieren 240/240 MP · Aura 40/60 MP</p>
+<p><strong>Cooldowns:</strong> CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.</p>
+<p><strong>Next:</strong> Guard · 0 damage. Aura spends 15 mana to guard. Your damage is halved, rounded up.</p>
+<p>Revision 1.</p>
+</td>
+<td width="50%" valign="top">
+<h3>Recent moves</h3>
+<p>Starts with the first move.</p>
+</td>
+</tr>
+</table>
 
-**Mana:** Frieren 240/240 MP · Aura 40/60 MP
+### Ability summary
 
-**Cooldowns:** CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.
+<table>
+<tr><td width="44" valign="top"><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>Attack</strong></p><p>5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</p></td></tr>
+<tr><td width="44" valign="top"><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>Guard</strong></p><p>Spend 15 mana to take at most 1 damage. Preserve Focus and ultimate preparation. Take one other turn before guarding again.</p></td></tr>
+<tr><td width="44" valign="top"><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>Focus</strong></p><p>Restore up to 40 mana and empower the next normal Attack. Mana can be refilled while focused. Focus does not prepare Ultimate.</p></td></tr>
+<tr><td width="44" valign="top"><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>Prepare Ult / Cast Ult</strong></p><p>First spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown. No critical hits.</p></td></tr>
+</table>
 
-**Next:** Guard · 0 damage. Aura spends 15 mana to guard. Your damage is halved, rounded up.
+### Enemy pattern
 
-**Your move:** Focus or prepare Ultimate while Aura guards, Attack during openings, and Guard her assault.
-
-Choose an action → submit the prefilled issue → wait for the result → return and refresh. GitHub sign-in required.
-
-**Victories:** 0 · **Defeats:** 0 · Encounter 1 · Revision 1
+<p>Aura repeats this four-move cycle:</p>
+<table>
+<tr>
+<td width="25%" valign="top"><p><strong>01 Guard</strong></p><p>Costs 15 MP</p><p>Halves incoming damage</p></td>
+<td width="25%" valign="top"><p><strong>02 Attack</strong></p><p>4 damage</p><p>No mana cost</p></td>
+<td width="25%" valign="top"><p><strong>03 Charge</strong></p><p>Restores 35 MP</p><p>No damage</p></td>
+<td width="25%" valign="top"><p><strong>04 Assault</strong></p><p>10 damage</p><p>Costs 30 MP</p></td>
+</tr>
+</table>
+<p>If she cannot afford Guard or Assault, she restores mana instead, then continues to the next move in the cycle.</p>
+<p>Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns advance only when a valid move is played.</p>
+<p>These combat numbers and the ultimate form are game adaptations. The full Scales of Obedience contest is planned for a future phase. <a href="game/ABILITIES.md">Character abilities and next-phase notes</a>.</p>
 
 <details>
-<summary>How to play / Recent turns</summary>
+<summary>How a shared turn works</summary>
 
-Everyone shares the same hero. You may play consecutive turns; nothing happens while nobody is playing.
-
-| Action | Effect |
-| --- | --- |
-| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when focused. Consumes Focus. 10% critical chance, ×1.5 rounded down. |
-| Guard | 15 mana. Take at most 1 damage and keep Focus and ultimate preparation. Must take one other turn before guarding again. |
-| Focus | Restore up to 40 mana and empower the next normal Attack. May refill mana while focused; cannot stack the damage boost. Does not prepare Ultimate. |
-| Prepare Ult / Cast Ult | First click spends 80 mana to prepare, deals no damage, and lets Aura respond. A later click casts Unleashed Zoltraak for 32 fixed damage with no further mana cost. Preparation persists through other actions. Casting starts a six-turn cooldown and preserves Focus. No critical multiplier. |
-
-Frieren starts with **26 HP / 240 MP**; Aura has **100 HP / 40 MP**, with a **60 MP** limit. These are game balance values, not canon measurements.
-
-Aura cycles **Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP)**. Guard halves all incoming damage, including the ultimate. If she cannot afford Guard or Assault, she visibly recovers mana instead (0 damage, no guard). Check the displayed intent before choosing. Your action resolves first; a killing blow prevents retaliation and Aura's mana recovery.
+Everyone shares the same hero. Consecutive turns are allowed. Nothing happens while nobody is playing.
 
 Cooldowns do not tick while nobody plays. Invalid actions, stale links, and retries spend no mana and consume no turns. Ultimate and Guard availability belongs to the shared encounter, not individual visitors.
-
-Her army and scales inspire this simplified encounter. [Character abilities and next-phase notes](game/ABILITIES.md).
-
-No moves yet. Take the first turn!
 
 [Game source and setup](game/README.md)
 

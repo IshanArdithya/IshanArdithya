@@ -17,50 +17,98 @@
     #scene { display: block; width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 12px; }
     #actions { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; max-width: 536px; margin: 18px auto; }
     #actions button { background: none; padding: 0; border: none; cursor: pointer; min-width: 0; border-radius: 5px; aspect-ratio: 1; }
-    #actions img { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+    #actions button svg { display: block; width: 100%; height: auto; }
     button:focus-visible, summary:focus-visible { outline: 2px solid #f3e6cb; outline-offset: 4px; }
     #actions button:hover:not(:disabled) { filter: brightness(1.25); }
     #actions button:disabled { cursor: default; }
     #actions[aria-busy="true"] button { opacity: .6; }
-    .encounter { background: #141d28; border: 1px solid #364458; border-radius: 8px; overflow: hidden; }
-    .encounter-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border-bottom: 1px solid #364458; }
-    .encounter-label { display: block; color: #a5b5c9; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-    #encounter-number { font: 24px/1.3 ui-monospace, monospace; color: #ebbb76; }
+    .info-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin-bottom: 12px; }
+    .panel { min-width: 0; background: linear-gradient(135deg,#17212b,#141c24); border: 1px solid #2c3c4b; border-radius: 7px; padding: 14px; }
+    .panel-title { display: flex; align-items: center; gap: 8px; color: #b4cbe4; font-size: 11px; font-weight: 650; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 10px; }
+    .panel-title svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .encounter, .recent { height: 192px; }
+    .encounter { display: flex; flex-direction: column; }
+    .encounter-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+    #encounter-number { font: 700 30px/1.2 ui-monospace, monospace; color: #ebc786; }
     .encounter-meta { text-align: right; }
-    #encounter-status { display: inline-block; padding: 2px 9px; border: 1px solid #526174; border-radius: 4px; color: #a5b5c9; font-size: 12px; }
-    #encounter-status[data-status="active"], #encounter-status[data-status="victory"] { color: #55d7c3; border-color: #34766f; }
-    #encounter-status[data-status="defeat"] { color: #f6a4ad; border-color: #965565; }
-    #record { display: block; margin-top: 4px; font-size: 12px; }
-    .recent { padding: 16px; }
-    .recent-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; margin-bottom: 12px; }
-    h2 { font-size: 14px; margin: 0; }
-    .recent-heading small { font-size: 11px; }
+    #encounter-status { display: inline-block; padding: 1px 8px; border: 1px solid #526174; border-radius: 4px; color: #a5b5c9; font-size: 11px; }
+    #encounter-status[data-status="active"], #encounter-status[data-status="victory"] { color: #55d7c3; border-color: #34766f; background: #15322f; }
+    #encounter-status[data-status="defeat"] { color: #f6a4ad; border-color: #965565; background: #351f2a; }
+    #record { display: block; margin-top: 4px; font-size: 10px; }
+    .starting { border-top: 1px solid #2c3c4b; padding-top: 10px; margin-top: auto; }
+    .starting h3 { color: #b4cbe4; font-size: 11px; font-weight: 600; letter-spacing: .5px; margin: 0 0 8px; }
+    .starting-characters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+    .character { display: flex; gap: 7px; align-items: center; min-width: 0; }
+    .character img { width: 32px; height: 32px; flex: none; border: 1px solid #bfa06c; border-radius: 2px; background: #173139; image-rendering: pixelated; }
+    .character:last-child img { background: #342039; }
+    .character strong { display: block; color: #d7e2ed; font-size: 12px; font-weight: 600; }
+    .character small { display: block; font-size: 10px; white-space: nowrap; }
+    .recent { display: flex; flex-direction: column; }
+    .history-window { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #475b71 transparent; border: 1px solid #263746; border-radius: 4px; padding: 10px; }
+    .history-window:focus-visible { outline: 2px solid #55d7c3; outline-offset: 2px; }
     #history { list-style: none; padding: 0; margin: 0; }
-    #history li { display: grid; grid-template-columns: 54px minmax(0,1fr); gap: 12px; margin: 0; padding: 12px 0; border-top: 1px solid #263345; font-size: 13px; }
+    #history li { display: grid; grid-template-columns: 38px minmax(0,1fr); gap: 6px; margin: 0; padding: 8px 0; border-top: 1px solid #263746; font-size: 11px; line-height: 1.6; }
     #history li:first-child { border-top: 0; padding-top: 0; }
     #history li:last-child { padding-bottom: 0; }
-    .turn-number { color: #a5b5c9; font: 11px/1.9 ui-monospace, monospace; }
-    #history-empty { color: #a5b5c9; font-size: 13px; margin: 0; }
+    .turn-number { color: #91aac2; font: 9px/2 ui-monospace, monospace; }
+    #history-empty { height: 100%; display: flex; justify-content: center; align-items: center; color: #91aac2; font-size: 11px; text-align: center; margin: 0; }
+    [hidden] { display: none !important; }
+    .guide { margin-bottom: 12px; }
+    .ability-table-wrap { border: 1px solid #2c3c4b; border-radius: 4px; overflow: hidden; }
+    .ability-table { width: 100%; border-collapse: collapse; text-align: left; color: #b9cce0; font-size: 12px; line-height: 1.65; }
+    .ability-table th, .ability-table td { border-top: 1px solid #2c3c4b; padding: 8px 10px 8px 0; vertical-align: middle; }
+    .ability-table tr:first-child > * { border-top: 0; }
+    .ability-table .ability-icon { padding: 6px; width: 44px; }
+    .ability-icon img { display: block; width: 32px; height: 32px; }
+    .ability-table th { width: 118px; font-size: 11px; font-weight: 650; }
+    .ability-attack { color: #ed959b; }
+    .ability-guard { color: #8dc8f1; }
+    .ability-focus { color: #64b9f2; }
+    .ability-ultimate { color: #d4a6f4; }
+    .pattern-intro, .pattern-note, .battle-notes { color: #b9cce0; font-size: 12px; }
+    .pattern-intro { margin: 0 0 10px; }
+    .pattern { list-style: none; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; padding: 0; margin: 0 0 12px; }
+    .pattern li { border: 1px solid #2c3c4b; border-radius: 4px; padding: 8px; margin: 0; }
+    .pattern strong { display: block; font-size: 12px; color: #d7e2ed; }
+    .pattern strong span { color: #91aac2; font-size: 10px; margin-right: 5px; }
+    .pattern small { display: block; font-size: 10px; }
+    .pattern-note { margin: 0; }
+    .battle-notes { border-top: 1px solid #2c3c4b; margin-top: 12px; padding-top: 10px; }
+    .battle-notes p { margin: 0 0 7px; }
+    .battle-notes p:last-child { margin-bottom: 0; font-size: 11px; color: #91aac2; }
     #actions button.next-encounter { grid-column: 1 / -1; aspect-ratio: auto; justify-self: start; padding: 10px 16px; border: 1px solid #bfa06c; background: #222d38; color: #f3e6cb; font: inherit; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
     #notice { color: #ebbb76; font-size: 13px; }
     .foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 24px 0; }
     #reset { background: transparent; border: 1px solid #364458; border-radius: 5px; color: #a5b5c9; padding: 8px 12px; cursor: pointer; }
-    details { border-top: 1px solid #263345; padding: 16px 0; }
-    summary { cursor: pointer; color: #a5b5c9; }
-    li { margin: 8px 0; }
-    ul, ol { padding-left: 20px; }
+    @media (max-width: 599px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .encounter { height: auto; min-height: 180px; }
+      .recent { height: 192px; }
+      .ability-table tr { display: grid; grid-template-columns: 42px minmax(0,1fr); border-top: 1px solid #2c3c4b; padding: 8px 4px; }
+      .ability-table tr:first-child { border-top: 0; }
+      .ability-table tr > * { border: 0; width: auto; padding: 0 6px 0 0; }
+      .ability-table .ability-icon { grid-row: 1 / 3; width: auto; padding: 0 5px; }
+      .ability-table th { padding-bottom: 3px; font-size: 12px; }
+      .ability-table td:last-child { grid-column: 2; }
+      .pattern { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
     @media (max-width: 400px) { main { padding: 0 16px; margin-top: 24px; } }
     @media (prefers-color-scheme: light) {
       body { background: #f6f8fa; color: #182334; }
-      .muted, small, summary, #reset, .encounter-label, .turn-number, #history-empty { color: #526174; }
+      .muted, small, #reset, .turn-number, #history-empty, .pattern strong span, .battle-notes p:last-child { color: #526174; }
       .eyebrow { color: #17796f; }
-      .encounter { background: #fff; border-color: #c3ccd5; }
-      .encounter-heading, #history li { border-color: #dce2e8; }
+      .panel { background: linear-gradient(135deg,#fff,#f0f4f7); border-color: #c3ccd5; }
+      .starting, .history-window, #history li, .ability-table-wrap, .ability-table th, .ability-table td, .ability-table tr, .pattern li, .battle-notes { border-color: #d1dbe4; }
+      .panel-title, .starting h3, .character strong, .pattern strong { color: #334e6c; }
+      .ability-table, .pattern-intro, .pattern-note, .battle-notes { color: #425a73; }
+      .ability-attack { color: #a73747; }
+      .ability-guard, .ability-focus { color: #176a9e; }
+      .ability-ultimate { color: #7d369d; }
       #encounter-number, #notice { color: #876028; }
       #encounter-status { color: #526174; }
-      #encounter-status[data-status="active"], #encounter-status[data-status="victory"] { color: #17796f; }
-      #encounter-status[data-status="defeat"] { color: #a2314c; }
+      #encounter-status[data-status="active"], #encounter-status[data-status="victory"] { color: #17796f; background: #e6f4ef; }
+      #encounter-status[data-status="defeat"] { color: #a2314c; background: #fcebf0; }
     }
   </style>
 </head>
@@ -75,29 +123,58 @@
     <div id="actions" aria-label="Battle actions"></div>
     <p id="message" class="sr-only" role="status" aria-live="polite"></p>
     <p id="notice" role="alert" hidden></p>
-    <section class="encounter" aria-label="Current encounter">
-      <div class="encounter-heading">
-        <div><span class="encounter-label">Encounter</span><strong id="encounter-number">001</strong></div>
-        <div class="encounter-meta"><span id="encounter-status">In progress</span><small id="record"></small></div>
+    <div class="info-grid">
+      <section class="panel encounter" aria-labelledby="encounter-title">
+        <h2 class="panel-title" id="encounter-title"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="4" width="12" height="13" rx="1"/><path d="M7 2v4m6-4v4M4 8h12"/></svg>Encounter</h2>
+        <div class="encounter-heading">
+          <strong id="encounter-number">001</strong>
+          <div class="encounter-meta"><span id="encounter-status">In progress</span><small id="record"></small></div>
+        </div>
+        <div class="starting">
+          <h3>Starting stats</h3>
+          <div class="starting-characters">
+            <div class="character"><img id="starting-frieren-portrait" width="32" height="32" alt=""><div><strong>Frieren</strong><small id="starting-frieren"></small></div></div>
+            <div class="character"><img id="starting-aura-portrait" width="32" height="32" alt=""><div><strong>Aura</strong><small id="starting-aura"></small></div></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel recent" aria-labelledby="recent-title">
+        <h2 class="panel-title" id="recent-title"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2"/></svg>Recent moves</h2>
+        <div class="history-window" role="region" aria-label="Current encounter moves, newest first" tabindex="0">
+          <ol id="history" aria-label="Last five completed moves"></ol>
+          <p id="history-empty">Starts with the first move.</p>
+        </div>
+      </section>
+    </div>
+    <section class="panel guide" aria-labelledby="ability-title">
+      <h2 class="panel-title" id="ability-title"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5C7 3 4 3 2 4v12c3-1 5-1 8 1 3-2 5-2 8-1V4c-2-1-5-1-8 1v12"/></svg>Ability summary</h2>
+      <div class="ability-table-wrap">
+        <table class="ability-table" aria-labelledby="ability-title">
+          <tbody>
+            <tr><td class="ability-icon"><img src="/assets/attack.png" width="32" height="32" alt=""></td><th scope="row" class="ability-attack">Attack</th><td>5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</td></tr>
+            <tr><td class="ability-icon"><img src="/assets/guard.png" width="32" height="32" alt=""></td><th scope="row" class="ability-guard">Guard</th><td>Spend 15 mana to take at most 1 damage. Preserve Focus and ultimate preparation. Take one other turn before guarding again.</td></tr>
+            <tr><td class="ability-icon"><img src="/assets/focus.png" width="32" height="32" alt=""></td><th scope="row" class="ability-focus">Focus</th><td>Restore up to 40 mana and empower your next normal Attack. You can refill mana while focused. Focus does not prepare Ultimate.</td></tr>
+            <tr><td class="ability-icon"><img src="/assets/ultimate.png" width="32" height="32" alt=""></td><th scope="row" class="ability-ultimate">Prepare Ult / Cast Ult</th><td>First spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown. No critical hits.</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="recent">
-        <div class="recent-heading"><h2>Recent moves</h2><small>Current encounter · newest first</small></div>
-        <ol id="history" aria-label="Last five completed moves"></ol>
-        <p id="history-empty">Your story starts with the first move.</p>
+    </section>
+    <section class="panel guide" aria-labelledby="enemy-title">
+      <h2 class="panel-title" id="enemy-title"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 2v5m0 6v5M2 10h5m6 0h5"/></svg>Enemy pattern</h2>
+      <p class="pattern-intro">Aura repeats this four-move cycle:</p>
+      <ol class="pattern">
+        <li><strong><span>01</span>Guard</strong><small>Costs 15 MP</small><small>Halves your damage</small></li>
+        <li><strong><span>02</span>Attack</strong><small>4 damage</small><small>No mana cost</small></li>
+        <li><strong><span>03</span>Charge</strong><small>Restores 35 MP</small><small>No damage</small></li>
+        <li><strong><span>04</span>Assault</strong><small>10 damage</small><small>Costs 30 MP</small></li>
+      </ol>
+      <p class="pattern-note">If she cannot afford Guard or Assault, she restores mana instead, then continues to the next move in the cycle.</p>
+      <div class="battle-notes">
+        <p>Aura’s Guard halves every attack, including your ultimate. A killing blow prevents retaliation. Cooldowns advance only when a valid move is played.</p>
+        <p>These combat numbers and the ultimate form are game adaptations. The full Scales of Obedience contest is planned for a future phase.</p>
       </div>
     </section>
     <div class="foot"><small>Only this tab. Refreshing resets the demo.</small><button id="reset" type="button">Reset demo</button></div>
-    <details>
-      <summary>How to play</summary>
-      <ul>
-        <li><strong>Attack:</strong> 5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</li>
-        <li><strong>Guard:</strong> 15 mana, take at most 1 damage, and preserve Focus and ultimate preparation. Take one other turn before guarding again.</li>
-        <li><strong>Focus:</strong> restore up to 40 mana and empower the next normal Attack. You can refill mana while focused. Focus does not prepare Ultimate.</li>
-        <li><strong>Prepare Ult / Cast Ult:</strong> first spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown; no critical hits.</li>
-      </ul>
-      <p class="muted">Frieren: 26 HP / 240 MP. Aura: 100 HP, starting with 40/60 MP. Aura cycles Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP). If she cannot afford Guard or Assault, she restores mana instead.</p>
-      <p class="muted">Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns tick only when someone plays a valid turn. These numbers and the ultimate form are game adaptations; the full Scales of Obedience contest remains a future feature.</p>
-    </details>
     <p class="muted"><small>This demo tests combat and artwork. GitHub issue handling and Actions need a separate GitHub test.</small></p>
     <noscript>Enable JavaScript to play this local demo.</noscript>
   </main>

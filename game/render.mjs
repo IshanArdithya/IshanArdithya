@@ -215,8 +215,12 @@ export function buttonKind(state, action) {
   const kind = action === 'ultimate' && state.ultimatePrepared ? 'ultimate-cast' : action;
   return actionUnavailable(state, action) ? `${kind}-disabled` : kind;
 }
+export function buttonIcon(action) {
+  const base = action.endsWith('-disabled') ? action.slice(0, -9) : action;
+  return base === 'restart' ? null : `${base}.png`;
+}
 export const BUTTON_ASSETS = [...ACTIONS, ...ACTIONS.map(a => `${a}-disabled`), 'ultimate-cast', 'ultimate-cast-disabled', 'restart'];
-export function renderButton(action, iconSvg) {
+export function renderButton(action, iconHref = buttonIcon(action)) {
   const disabled = action.endsWith('-disabled');
   const base = disabled ? action.slice(0, -9) : action;
   const config = {
@@ -230,18 +234,16 @@ export function renderButton(action, iconSvg) {
     const label = lettering.text(48,27,config[0],14,color,'text-anchor="middle"',82);
     return `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="44" viewBox="0 0 96 44" role="img" aria-label="PLAY AGAIN"><rect x="1" y="1" width="94" height="42" rx="5" fill="#172234" stroke="${color}"/>${lettering.definitions()}${label}</svg>\n`;
   }
-  if (!iconSvg?.includes('id="arcane-frame"')) throw new Error(`Missing shared-frame vector icon for ${base}`);
-  const artwork = iconSvg.replace(/^[\s\S]*?<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '')
-    .replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').trim();
-  const label = lettering.text(64,config[2] ? 108 : 115,config[0],18,disabled ? '#9aa5b5' : '#f3e6cb','text-anchor="middle"',112)
-    + (config[2] ? lettering.text(64,122,config[2],13,color,'text-anchor="middle"',100) : '');
+  if (!iconHref) throw new Error(`Missing icon for ${base}`);
+  const label = lettering.text(64,115,config[0],18,disabled ? '#9aa5b5' : '#f3e6cb','text-anchor="middle"',112);
+  const badge = config[2] ? `<g data-phase-badge="${config[2]}"><path d="M78 6h40v2h2v15h-2v2H78v-2h-2V8h2z" fill="#171c2c" stroke="${color}" shape-rendering="crispEdges"/>${lettering.text(98,20,config[2],12,disabled ? '#9aa5b5' : '#f0deff','text-anchor="middle"',36)}</g>` : '';
   const title = `${config[0]}${config[2] ? ` (${config[2]})` : ''}${disabled ? ' unavailable' : ''}`;
+  const muted = disabled ? '<defs><filter id="muted-icon" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/></filter></defs>' : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="${xml(title)}" data-action-card="${base}">
 <title>${xml(title)}</title><rect x="1" y="1" width="126" height="126" rx="5" fill="#131d2a" stroke="${disabled ? '#435063' : '#897754'}"/>
 <path d="M8 3h112" stroke="${color}" opacity=".7"/>
-${disabled ? '<defs><filter id="muted-icon" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/></filter></defs>' : ''}
-<g${disabled ? ' filter="url(#muted-icon)" opacity=".45"' : ''}><svg x="18" y="5" width="92" height="92" viewBox="18 18 284 284" shape-rendering="crispEdges" aria-hidden="true">${artwork}</svg></g>
-${lettering.definitions()}${label}</svg>\n`;
+${muted}<image href="${xml(iconHref)}" x="18" y="5" width="92" height="92" preserveAspectRatio="xMidYMid meet"${disabled ? ' filter="url(#muted-icon)" opacity=".45"' : ''}/>
+${lettering.definitions()}${label}${badge}</svg>\n`;
 }
 
 export function issueUrl(state, action, repository = DEFAULT_REPOSITORY) {
@@ -256,61 +258,88 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   validateState(state);
   if (!/^[\w.-]+\/[\w.-]+$/.test(repository)) throw new Error('Invalid repository');
   const raw = `https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets`;
-  const button = (action, alt) => `<a href="${xml(issueUrl(state, action, repository))}"><img src="${raw}/${action === 'restart' ? action : buttonKind(state, action)}.svg" width="${action === 'restart' ? '96' : '23%'}" alt="${xml(alt)}"></a>`;
+  const buttonFile = action => `${action === 'restart' ? action : buttonKind(state, action)}.svg`;
+  const button = (action, alt) => `<a href="${xml(issueUrl(state, action, repository))}"><img src="${raw}/${buttonFile(action)}" width="${action === 'restart' ? '96' : '23%'}" alt="${xml(alt)}"></a>`;
   const active = state.status === 'active';
   const intent = enemyIntent(state);
   const controls = active ? ACTIONS.map(action => {
     const reason = actionUnavailable(state, action);
-    return reason ? `<img src="${raw}/${buttonKind(state, action)}.svg" width="23%" alt="${xml(`${actionDescription(state, action)} — unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
+    return reason ? `<img src="${raw}/${buttonFile(action)}" width="23%" alt="${xml(`${actionDescription(state, action)} — unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
   }).join(' ') : button('restart', 'Play Again — start a new encounter');
   const unavailable = active ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
-  const next = active ? `**Next:** ${intent.name} · ${intent.damage} damage. ${intent.message}`
-    : `**${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}** Choose Play Again for a fresh encounter.`;
-  const history = state.recent.length ? state.recent.map(e => `- [Turn ${e.turn} · @${e.player}](https://github.com/${repository}/issues/${e.issue}): ${e.summary.replace(`@${e.player} `, '')}`).join('\n') : 'No moves yet. Take the first turn!';
+  const next = active ? `<strong>Next:</strong> ${xml(intent.name)} · ${intent.damage} damage. ${xml(intent.message)}`
+    : `<strong>${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}</strong> Choose Play Again for a fresh encounter.`;
+  const moves = state.recent.filter(event => event.encounter === state.encounter);
+  const history = moves.length ? moves.map(event => {
+    const label = event.action === 'restart' ? 'New encounter' : `Turn ${event.turn}`;
+    const mention = `@${event.player}`;
+    const body = event.summary.startsWith(`${mention} `) ? event.summary : `${mention} ${event.summary}`;
+    return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${xml(body)}</p>`;
+  }).join('\n') : '<p>Starts with the first move.</p>';
+  const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} · ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
+  const ability = (icon, name, effect) => `<tr><td width="44" valign="top"><img src="${raw}/${icon}.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
+  const pattern = (index, name, first, second) => `<td width="25%" valign="top"><p><strong>${index} ${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
   return `${START}
 ## README Raid
 
-**Frieren faces Aura. Everyone takes a turn.** Help protect the forest clearing.
+**Protect the forest clearing.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
 ![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg?v=${state.revision})
 
 ${controls}
 
-**Frieren:** ${state.heroHp}/${RULES.heroHp} HP · **Aura:** ${state.bossHp}/${RULES.bossHp} HP · **Attack:** ${state.charged ? 'focused' : 'normal'} · **Ultimate:** ${state.ultimatePrepared ? 'charged; mana paid' : 'not prepared'}
+<table>
+<tr>
+<td width="50%" valign="top">
+<h3>Encounter</h3>
+<p><strong>${String(state.encounter).padStart(3, '0')}</strong> · ${{ active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status]}</p>
+<p>${record}</p>
+<h3>Starting stats</h3>
+<p><strong>Frieren</strong> · ${RULES.heroHp} HP / ${RULES.heroMana} MP</p>
+<p><strong>Aura</strong> · ${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP</p>
+<p><strong>Frieren:</strong> ${state.heroHp}/${RULES.heroHp} HP · <strong>Aura:</strong> ${state.bossHp}/${RULES.bossHp} HP · <strong>Attack:</strong> ${state.charged ? 'focused' : 'normal'} · <strong>Ultimate:</strong> ${state.ultimatePrepared ? 'charged; mana paid' : 'not prepared'}</p>
+<p><strong>Mana:</strong> Frieren ${state.heroMana}/${RULES.heroMana} MP · Aura ${state.bossMana}/${RULES.bossMana} MP</p>
+<p><strong>Cooldowns:</strong> ${cooldownSummary(state)}. Counts decrease only on accepted turns.</p>
+${unavailable ? `<p>${xml(unavailable)}</p>\n` : ''}<p>${next}</p>
+${state.previousResult ? `<p>Previous result: encounter ${state.previousResult.encounter}, ${state.previousResult.status}, ${state.previousResult.turns} turns. Revision ${state.revision}.</p>` : `<p>Revision ${state.revision}.</p>`}
+</td>
+<td width="50%" valign="top">
+<h3>Recent moves</h3>
+${history}
+</td>
+</tr>
+</table>
 
-**Mana:** Frieren ${state.heroMana}/${RULES.heroMana} MP · Aura ${state.bossMana}/${RULES.bossMana} MP
+### Ability summary
 
-**Cooldowns:** ${cooldownSummary(state)}. Counts decrease only on accepted turns.
-${unavailable ? `\n${unavailable}\n` : ''}
-${next}
+<table>
+${ability('attack', 'Attack', '5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).')}
+${ability('guard', 'Guard', 'Spend 15 mana to take at most 1 damage. Preserve Focus and ultimate preparation. Take one other turn before guarding again.')}
+${ability('focus', 'Focus', 'Restore up to 40 mana and empower the next normal Attack. Mana can be refilled while focused. Focus does not prepare Ultimate.')}
+${ability('ultimate', 'Prepare Ult / Cast Ult', 'First spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown. No critical hits.')}
+</table>
 
-${state.recent[0] ? `**Last turn:** ${state.recent[0].summary}` : '**Your move:** Focus or prepare Ultimate while Aura guards, Attack during openings, and Guard her assault.'}
+### Enemy pattern
 
-Choose an action → submit the prefilled issue → wait for the result → return and refresh. GitHub sign-in required.
+<p>Aura repeats this four-move cycle:</p>
+<table>
+<tr>
+${pattern('01', 'Guard', 'Costs 15 MP', 'Halves incoming damage')}
+${pattern('02', 'Attack', '4 damage', 'No mana cost')}
+${pattern('03', 'Charge', 'Restores 35 MP', 'No damage')}
+${pattern('04', 'Assault', '10 damage', 'Costs 30 MP')}
+</tr>
+</table>
+<p>If she cannot afford Guard or Assault, she restores mana instead, then continues to the next move in the cycle.</p>
+<p>Aura’s Guard halves every attack, including the ultimate. A killing blow prevents retaliation. Cooldowns advance only when a valid move is played.</p>
+<p>These combat numbers and the ultimate form are game adaptations. The full Scales of Obedience contest is planned for a future phase. <a href="game/ABILITIES.md">Character abilities and next-phase notes</a>.</p>
 
-**Victories:** ${state.wins} · **Defeats:** ${state.losses} · Encounter ${state.encounter} · Revision ${state.revision}
-${state.previousResult ? `\nPrevious result: encounter ${state.previousResult.encounter}, ${state.previousResult.status}, ${state.previousResult.turns} turns.\n` : ''}
 <details>
-<summary>How to play / Recent turns</summary>
+<summary>How a shared turn works</summary>
 
-Everyone shares the same hero. You may play consecutive turns; nothing happens while nobody is playing.
-
-| Action | Effect |
-| --- | --- |
-| Attack | 5–7 damage for 10 mana, or 14–18 for 20 mana when focused. Consumes Focus. 10% critical chance, ×1.5 rounded down. |
-| Guard | 15 mana. Take at most 1 damage and keep Focus and ultimate preparation. Must take one other turn before guarding again. |
-| Focus | Restore up to 40 mana and empower the next normal Attack. May refill mana while focused; cannot stack the damage boost. Does not prepare Ultimate. |
-| Prepare Ult / Cast Ult | First click spends 80 mana to prepare, deals no damage, and lets Aura respond. A later click casts Unleashed Zoltraak for 32 fixed damage with no further mana cost. Preparation persists through other actions. Casting starts a six-turn cooldown and preserves Focus. No critical multiplier. |
-
-Frieren starts with **26 HP / 240 MP**; Aura has **100 HP / 40 MP**, with a **60 MP** limit. These are game balance values, not canon measurements.
-
-Aura cycles **Guard (15 MP) → Attack (4 damage, free) → Charge (+35 MP) → Assault (10 damage, 30 MP)**. Guard halves all incoming damage, including the ultimate. If she cannot afford Guard or Assault, she visibly recovers mana instead (0 damage, no guard). Check the displayed intent before choosing. Your action resolves first; a killing blow prevents retaliation and Aura's mana recovery.
+Everyone shares the same hero. Consecutive turns are allowed. Nothing happens while nobody is playing.
 
 Cooldowns do not tick while nobody plays. Invalid actions, stale links, and retries spend no mana and consume no turns. Ultimate and Guard availability belongs to the shared encounter, not individual visitors.
-
-Her army and scales inspire this simplified encounter. [Character abilities and next-phase notes](game/ABILITIES.md).
-
-${history}
 
 [Game source and setup](game/README.md)
 

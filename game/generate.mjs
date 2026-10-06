@@ -1,9 +1,27 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { initialState, validateState, migrateState } from './engine.mjs';
 import { loadButtonIcons } from './button-icons.mjs';
-import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS } from './render.mjs';
+import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS, buttonIcon } from './render.mjs';
+
+function iconDocument(iconSvg) {
+  const artwork = iconSvg.replace(/^[\s\S]*?<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '')
+    .replace(/<(title|desc)\b[^>]*>[\s\S]*?<\/\1>/g, '').trim();
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="284" height="284" viewBox="18 18 284 284" shape-rendering="crispEdges">${artwork}</svg>`;
+}
+
+function rasterizeButton(svg, dest) {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn('resvg', ['-w', '568', '-h', '568', '-', dest], { stdio: ['pipe', 'inherit', 'pipe'] });
+    let stderr = '';
+    child.stderr.on('data', chunk => { stderr += chunk; });
+    child.on('error', reject);
+    child.on('close', code => code === 0 ? resolvePromise() : reject(new Error(stderr || `resvg exited ${code}`)));
+    child.stdin.end(svg);
+  });
+}
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 export const GENERATED_PATHS = ['README.md', 'game/state.json', 'game/events.jsonl', 'game/assets/battle.svg'];
@@ -19,6 +37,28 @@ export async function writeArtifacts(root, state, options) {
   await writeFile(resolve(root, 'README.md'), readme);
 }
 
+export async function writeButtons(root) {
+  const icons = await loadButtonIcons();
+  const dir = resolve(root, 'game/assets');
+  await mkdir(dir, { recursive: true });
+  const written = new Set();
+  for (const action of BUTTON_ASSETS) {
+    if (action === 'restart') {
+      await writeFile(resolve(dir, 'restart.svg'), renderButton('restart'));
+      continue;
+    }
+    const base = action.replace(/-disabled$/, '');
+    const pngPath = resolve(dir, buttonIcon(base));
+    if (!written.has(base)) {
+      written.add(base);
+      await rasterizeButton(iconDocument(icons[base]), pngPath);
+    }
+    const href = `data:image/png;base64,${(await readFile(pngPath)).toString('base64')}`;
+    await writeFile(resolve(dir, `${action}.svg`), renderButton(action, href));
+    if (action.endsWith('-disabled')) await unlink(`${pngPath.replace(/\.png$/, '')}-disabled.png`).catch(error => { if (error.code !== 'ENOENT') throw error; });
+  }
+}
+
 export async function generate() {
   let state;
   try { state = migrateState(JSON.parse(await readFile(resolve(ROOT, 'game/state.json'), 'utf8'))); }
@@ -27,9 +67,7 @@ export async function generate() {
     repository: process.env.GITHUB_REPOSITORY || DEFAULT_REPOSITORY,
     branch: process.env.DEFAULT_BRANCH || 'main',
   });
-  const icons = await loadButtonIcons();
-  for (const action of BUTTON_ASSETS)
-    await writeFile(resolve(ROOT, `game/assets/${action}.svg`), renderButton(action, icons[action.replace(/-disabled$/, '')]));
+  await writeButtons(ROOT);
   await writeFile(resolve(ROOT, 'game/events.jsonl'), '', { flag: 'a' });
 }
 

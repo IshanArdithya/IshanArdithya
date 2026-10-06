@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { initialState } from '../engine.mjs';
 import { renderScene, renderSection, renderButton, updateReadme, issueUrl, START, END } from '../render.mjs';
 import { fixtures } from '../preview.mjs';
-import { loadButtonIcons } from '../button-icons.mjs';
 
 test('README insertion preserves all existing content and subsequent rendering is idempotent', () => {
   const before = 'intro\ncontact links\n\n## Things I code with:\nexisting content\n';
@@ -59,7 +58,7 @@ test('each battle state has its intended character pose and readable health', ()
   const all = fixtures();
   for (const [name, pose] of Object.entries({ ready: 'ready', charged: 'charged', attacking: 'attacking', guarding: 'guarding', victory: 'victorious', defeat: 'defeated' })) {
     assert.match(renderScene(all[name]), new RegExp(`data-pose="${pose}"`));
-    assert.ok(renderSection(all[name]).includes(`**Frieren:** ${all[name].heroHp}/26 HP`));
+    assert.ok(renderSection(all[name]).includes(`<strong>Frieren:</strong> ${all[name].heroHp}/26 HP`));
   }
   assert.match(renderScene(all.critical), />CRITICAL</);
   const defender = renderScene(all.charged);
@@ -71,21 +70,20 @@ test('each battle state has its intended character pose and readable health', ()
     assert.ok(attacker.includes(`data-knight-layer="${layer}"`));
 });
 
-test('square ability cards embed the correct vector art and keep four README controls in one row', async () => {
-  const icons = await loadButtonIcons();
-  for (const [action, art] of Object.entries({ attack: 'blast', guard: 'defense', focus: 'focus', ultimate: 'prepare', 'ultimate-cast': 'cast' })) {
+test('square ability cards keep icon art in a PNG and labels as lettering', () => {
+  for (const action of ['attack', 'guard', 'focus', 'ultimate', 'ultimate-cast']) {
     for (const kind of [action, `${action}-disabled`]) {
-      const svg = renderButton(kind, icons[action]);
+      const svg = renderButton(kind);
       assert.match(svg, /width="128" height="128" viewBox="0 0 128 128"/);
-      assert.ok(svg.includes(`id="arcane-${art}-artwork"`));
-      assert.match(svg, /id="arcane-frame"/);
-      assert.doesNotMatch(svg, /<image\b|<script|data:image/);
-      for (const [, href] of svg.matchAll(/\bhref="([^"]+)"/g)) assert.ok(href.startsWith('#'));
+      assert.match(svg, new RegExp(`href="${action}\\.png"`));
+      assert.match(svg, /data-lettering="/);
+      assert.doesNotMatch(svg, /id="arcane-|<script/);
+      for (const [, href] of svg.matchAll(/\bhref="#([^"]+)"/g)) assert.match(href, /^letter-/);
       assert.equal(svg.includes('filter="url(#muted-icon)"'), kind.endsWith('-disabled'));
     }
   }
-  assert.match(renderButton('ultimate', icons.ultimate), /ZOLTRAAK \(PREP\)/);
-  assert.match(renderButton('ultimate-cast', icons['ultimate-cast']), /ZOLTRAAK \(CAST\)/);
+  assert.match(renderButton('ultimate'), /ZOLTRAAK \(PREP\)/);
+  assert.match(renderButton('ultimate-cast'), /ZOLTRAAK \(CAST\)/);
   assert.match(renderButton('restart'), /width="96" height="44"/);
   const section = renderSection(initialState());
   assert.equal([...section.matchAll(/width="23%"/g)].length, 4);
@@ -117,7 +115,10 @@ test('ultimate controls use phase-specific assets but the same revisioned action
   assert.doesNotMatch(renderSection(all.prepared),/%7Cultimate-cast&/);
   assert.match(renderScene(all.prepared),/data-effect="ultimate-preparation"/);
   assert.doesNotMatch(renderScene(all.prepared),/data-effect="unleashed-zoltraak"/);
-  assert.match(renderSection(all.charged),/\*\*Attack:\*\* focused/);
+  assert.match(renderSection(all.charged), /<strong>Attack:<\/strong> focused/);
+  assert.match(renderSection(initialState()), /<h3>Recent moves<\/h3>\n<p>Starts with the first move\.<\/p>/);
+  assert.match(renderSection(all.charged), /<a href="https:\/\/github.com\/IshanArdithya\/IshanArdithya\/issues\/1">Turn 1<\/a> · @visitor /);
+  assert.doesNotMatch(renderSection(all.charged), /\[Turn 1 · @visitor\]/);
   assert.doesNotMatch(renderScene(all.charged),/data-lettering="(?:ATTACK:|CD ·|NEXT:)/);
   assert.match(renderSection(all.ready),/%7Cfocus&/);
   assert.doesNotMatch(renderSection(all.ready),/%7Ccharge&/);
