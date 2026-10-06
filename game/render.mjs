@@ -55,10 +55,7 @@ export function renderScene(state, { animate = true } = {}) {
     }
   }
   const auraPose = state.status === 'victory' ? 'defeated' : intent.kind;
-  const label = ended ? (state.status === 'victory' ? 'VICTORY · FOREST PROTECTED' : 'DEFEAT · RISE AGAIN')
-    : intent.kind === 'guard' ? 'GUARD · HALF DAMAGE TAKEN'
-    : `${intent.name.toUpperCase()} · ${intent.damage} DAMAGE`;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="472" viewBox="0 0 640 472" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
   <title id="title">README Raid: Frieren vs Aura</title>
   <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. Ultimate ${state.ultimatePrepared ? 'prepared; mana already paid' : 'not prepared'}. ${ended ? state.status : intent.message} ${state.charged ? 'Attack focused.' : 'Attack normal.'}`)}</desc>
   <style>
@@ -195,10 +192,8 @@ export function renderScene(state, { animate = true } = {}) {
   </g>
   ${renderHud(state, { text, swap, playback })}
 ${popups}
-  ${text(24, 391, state.charged ? 'ATTACK: FOCUSED' : 'ATTACK: NORMAL', 24, state.charged ? '#55d7c3' : '#a5b5c9')}
-  ${text(24, 423, cooldownSummary(state), 24, '#c5b3e8')}
-  ${text(24, 456, ended ? label : `NEXT: ${label}`, 24, ended ? '#ebbb76' : '#f3e6cb')}
-  <rect x=".5" y=".5" width="639" height="471" rx="12" fill="none" stroke="#364458"/>
+${ended ? `<g class="raid-settled" data-battle-result="${state.status}"><rect x="210" y="116" width="220" height="40" rx="4" fill="#101723" opacity=".9"/>${text(320,144,state.status === 'victory' ? 'VICTORY' : 'DEFEAT',24,'#ebbb76','text-anchor="middle"',196)}</g>` : ''}
+  <rect x=".5" y=".5" width="639" height="359" rx="12" fill="none" stroke="#364458"/>
 </svg>\n`;
   return svg.replace('  <style>', `${lettering.definitions()}\n  <style>`);
 }

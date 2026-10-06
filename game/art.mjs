@@ -10,7 +10,7 @@ export function heroArt(pose, options) {
 }
 
 export function background() {
-  return `<rect width="640" height="472" rx="12" fill="#101723"/>
+  return `<rect width="640" height="360" rx="12" fill="#101723"/>
     <defs>
       <clipPath id="forest-bounds"><path d="M0 0h640v360H0z"/></clipPath>
       <filter id="forest-tone" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values=".5"/></filter>

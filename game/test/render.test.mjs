@@ -41,7 +41,7 @@ test('full-mana focused state has no Focus link and terminal state only offers r
 test('fixtures contain self-contained accessible SVG with reduced-motion and still fallbacks', () => {
   for (const [name, state] of Object.entries(fixtures())) {
     const svg = renderScene(state);
-    assert.match(svg, /viewBox="0 0 640 472"/);
+    assert.match(svg, /viewBox="0 0 640 360"/);
     assert.match(svg, /<title id="title">/);
     assert.match(svg, /prefers-reduced-motion: reduce/);
     assert.doesNotMatch(svg, /<script|<foreignObject|<image\b|data:image|@import|\son\w+=/i);
@@ -81,7 +81,7 @@ test('mana, ultimate effects, fallback intent, and unavailable actions appear in
   assert.match(renderScene(all.ultimate), /data-effect="unleashed-zoltraak"/);
   assert.match(renderScene(all.ultimate), /ULT: 6T/);
   assert.match(renderScene(all.depleted), /0\/240 MP/);
-  assert.match(renderScene(all.depleted), /RECOVER MANA/);
+  assert.match(renderSection(all.depleted), /Recover mana/);
   const section=renderSection(all.depleted);
   for(const action of ['attack','guard','ultimate']) {
     assert.match(section,new RegExp(`${action}-disabled.svg`));
@@ -99,7 +99,8 @@ test('ultimate controls use phase-specific assets but the same revisioned action
   assert.doesNotMatch(renderSection(all.prepared),/%7Cultimate-cast&/);
   assert.match(renderScene(all.prepared),/data-effect="ultimate-preparation"/);
   assert.doesNotMatch(renderScene(all.prepared),/data-effect="unleashed-zoltraak"/);
-  assert.match(renderScene(all.charged),/ATTACK: FOCUSED/);
+  assert.match(renderSection(all.charged),/\*\*Attack:\*\* focused/);
+  assert.doesNotMatch(renderScene(all.charged),/data-lettering="(?:ATTACK:|CD ·|NEXT:)/);
   assert.match(renderSection(all.ready),/%7Cfocus&/);
   assert.doesNotMatch(renderSection(all.ready),/%7Ccharge&/);
 });

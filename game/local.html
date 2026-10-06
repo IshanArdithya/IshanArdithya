@@ -14,7 +14,7 @@
     h1 { font-size: clamp(25px, 5vw, 34px); letter-spacing: -1px; margin: 8px 0; line-height: 1.2; }
     p { margin: 8px 0; }
     .muted, small { color: #a5b5c9; }
-    #scene { display: block; width: 100%; height: auto; aspect-ratio: 80/59; border-radius: 12px; }
+    #scene { display: block; width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 12px; }
     #actions { display: grid; grid-template-columns: repeat(2,96px); gap: 8px; margin: 18px 0; }
     #actions button { background: none; padding: 0; border: none; cursor: pointer; max-width: 96px; min-width: 0; flex: 1; border-radius: 5px; }
     #actions img { display: block; width: 100%; height: auto; }
@@ -42,7 +42,7 @@
       <h1>Protect the forest clearing.</h1>
       <p class="muted">Choose a move, watch both actions, then take your next turn.</p>
     </header>
-    <img id="scene" alt="Frieren versus Aura in a forest clearing" width="640" height="472">
+    <img id="scene" alt="Frieren versus Aura in a forest clearing" width="640" height="360">
     <div id="actions" aria-label="Battle actions"></div>
     <div id="stats" style="white-space:pre-line"></div>
     <p id="availability" class="muted"></p>
