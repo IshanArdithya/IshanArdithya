@@ -121,9 +121,9 @@ test('local execution cannot reset a developer checkout', () => {
 });
 
 test('prepare and cast retries cannot double spend or turn a retried preparation into a cast', async () => {
-  const repo=memory(); repo.state.intent=2;
+  const repo=memory();
   const prepare=issue(1,'raid|1|0|ultimate');
-  await assert.rejects(processIssue(prepare,repo,async()=>{throw Error('feedback failed')}),/feedback failed/);
+  await assert.rejects(processIssue(prepare,repo,async()=>{throw Error('feedback failed')},rng),/feedback failed/);
   const before=structuredClone(repo.state);
   assert.equal((await processIssue(prepare,repo,async()=>{})).duplicate,true);
   assert.deepEqual(repo.state,before); assert.equal(repo.state.heroMana,160);
@@ -131,7 +131,7 @@ test('prepare and cast retries cannot double spend or turn a retried preparation
   assert.equal(repo.state.bossHp,100);
   assert.equal((await processIssue(issue(2,'raid|1|0|ultimate'),repo,async()=>{})).rejected,true);
   const cast=issue(3,'raid|1|1|ultimate');
-  await processIssue(cast,repo,async()=>{});
+  await processIssue(cast,repo,async()=>{},rng);
   const after=structuredClone(repo.state);
   assert.equal(after.bossHp,84); assert.equal(after.heroMana,160);
   assert.equal(after.ultimatePrepared,false); assert.equal(after.ultimateCooldown,6);
