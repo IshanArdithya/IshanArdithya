@@ -203,12 +203,12 @@ export function cooldownSummary(state) {
 }
 export function actionDescription(state, action) {
   return {
-    attack: `Attack — 5–7 damage, or 14–18 focused; ${state.charged ? RULES.chargedCost : RULES.attackCost} mana`,
-    guard: `Guard — take at most 1 damage; ${RULES.guardCost} mana; skip one turn before reusing`,
-    focus: `Focus — restore ${RULES.chargeRestore} mana and empower the next normal Attack`,
+    attack: `Attack: 5–7 damage, or 14–18 focused; ${state.charged ? RULES.chargedCost : RULES.attackCost} mana`,
+    guard: `Guard: take at most 1 damage; ${RULES.guardCost} mana; skip one turn before reusing`,
+    focus: `Focus: restore ${RULES.chargeRestore} mana and empower the next normal Attack`,
     ultimate: state.ultimatePrepared
-      ? `Zoltraak (Cast) — ${RULES.ultimateDamage} damage; mana already paid; starts a ${RULES.ultimateCooldown}-turn cooldown`
-      : `Zoltraak (Prep) — spend ${RULES.ultimateCost} mana now; Aura responds; cast on a later turn`,
+      ? `Zoltraak (Cast): ${RULES.ultimateDamage} damage; mana already paid; starts a ${RULES.ultimateCooldown}-turn cooldown`
+      : `Zoltraak (Prep): spend ${RULES.ultimateCost} mana now; Aura responds; cast on a later turn`,
   }[action];
 }
 export function buttonKind(state, action) {
@@ -261,8 +261,8 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   const active = state.status === 'active';
   const controls = active ? ACTIONS.map(action => {
     const reason = actionUnavailable(state, action);
-    return reason ? `<img src="${raw}/${buttonFile(action)}" width="23%" alt="${xml(`${actionDescription(state, action)} — unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
-  }).join(' ') : button('restart', 'Play Again — start a new encounter');
+    return reason ? `<img src="${raw}/${buttonFile(action)}" width="23%" alt="${xml(`${actionDescription(state, action)}. Unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
+  }).join(' ') : button('restart', 'Play Again: start a new encounter');
   const unavailable = active ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
   const outcome = active ? '' : `<p><strong>${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}</strong> Choose Play Again for a fresh encounter.</p>\n`;
   const moves = state.recent.filter(event => event.encounter === state.encounter);

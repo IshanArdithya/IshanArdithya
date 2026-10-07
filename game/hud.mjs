@@ -6,7 +6,6 @@ const center = 'text-anchor="middle"';
 const gold = '#c8a76a';
 const ivory = '#fff0cb';
 
-// Share the action eligibility rules so the badge never promises an unusable ultimate.
 export function ultimateIndicator(state, character = 'frieren') {
   const ready = character === 'aura'
     ? state.status === 'active' && (state.bossUltimatePrepared || state.bossMana >= RULES.bossAssaultCost)
@@ -87,7 +86,6 @@ export function renderHud(state, { text, swap, playback }) {
   };
   const badge = character => {
     const indicator = ultimateIndicator(state, character);
-    // Both badges settle after playback; pending actions should not look usable.
     return `<g data-hud="ultimate-badge" data-character="${character}">${indicator.ready && playback
       ? `<g class="raid-before" style="animation-delay:${playback.duration/1000}s">${emblem({ready:false,label:'ULT NOT READY'},character)}</g><g class="raid-after" style="animation-delay:${playback.duration/1000}s">${emblem(indicator,character)}</g>`
       : emblem(indicator,character)}</g>`;

@@ -42,7 +42,6 @@ export function acknowledger(api, repository) {
 }
 
 export function gitRepository(root, repository, branch) {
-  // This adapter deliberately resets only a disposable Actions checkout, never a developer's working tree.
   if (process.env.GITHUB_ACTIONS !== 'true' || !process.env.RUNNER_TEMP) throw new Error('Git persistence is only allowed in a GitHub Actions runner.');
   const git = (...args) => exec('git', args, { cwd: root, timeout: 60_000, maxBuffer: 1024 * 1024 });
   return {
@@ -85,7 +84,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   try { await main(); }
   catch (error) {
     console.error(`README Raid failed: ${error.message}`);
-    // Avoid printing subprocess options, environment, or authenticated remote URLs.
     process.exitCode = 1;
   }
 }

@@ -2,8 +2,6 @@ import { TURN_TIMING as T } from './playback.mjs';
 import { KNIGHT_LAYERS, KNIGHT_JOINTS, KNIGHT_EDGE, KNIGHT_HALO } from './knight-source.mjs';
 import { SWORD_LAYERS, SWORD_JOINTS, SWORD_EDGE, SWORD_HALO } from './sword-knight-source.mjs';
 
-// Both artworks are defined once; five independently animated instances reuse
-// their vector layers. These are one combined enemy action, not five damage rolls.
 export function armyArt() {
   const types = {
     halberd: { ...KNIGHT_LAYERS, joints: KNIGHT_JOINTS, edge: KNIGHT_EDGE, halo: KNIGHT_HALO },
@@ -11,8 +9,6 @@ export function armyArt() {
   };
   const defs = Object.entries(types).map(([type, parts]) => Object.entries(parts)
     .map(([part, paths]) => `<g id="army-${type}-${part}">${paths}</g>`).join('')).join('');
-  // Match the standalone Attack/Guard scale. Closely staggered ranks overlap
-  // within one patch of ground; the rear rank is only eight scene pixels higher.
   const scale = 1.75;
   const formation = [
     { type:'halberd', x:261, y:106, delay:180 },

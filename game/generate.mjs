@@ -31,7 +31,6 @@ export const GENERATED_PATHS = ['README.md', 'game/state.json', 'game/events.jso
 
 export async function writeArtifacts(root, state, options) {
   validateState(state);
-  // Validate the README before writing any files.
   const readme = updateReadme(await readFile(resolve(root, 'README.md'), 'utf8'), renderSection(state, options));
   const scene = renderScene(state);
   await mkdir(resolve(root, 'game/assets'), { recursive: true });

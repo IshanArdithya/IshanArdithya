@@ -45,7 +45,6 @@ test('fixtures contain self-contained accessible SVG with reduced-motion and sti
     assert.match(svg, /<title id="title">/);
     assert.match(svg, /prefers-reduced-motion: reduce/);
     assert.doesNotMatch(svg, /<script|<foreignObject|<image\b|data:image|@import|\son\w+=/i);
-    // All artwork is now vector geometry; only local fragment references are allowed.
     for (const [, href] of svg.matchAll(/\bhref="([^"]+)"/g))
       assert.ok(href.startsWith('#'));
     for (const [, target] of svg.matchAll(/url\(([^)]+)\)/g)) assert.ok(target.startsWith('#'));

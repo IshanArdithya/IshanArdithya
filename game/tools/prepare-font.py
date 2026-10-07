@@ -25,7 +25,6 @@ for char in characters:
     name = cmap[ord(char)]
     pen = SVGPathPen(glyph_set, ntos=lambda n: f'{n:.2f}'.rstrip('0').rstrip('.') if '.' in f'{n:.2f}' else str(n))
     if char.isdigit():
-        # Align old-style figures to a common cap height for small game counters.
         box = BoundsPen(glyph_set)
         glyph_set[name].draw(box)
         bottom, top = box.bounds[1], box.bounds[3]
@@ -34,7 +33,6 @@ for char in characters:
     else:
         glyph_set[name].draw(pen)
     glyphs[char] = {'advance': font['hmtx'][name][0], 'path': pen.getCommands()}
-# The font lacks these two UI symbols. Keep them explicit original SVG shapes.
 glyphs['−'] = {'advance': 1100, 'path': 'M150 570H950V680H150Z'}
 glyphs['✓'] = {'advance': 1400, 'path': 'M130 580L440 180L1290 1120L1170 1240L450 450L250 700Z'}
 kern = {}

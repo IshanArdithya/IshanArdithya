@@ -70,6 +70,6 @@ for (x,y),color in cells.items():
         seams[color].append(f'M{x} {y}h1v1h-1z')
 seam_markup = ''.join(f'<path fill="{c}" d="{"".join(runs)}"/>' for c,runs in seams.items())
 (root/'assets/frieren-original.svg').write_bytes(source)
-(root/'assets/frieren.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" shape-rendering="crispEdges"><title>Frieren — supplied uniform pixel sprite</title>'+''.join(markup.values())+'</svg>\n')
+(root/'assets/frieren.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" shape-rendering="crispEdges"><title>Frieren: supplied uniform pixel sprite</title>'+''.join(markup.values())+'</svg>\n')
 (root/'frieren-source.mjs').write_text('// Generated losslessly from assets/frieren-original.svg by tools/prepare-frieren.py.\nexport const FRIEREN_LAYERS = '+json.dumps(markup)+';\nexport const FRIEREN_SEAMS = '+json.dumps(seam_markup)+';\n')
 print(f'Preserved {len(cells)} pixel cells and {len(set(cells.values()))} colors in {len(markup)} layers.')

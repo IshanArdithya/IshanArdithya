@@ -18,7 +18,6 @@ def frame_pixel(x, y):
     left, top, right, bottom = INTERIOR
     if not (left <= x < right and top <= y < bottom):
         return True
-    # Preserve the matching gold flourishes just inside all four corners.
     return (x < 51 or x >= 269) and (y < 61 or y >= 259)
 
 
@@ -69,11 +68,8 @@ def vectorize(source, destination, artwork='attack', frame_reference=None):
         raise ValueError('Non-attack icons require the attack PNG as --frame-reference')
     original = read_reference(source)
     border = read_reference(frame_reference or source).resize((SIZE, SIZE), Image.Resampling.NEAREST)
-    # Quantize the frame separately so artwork colors cannot alter its golds.
     frame = '<g id="arcane-frame">\n' + vector_paths(palette_image(border), frame_pixel) + '\n  </g>'
     if artwork in ('defense', 'focus'):
-        # The references have slightly different frame insets. Align only the
-        # artwork opening; reuse the exact same border geometry and palette.
         box = tuple(round(v * original.width / 1254) for v in (140, 161, 1113, 1093))
         interior = original.crop(box).resize((252, 238), Image.Resampling.NEAREST)
     else:
@@ -106,7 +102,6 @@ def vectorize(source, destination, artwork='attack', frame_reference=None):
     ])
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(svg)
-    # Transparent center makes this same frame reusable for future action icons.
     (destination.parent / 'arcane-frame.svg').write_text('\n'.join([
         opening, '  <title id="title">Shared jeweled pixel frame</title>',
         '  <desc id="desc">Gold rails, ruby corner ornaments, and gold flourishes with a transparent artwork opening.</desc>',

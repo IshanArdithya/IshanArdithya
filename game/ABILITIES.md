@@ -1,4 +1,4 @@
-# Frieren vs Aura — research and next-phase abilities
+# Frieren vs Aura: research and next-phase abilities
 
 Research dates: 2026-10-03; Assault presentation checked 2026-10-04. This note focuses on the Aura encounter and early-series abilities; it contains encounter spoilers. The game is a fan-made adaptation, not a canonical combat simulator.
 

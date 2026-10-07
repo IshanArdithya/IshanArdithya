@@ -26,7 +26,6 @@ const files = new Map([
   ['/shield-knight-source.mjs', ['shield-knight-source.mjs', 'text/javascript']],
 ]);
 
-// A read-only server. Battles live only in each browser tab, never in repository files.
 export function createLocalServer() {
   return createServer(async (request, response) => {
     const path = new URL(request.url, 'http://127.0.0.1').pathname;

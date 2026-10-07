@@ -54,8 +54,6 @@ def layer(x, y):
         return 'cape'
     return 'body'
 
-# Row runs are combined by color inside each layer. Every source cell is kept
-# exactly once; the rest frame has precisely the original coverage and palette.
 layers = {name: defaultdict(list) for name in ('cape','hair','body','scales','panLeft','panRight')}
 for y in range(96):
     x = 0
@@ -70,8 +68,6 @@ for y in range(96):
             x += 1
         layers[name][color].append(f'M{start} {y}h{x-start}v1h-{x-start}z')
 markup = {name: ''.join(f'<path fill="{color}" d="{"".join(runs)}"/>' for color,runs in colors.items()) for name,colors in layers.items()}
-# Keep one pixel of original color behind moving joints. These pixels are
-# already covered at rest; they prevent transparent cracks during stepped motion.
 seams = defaultdict(list)
 for (x, y), color in cells.items():
     name = layer(x, y)
@@ -80,6 +76,6 @@ for (x, y), color in cells.items():
         seams[color].append(f'M{x} {y}h1v1h-1z')
 seam_markup = ''.join(f'<path fill="{color}" d="{"".join(runs)}"/>' for color,runs in seams.items())
 (root/'assets/aura-original.svg').write_bytes(source)
-(root/'assets/aura.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" shape-rendering="crispEdges"><title>Aura — supplied uniform pixel sprite</title>\n'+''.join(markup.values())+'\n</svg>\n')
+(root/'assets/aura.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" shape-rendering="crispEdges"><title>Aura: supplied uniform pixel sprite</title>\n'+''.join(markup.values())+'\n</svg>\n')
 (root/'aura-source.mjs').write_text('// Generated losslessly from assets/aura-original.svg by tools/prepare-aura.py.\nexport const AURA_LAYERS = '+json.dumps(markup)+';\nexport const AURA_SEAMS = '+json.dumps(seam_markup)+';\n')
 print(f'Preserved {len(cells)} pixel cells and {len(set(cells.values()))} colors in {len(markup)} animation layers.')

@@ -21,9 +21,6 @@ export function enemyIntent(state, kind = state.bossIntent) {
   return { kind: 'attack', name: state.bossCharged ? 'Focused Attack' : 'Attack', damage, cost: 0,
     message: state.bossCharged ? 'Aura spends Focus on an empowered attack. Incoming: 8 damage; no mana cost.' : 'Aura commands a soldier to attack. Incoming: 4 damage; no mana cost.' };
 }
-// Called on the state from before this issue's action. A prepared ultimate is always cast.
-// Low mana recovers first. An earlier Focus or prepared ultimate is guarded. Recent attacks
-// make Guard more likely, and a recent Guard is an opening. Otherwise she rolls.
 function previousActions(state) {
   return state.recent
     .filter(event => event.encounter === state.encounter && event.action !== 'restart')
@@ -52,7 +49,6 @@ export function chooseBossIntent(state, randomInt) {
     roll -= amount;
   }
 }
-// A non-null reason is shared by the engine, README links, and local controls.
 export function actionUnavailable(state, action) {
   if (state.status !== 'active') return 'This encounter has ended. Choose Play Again.';
   if (action === 'guard' && state.guardCooldown) return 'Guard is cooling down. Take one other turn first.';
@@ -96,11 +92,7 @@ export function migrateState(state) {
     state = { ...state, version: 3, heroHp: Math.ceil(state.heroHp / 24 * RULES.heroHp), bossHp: Math.ceil(state.bossHp / 60 * RULES.bossHp),
       heroMana: RULES.heroMana, bossMana: RULES.bossStartMana, guardCooldown: 0, ultimateCooldown: 0 };
   }
-  if (state.version === 3) {
-    // Old charge remains the normal-attack boost. Existing ultimate links must
-    // refresh because the same command now prepares before it can cast.
-    state = { ...state, version: 4, ultimatePrepared: false, revision: state.revision + 1 };
-  }
+  if (state.version === 3) state = { ...state, version: 4, ultimatePrepared: false, revision: state.revision + 1 };
   if (state.version === 4) state = { ...state, version: 5, players: state.players ?? {} };
   if (state.version === 5) {
     state = { ...state, version: 6, bossIntent: null, bossCharged: false, bossUltimatePrepared: false };
@@ -122,7 +114,6 @@ export function transition(current, command, actor, randomInt) {
   if (command.action === 'restart' && current.status === 'active') throw new MoveError('This encounter is still in progress.');
   if (command.action !== 'restart') { const reason = actionUnavailable(current,command.action); if (reason) throw new MoveError(reason); }
   if (!Number.isSafeInteger(actor.issue) || actor.issue < 1 || !/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})$/.test(actor.login)) throw new Error('Invalid issue actor');
-  // Decide from the board and recent moves before this action changes either.
   const intent = command.action === 'restart' ? null : enemyIntent(current, chooseBossIntent(current, randomInt));
   const ultimatePhase = command.action === 'ultimate' ? (current.ultimatePrepared ? 'cast' : 'prepare') : null;
   let next = structuredClone(current);
@@ -138,7 +129,6 @@ export function transition(current, command, actor, randomInt) {
     event.summary = `@${actor.login} began encounter ${next.encounter}.`;
   } else {
     next.turn++;
-    // Counters count other accepted turns; retries/invalid requests cannot tick them.
     next.guardCooldown = command.action === 'guard' ? 1 : Math.max(0,current.guardCooldown-1);
     next.ultimateCooldown = ultimatePhase === 'cast' ? RULES.ultimateCooldown : Math.max(0,current.ultimateCooldown-1);
     if (command.action === 'focus') {
@@ -151,7 +141,6 @@ export function transition(current, command, actor, randomInt) {
       next.heroMana -= event.manaSpent;
     }
     if (ultimatePhase) next.ultimatePrepared = ultimatePhase === 'prepare';
-    // Aura's guard is paid before the player's strike because it protects that strike.
     if (intent.kind === 'guard') { event.enemyManaSpent = intent.cost; next.bossMana -= intent.cost; }
     if (command.action === 'attack' || ultimatePhase === 'cast') {
       if (command.action === 'ultimate') event.baseDamage = RULES.ultimateDamage;

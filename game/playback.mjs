@@ -1,4 +1,3 @@
-// Shared presentation timing only. Combat is resolved once by the pure engine.
 export const TURN_TIMING = Object.freeze({ player: 0, actionDuration: 700, bossDamage: 750,
   enemy: 1700, heroDamage: 2450, popupDuration: 850, finish: 3400, victoryFinish: 1700,
   assaultDuration: 4000, knightDuration: 3400, knightWalkDuration: 2200 });

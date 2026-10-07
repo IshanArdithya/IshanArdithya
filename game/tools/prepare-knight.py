@@ -70,15 +70,11 @@ for pos, color in cells.items():
     parts[layer(*pos)][pos] = color
 assert sum(map(len, parts.values())) == len(cells)
 markup = {name: paths(pixels) for name, pixels in parts.items()}
-# Original joint pixels back the small leg movements; hidden by their layer at rest.
 joints = {pos: color for pos, color in cells.items()
           if (layer(*pos) in ('frontLeg','backLeg') and pos[1] < 65)
           or (layer(*pos) == 'shield' and pos[0] >= 46 and 33 <= pos[1] <= 60)}
-# Highlight the actual light steel pixels, rather than drawing a guessed outline.
 edge = {pos: '#edceff' for pos, color in parts['shield'].items()
         if min(int(color[i:i+2], 16) for i in (1,3,5)) > 155}
-# A visible pixel halo extends beyond the steel instead of repainting only
-# already-bright pixels. Draw it behind the shield to preserve its silhouette.
 halo = {}
 for x, y in edge:
     for dy in range(-3, 4):

@@ -27,8 +27,6 @@ for e in svg:
 if len(cells) != 320*180:
     raise ValueError('Expected a fully painted background')
 
-# Merge same-color runs, then extend matching runs vertically. This changes
-# representation only: the source palette and every pixel remain identical.
 paths = defaultdict(list)
 active = {}
 for y in range(181):
@@ -47,8 +45,6 @@ for y in range(181):
     active = row
 markup = ''.join(f'<path fill="{c}" d="{"".join(runs)}"/>' for c,runs in paths.items())
 
-# Small sunlit leaf tips retain their original colors over the intact base.
-# Moving only these highlights avoids holes and keeps trunks/ground stationary.
 leaves = defaultdict(list)
 for (x,y),c in cells.items():
     r,g,b = (int(c[i:i+2],16) for i in (1,3,5))
@@ -57,6 +53,6 @@ for (x,y),c in cells.items():
         leaves[c].append(f'M{x} {y}h1v1h-1z')
 foliage = ''.join(f'<path fill="{c}" d="{"".join(runs)}"/>' for c,runs in leaves.items())
 (root/'assets/forest-original.svg').write_bytes(source)
-(root/'assets/forest.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" shape-rendering="crispEdges"><title>Forest clearing — supplied pixel background</title>'+markup+'</svg>\n')
+(root/'assets/forest.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" shape-rendering="crispEdges"><title>Forest clearing: supplied pixel background</title>'+markup+'</svg>\n')
 (root/'forest-source.mjs').write_text('// Generated losslessly from assets/forest-original.svg by tools/prepare-forest.py.\nexport const FOREST_SHAPES = '+json.dumps(markup)+';\nexport const FOREST_LEAVES = '+json.dumps(foliage)+';\n')
 print(f'Preserved {len(cells)} pixels and {len(paths)} colors; compact SVG geometry: {len(markup):,} bytes.')

@@ -11,7 +11,6 @@ const later = (fn, ms) => { const timer = setTimeout(() => { timers.delete(timer
 const clearTimers = () => { for (const timer of timers) clearTimeout(timer); timers.clear(); };
 const element = id => document.getElementById(id);
 const svgUrl = svg => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-// Reference stats describe the beginning of every encounter, never the live battle.
 element('starting-frieren').textContent = `${RULES.heroHp} HP / ${RULES.heroMana} MP`;
 element('starting-aura').textContent = `${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP`;
 for (const name of ['frieren', 'aura']) {
@@ -22,7 +21,6 @@ function showNotice(text = '') {
   element('notice').hidden = !text;
 }
 
-// Uniform cryptographic integer draws, matching the production engine's randomInt contract.
 function randomInt(min, max) {
   const range = max - min;
   const limit = Math.floor(2 ** 32 / range) * range;
@@ -73,7 +71,6 @@ function render({ scene = true } = {}) {
     element('scene').onload = () => beginPlayback(token);
     element('scene').onerror = () => finishPlayback(token, true);
     element('scene').src = svgUrl(renderScene(state, { animate: busy }));
-    // A broken image must never strand the controls. Loading normally starts the clock.
     if (busy) later(() => finishPlayback(token, true), 8000);
   }
   element('actions').setAttribute('aria-busy', String(busy));
@@ -86,7 +83,7 @@ function render({ scene = true } = {}) {
     button.type = 'button'; button.dataset.action = action;
     const reason = busy ? 'Wait for this turn to finish.' : action === 'restart' ? null : actionUnavailable(state, action);
     button.disabled = Boolean(reason);
-    button.title = reason || (action === 'restart' ? 'Start the next encounter' : actionDescription(state, action).replaceAll(' — ', ': '));
+    button.title = reason || (action === 'restart' ? 'Start the next encounter' : actionDescription(state, action));
     button.setAttribute('aria-label', button.title);
     if (action === 'restart') {
       button.className = 'next-encounter';
@@ -101,7 +98,6 @@ function render({ scene = true } = {}) {
   element('encounter-number').textContent = String(state.encounter).padStart(3, '0');
   element('encounter-status').dataset.status = busy ? 'resolving' : state.status;
   element('encounter-status').textContent = busy ? 'Resolving turn…' : { active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status];
-  // The engine commits the result before playback; reveal the lifetime result only after it ends.
   const wins = state.wins - Number(busy && state.status === 'victory');
   const losses = state.losses - Number(busy && state.status === 'defeat');
   element('record').textContent = `${wins} ${wins === 1 ? 'victory' : 'victories'} · ${losses} ${losses === 1 ? 'defeat' : 'defeats'}`;

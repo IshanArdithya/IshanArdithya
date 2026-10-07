@@ -1,7 +1,6 @@
 import { randomInt as secureRandomInt } from 'node:crypto';
 import { MoveError, parseCommand, transition } from './engine.mjs';
 
-// Repository and feedback adapters keep failure/retry behavior independently testable.
 export async function processIssue(issue, repository, acknowledge, randomInt = secureRandomInt) {
   if (issue.pull_request || issue.user?.type !== 'User' || !issue.title.startsWith('raid|')) return { ignored: true };
   let lastError;
@@ -22,11 +21,9 @@ export async function processIssue(issue, repository, acknowledge, randomInt = s
     }
     try { await repository.commit(result.state, result.event); }
     catch (error) { lastError = error; continue; }
-    // Outside the commit catch: feedback failure must never reapply a committed move.
     await acknowledge(issue.number, result.event.summary);
     return result;
   }
-  // A push can succeed remotely while its local connection fails.
   const { events } = await repository.loadLatest();
   const receipt = events.find(event => event.issue === issue.number);
   if (receipt) {

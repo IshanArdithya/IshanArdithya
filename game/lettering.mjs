@@ -5,7 +5,6 @@ const number = value => Number(value.toFixed(3));
 const glyphId = char => `letter-${char.codePointAt(0).toString(16)}`;
 const digitWidth = Math.max(...'0123456789'.split('').map(char => FONT.glyphs[char].advance));
 
-// A fresh collector for each SVG keeps IDs unique and includes only used glyphs.
 export function createLettering() {
   const used = new Set();
   function text(x, y, value, size = 24, color = '#f3e6cb', extra = '', maxWidth = Infinity) {

@@ -1,7 +1,6 @@
 import { FRIEREN_LAYERS, FRIEREN_SEAMS } from './frieren-source.mjs';
 
 function closedEyes(half = false) {
-  // Coordinates are native pixel cells. Leave the fringe and nose untouched.
   return half
     ? '<path fill="#fce3ce" d="M59 35h4v3h-4zM68 35h4v3h-4z"/><path fill="#0e080e" d="M59 37h4v1h-4zM68 37h4v1h-4z"/>'
     : '<path fill="#fce3ce" d="M59 35h4v5h-4zM68 35h4v5h-4z"/><path fill="#0e080e" d="M59 37h4v1h-4zM68 37h4v1h-4z"/>';
