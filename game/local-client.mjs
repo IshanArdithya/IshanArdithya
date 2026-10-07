@@ -100,7 +100,7 @@ function render({ scene = true } = {}) {
   element('encounter-status').textContent = busy ? 'Resolving turn…' : { active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status];
   const wins = state.wins - Number(busy && state.status === 'victory');
   const losses = state.losses - Number(busy && state.status === 'defeat');
-  element('record').textContent = `${wins} ${wins === 1 ? 'victory' : 'victories'} · ${losses} ${losses === 1 ? 'defeat' : 'defeats'}`;
+  element('record').textContent = `${wins} ${wins === 1 ? 'victory' : 'victories'} | ${losses} ${losses === 1 ? 'defeat' : 'defeats'}`;
   const last = state.recent[0];
   element('message').textContent = busy ? `Frieren uses ${last.action === 'ultimate' ? (last.ultimatePhase === 'prepare' ? 'Prepare Ultimate' : 'Unleashed Zoltraak') : last.action}.` : last ? last.summary.replace('@you ', 'You ') : 'Your move. Aura answers from the earlier turns when this one resolves.';
   const moves = (busy ? state.recent.slice(1) : state.recent)

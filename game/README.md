@@ -128,7 +128,7 @@ Issues use `raid|<encounter>|<revision>|<action>`. Links carry the exact visible
 
 The Actions concurrency group uses `queue: max`, with no in-progress cancellation. GitHub currently permits up to 100 queued runs; additional submissions may need a manual retry. Ordinary issues, pull requests, and bots do not play. Editing or reopening an issue does not automatically trigger another run.
 
-Moves are committed atomically with the scene, README, and event log before feedback is posted. If feedback fails, rerunning the same issue repairs its existing bot comment and closes it without replaying the move. Image URLs contain the global revision to reduce cache reuse, but GitHub image propagation can still lag. The Markdown status and issue result provide the textual state.
+Moves are committed atomically with the scene, README, and event log before feedback is posted. If feedback fails, rerunning the same issue repairs its existing bot comment and closes it without replaying the move. The battle image uses the plain file address. GitHub can still keep that picture for about five minutes after a turn. The Markdown status and issue result provide the textual state.
 
 ## Enable on GitHub
 

@@ -272,7 +272,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
     const body = event.summary.startsWith(`${mention} `) ? event.summary : `${mention} ${event.summary}`;
     return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${xml(body)}</p>`;
   }).join('\n') : '<p>Starts with the first move.</p>';
-  const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} · ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
+  const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} | ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
   const ability = (icon, name, effect) => `<tr><td width="44" valign="top"><img src="${raw}/${icon}.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
   const pattern = (name, first, second) => `<td width="25%" valign="top"><p><strong>${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
   return `${START}
@@ -280,7 +280,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
 
 **Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
-![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg?v=${state.revision})
+![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg)
 
 ${controls}
 
@@ -288,7 +288,7 @@ ${controls}
 <tr>
 <td width="50%" valign="top">
 <h3>Encounter</h3>
-<p><strong>${String(state.encounter).padStart(3, '0')}</strong> · ${{ active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status]}</p>
+<p><strong>${String(state.encounter).padStart(3, '0')}</strong> | ${{ active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status]}</p>
 <p>${record}</p>
 <h3>Starting stats</h3>
 <table>

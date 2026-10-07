@@ -3,7 +3,7 @@
 
 **Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
-![Frieren 12/26 HP; Aura 52/100 HP; active; attack normal; ultimate not prepared](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=4)
+![Frieren 12/26 HP; Aura 52/100 HP; active; attack normal; ultimate not prepared](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg)
 
 <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C4%7Cattack&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg" width="23%" alt="Attack: 5–7 damage, or 14–18 focused; 10 mana"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C4%7Cguard&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg" width="23%" alt="Guard: take at most 1 damage; 15 mana; skip one turn before reusing"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C4%7Cfocus&amp;body=Submit+this+issue+to+take+one+shared+turn+in+README+Raid.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23readme-raid%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.svg" width="23%" alt="Focus: restore 40 mana and empower the next normal Attack"></a> <img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate-disabled.svg" width="23%" alt="Zoltraak (Prep): spend 80 mana now; Aura responds; cast on a later turn. Unavailable: Ultimate is cooling down: 6 other turns remaining.">
 
@@ -11,8 +11,8 @@
 <tr>
 <td width="50%" valign="top">
 <h3>Encounter</h3>
-<p><strong>001</strong> · In progress</p>
-<p>0 victories · 0 defeats</p>
+<p><strong>001</strong> | In progress</p>
+<p>0 victories | 0 defeats</p>
 <h3>Starting stats</h3>
 <table>
 <tr>
