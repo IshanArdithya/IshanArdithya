@@ -278,7 +278,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   return `${START}
 ## README Raid
 
-**Protect the forest clearing.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
+**Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
 ![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg?v=${state.revision})
 
@@ -291,8 +291,14 @@ ${controls}
 <p><strong>${String(state.encounter).padStart(3, '0')}</strong> · ${{ active: 'In progress', victory: 'Victory', defeat: 'Defeat' }[state.status]}</p>
 <p>${record}</p>
 <h3>Starting stats</h3>
-<p><strong>Frieren</strong> · ${RULES.heroHp} HP / ${RULES.heroMana} MP</p>
-<p><strong>Aura</strong> · ${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP</p>
+<table>
+<tr>
+<td width="40" valign="middle"><img src="${raw}/frieren-portrait.svg" width="34" height="34" alt=""></td>
+<td valign="middle"><p><strong>Frieren</strong></p><p>${RULES.heroHp} HP / ${RULES.heroMana} MP</p></td>
+<td width="40" valign="middle"><img src="${raw}/aura-portrait.svg" width="34" height="34" alt=""></td>
+<td valign="middle"><p><strong>Aura</strong></p><p>${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP</p></td>
+</tr>
+</table>
 <p><strong>Frieren:</strong> ${state.heroHp}/${RULES.heroHp} HP · <strong>Aura:</strong> ${state.bossHp}/${RULES.bossHp} HP · <strong>Attack:</strong> ${state.charged ? 'focused' : 'normal'} · <strong>Ultimate:</strong> ${state.ultimatePrepared ? 'charged; mana paid' : 'not prepared'}</p>
 <p><strong>Mana:</strong> Frieren ${state.heroMana}/${RULES.heroMana} MP · Aura ${state.bossMana}/${RULES.bossMana} MP</p>
 <p><strong>Cooldowns:</strong> ${cooldownSummary(state)}. Counts decrease only on accepted turns.</p>
@@ -336,8 +342,6 @@ ${pattern('Ultimate', 'Prepare for 30 MP', 'Casts next turn for 10')}
 Everyone shares the same hero. Consecutive turns are allowed. Nothing happens while nobody is playing.
 
 Cooldowns do not tick while nobody plays. Invalid actions, stale links, and retries spend no mana and consume no turns. Ultimate and Guard availability belongs to the shared encounter, not individual visitors.
-
-[Game source and setup](game/README.md)
 
 </details>
 ${END}`;

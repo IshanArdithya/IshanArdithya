@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { initialState, validateState, migrateState } from './engine.mjs';
 import { loadButtonIcons } from './button-icons.mjs';
+import { HUD_PORTRAITS } from './hud-source.mjs';
 import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS, buttonIcon } from './render.mjs';
 
 function iconDocument(iconSvg, { muted = false } = {}) {
@@ -28,6 +29,20 @@ function rasterizeButton(svg, dest) {
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 export const GENERATED_PATHS = ['README.md', 'game/state.json', 'game/events.jsonl', 'game/assets/battle.svg'];
+
+const PORTRAIT_BACK = { frieren: '#173139', aura: '#342039' };
+
+export function portraitCard(name) {
+  const art = HUD_PORTRAITS[name];
+  if (!art || !PORTRAIT_BACK[name]) throw new Error(`Unknown portrait: ${name}`);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" shape-rendering="crispEdges"><rect width="34" height="34" fill="#bfa06c"/><rect x="1" y="1" width="32" height="32" fill="${PORTRAIT_BACK[name]}"/><g transform="translate(1 1)">${art}</g></svg>\n`;
+}
+
+export async function writePortraits(root) {
+  const dir = resolve(root, 'game/assets');
+  await mkdir(dir, { recursive: true });
+  for (const name of ['frieren', 'aura']) await writeFile(resolve(dir, `${name}-portrait.svg`), portraitCard(name));
+}
 
 export async function writeArtifacts(root, state, options) {
   validateState(state);
@@ -68,6 +83,7 @@ export async function generate() {
     repository: process.env.GITHUB_REPOSITORY || DEFAULT_REPOSITORY,
     branch: process.env.DEFAULT_BRANCH || 'main',
   });
+  await writePortraits(ROOT);
   await writeButtons(ROOT);
   await writeFile(resolve(ROOT, 'game/events.jsonl'), '', { flag: 'a' });
 }

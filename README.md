@@ -1,30 +1,7 @@
-## <div align="center"> Hey <img src="https://github.com/KenanGain/KenanGain/blob/main/icons/wave.gif" width="48">, I'm Ishan Ardithya </div>
-<br>
-<p align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?color=70a5fd&width=380&height=28&lines=Software+Engineer;Full+Stack+Developer;Freelancer&center=true" alt="Typing SVG">
-</p>
-
-I'm a full-stack Software Engineer and freelancer. I spend my days building web apps, writing APIs, and automating my deployment workflows.
-
-- 🌐 **Web Development:** Focused on building full-stack applications using TypeScript, React, and Next.js.
-- ⚙️ **DevOps & Infrastructure:** Exploring modern deployment pipelines, Docker containerization, and server management.
-- 🎨 **Next Frontier:** Planning to dive into **Three.js** and **WebGL** to build interactive 3D browser experiences.
-- 🌍 **Location:** Based in Colombo, Sri Lanka.
-- 💼 **Open to:** **Software Engineer** roles and freelance collaborations.
-
-In my free time, I love to play games, listen to music, and watch sports. These hobbies keep me balanced, inspired, and motivated to bring creativity into my projects.
-
-<div align="center">
-    <a href="mailto:ishanardithya@gmail.com"><img src="https://img.shields.io/badge/Gmail: ishanardithya@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white&color=black" alt="Gmail"></a>
-    <a href="https://www.linkedin.com/in/ishan-ardithya/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&color=black" alt="Linkedin"></a><br>
-    <a href="https://www.instagram.com/ishan_ardithya/"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white&color=black" alt="Instagram"></a>
-    <a href="https://discord.com/users/365863757735395328"><img src="https://img.shields.io/badge/Discord: heoughten-5865F2?style=for-the-badge&logo=discord&logoColor=white&color=black" alt="Discord"></a>
-</div>
-
 <!-- README-RAID:START -->
 ## README Raid
 
-**Protect the forest clearing.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
+**Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
 ![Frieren 26/26 HP; Aura 100/100 HP; active; attack normal; ultimate not prepared](https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle.svg?v=0)
 
@@ -37,8 +14,14 @@ In my free time, I love to play games, listen to music, and watch sports. These 
 <p><strong>001</strong> · In progress</p>
 <p>0 victories · 0 defeats</p>
 <h3>Starting stats</h3>
-<p><strong>Frieren</strong> · 26 HP / 240 MP</p>
-<p><strong>Aura</strong> · 100 HP / 40/60 MP</p>
+<table>
+<tr>
+<td width="40" valign="middle"><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/frieren-portrait.svg" width="34" height="34" alt=""></td>
+<td valign="middle"><p><strong>Frieren</strong></p><p>26 HP / 240 MP</p></td>
+<td width="40" valign="middle"><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/aura-portrait.svg" width="34" height="34" alt=""></td>
+<td valign="middle"><p><strong>Aura</strong></p><p>100 HP / 40/60 MP</p></td>
+</tr>
+</table>
 <p><strong>Frieren:</strong> 26/26 HP · <strong>Aura:</strong> 100/100 HP · <strong>Attack:</strong> normal · <strong>Ultimate:</strong> not prepared</p>
 <p><strong>Mana:</strong> Frieren 240/240 MP · Aura 40/60 MP</p>
 <p><strong>Cooldowns:</strong> CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.</p>
@@ -83,59 +66,5 @@ Everyone shares the same hero. Consecutive turns are allowed. Nothing happens wh
 
 Cooldowns do not tick while nobody plays. Invalid actions, stale links, and retries spend no mana and consume no turns. Ultimate and Guard availability belongs to the shared encounter, not individual visitors.
 
-[Game source and setup](game/README.md)
-
 </details>
 <!-- README-RAID:END -->
-
-## Things I code with:
-
-### Frontend
-[![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)](https://www.javascript.com/)
-[![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-<br>
-[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://react.dev/)
-[![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-
-### Backend & Database
-[![Nodejs](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Expressjs](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
-[![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com/)
-<br>
-[![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://cplusplus.com/)
-[![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.java.com/)
-[![DotNet](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/en-us/)
-<br>
-[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-
-### DevOps, Tools & OS
-[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
-[![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com/)
-[![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white)](https://www.postman.com/)
-<br>
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)]()
-[![Visual Studio Code](https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)](https://code.visualstudio.com/)
-
-## Github Stats
-<div class="badges-githubstats">
-    <p align="center">
-    <img src="https://github-readme-stats.vercel.app/api?username=IshanArdithya&hide_title=true&hide_rank=false&show_icons=true&include_all_commits=false&count_private=true&disable_animations=false&theme=tokyonight&locale=en&hide_border=true&order=1" height="155" alt="Ishan's Stats"  />
-    <img src="https://github-readme-streak-stats-salesp07.vercel.app?user=IshanArdithya&theme=tokyonight&hide_border=true&card_width=466" height="155" alt="Ishan's Streak"  />
-    </p>
-</div>
-
-##
-
-<div align="center">
-    <img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/output/snake.svg" alt="Snake animation" />
-</div>
-
-![Profile views](https://komarev.com/ghpvc/?username=IshanArdithya&label=Profile%20views&color=60598F&style=pixel)
-
----
