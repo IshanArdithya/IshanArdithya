@@ -1,0 +1,12 @@
+{
+  "name": "readme-raid",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "render": "node generate.mjs",
+    "preview": "node preview.mjs",
+    "play": "node --watch local.mjs"
+  }
+}

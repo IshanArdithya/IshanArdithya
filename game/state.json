@@ -1,0 +1,23 @@
+{
+  "version": 6,
+  "encounter": 1,
+  "revision": 0,
+  "status": "active",
+  "turn": 0,
+  "heroHp": 26,
+  "bossHp": 100,
+  "charged": false,
+  "wins": 0,
+  "losses": 0,
+  "previousResult": null,
+  "recent": [],
+  "heroMana": 240,
+  "bossMana": 40,
+  "guardCooldown": 0,
+  "ultimateCooldown": 0,
+  "ultimatePrepared": false,
+  "players": {},
+  "bossIntent": null,
+  "bossCharged": false,
+  "bossUltimatePrepared": false
+}
