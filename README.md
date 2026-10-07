@@ -3,16 +3,16 @@
 
 **Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
-<picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle-e1t8.svg" width="100%" alt="Frieren 2/26 HP; Aura 28/100 HP; active; attack normal; ultimate not prepared"></picture>
+<picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle-e1t9.svg" width="100%" alt="Frieren 0/26 HP; Aura 22/100 HP; defeat; attack normal; ultimate not prepared"></picture>
 
-<a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C8%7Cattack&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg" width="23%" alt="Attack: 5 - 7 damage, or 14 - 18 focused; 10 mana"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C8%7Cguard&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg" width="23%" alt="Guard: take at most 1 damage; 15 mana; skip one turn before reusing"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C8%7Cfocus&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.svg" width="23%" alt="Focus: restore 40 mana and empower the next normal Attack"></a> <picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate-disabled.svg" width="23%" alt="Zoltraak (Prep): spend 80 mana now; Aura responds; cast on a later turn. Unavailable: Ultimate is cooling down: 2 other turns remaining."></picture>
+<a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C1%7C9%7Crestart&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/restart.svg" width="96" alt="Play Again: start a new encounter"></a>
 
 <table>
 <tr>
 <td width="50%" valign="top">
 <h3>Encounter</h3>
-<p><strong>001</strong> | In progress</p>
-<p>0 victories | 0 defeats</p>
+<p><strong>001</strong> | Defeat</p>
+<p>0 victories | 1 defeat</p>
 <h3>Starting stats</h3>
 <table>
 <tr>
@@ -22,15 +22,16 @@
 <td valign="middle"><p><strong>Aura</strong></p><p>100 HP / 40/60 MP</p></td>
 </tr>
 </table>
-<p>ultimate: Ultimate is cooling down: 2 other turns remaining.</p>
+<p><strong>Defeat. Frieren will rise again.</strong> Choose Play Again for a fresh encounter.</p>
+<p>Previous result: encounter 1, defeat, 9 turns.</p>
 </td>
 <td width="50%" valign="top">
 <h3>Recent moves</h3>
+<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/10">Turn 9</a> · @IshanArdithya dealt 6 damage and took 8. Spent 10 mana. Frieren has fallen.</p>
 <p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/9">Turn 8</a> · @IshanArdithya dealt 7 damage and took 0. Spent 10 mana. Aura restored 35 mana.</p>
 <p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/8">Turn 7</a> · @IshanArdithya dealt 4 damage (Aura guarded 3) and took 0. Spent 10 mana. Aura spent 15 mana.</p>
 <p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/7">Turn 6</a> · @IshanArdithya dealt 7 damage (critical!) and took 10. Spent 10 mana.</p>
 <p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/6">Turn 5</a> · @IshanArdithya dealt 6 damage and took 0. Spent 10 mana. Aura spent 30 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/5">Turn 4</a> · @IshanArdithya cast Unleashed Zoltraak and dealt 32 damage and took 0. Aura restored 35 mana.</p>
 </td>
 </tr>
 </table>
