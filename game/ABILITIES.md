@@ -20,7 +20,7 @@ The new **Unleashed Zoltraak** button adapts her ordinary offensive magic and re
 
 | Character / action | Implemented rule | Canon relationship |
 | --- | --- | --- |
-| Frieren / Attack | 10 MP for 5–7 damage; focused: 20 MP for 14–18. 10% critical chance. | Generic offensive magic, with original game damage rolls. |
+| Frieren / Attack | 10 MP for 5-7 damage; focused: 20 MP for 14-18. 10% critical chance. | Generic offensive magic, with original game damage rolls. |
 | Frieren / Guard | 15 MP, incoming damage at most 1. One intervening turn before reuse. | Inspired by defensive magic; cooldown is a game rule. |
 | Frieren / Focus | Restore up to 40 MP and empower the next normal Attack. Can refill while focused; separate from Ultimate. | A resource-recovery adaptation, not a claim that revealing hidden mana creates more energy. |
 | Frieren / Unleashed Zoltraak | First click spends 80 MP and a turn preparing. A later click casts for 32 fixed damage without further mana cost. Preparation persists through other actions. Casting preserves Focus and starts a six-turn cooldown. Aura's guard halves it. | A stronger Zoltraak presentation, without a canonical “ultimate form” claim. |

@@ -261,7 +261,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   const active = state.status === 'active';
   const controls = active ? ACTIONS.map(action => {
     const reason = actionUnavailable(state, action);
-    return reason ? `<img src="${raw}/${buttonFile(action)}" width="23%" alt="${xml(`${actionDescription(state, action)}. Unavailable: ${reason}`)}">` : button(action, actionDescription(state, action));
+    return reason ? `<picture><img src="${raw}/${buttonFile(action)}" width="23%" alt="${xml(`${actionDescription(state, action)}. Unavailable: ${reason}`)}"></picture>` : button(action, actionDescription(state, action));
   }).join(' ') : button('restart', 'Play Again: start a new encounter');
   const unavailable = active ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
   const outcome = active ? '' : `<p><strong>${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}</strong> Choose Play Again for a fresh encounter.</p>\n`;

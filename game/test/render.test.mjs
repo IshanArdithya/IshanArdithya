@@ -102,7 +102,7 @@ test('mana, ultimate effects, fallback intent, and unavailable actions appear in
   assert.match(renderSection(all.depleted), /Focus/);
   const section=renderSection(all.depleted);
   for(const action of ['attack','guard','ultimate']) {
-    assert.match(section,new RegExp(`${action}-disabled.svg`));
+    assert.match(section,new RegExp(`<picture><img src="[^"]+${action}-disabled\\.svg"`));
     assert.ok(!section.includes(`%7C${action}&`));
   }
   assert.match(section, /%7Cfocus&/);

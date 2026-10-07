@@ -58,9 +58,9 @@ node game/preview.mjs
 
 ## Turn playback
 
-Each accepted move plays once per image load: Frieren acts (0–0.7s), Aura's damage appears on her right (0.75–1.6s), Aura responds (1.7–2.4s), then Frieren's damage appears on her left (2.45–3.3s). The next local move unlocks at 3.4s. A killing blow skips Aura's response and settles at 1.7s. Damage of zero does not produce a floating number. Guard labels use smaller text just above and in front of the defender's head, and disappear. Guard visuals remain through the incoming hit because they protect that hit.
+Each accepted move plays once per image load: Frieren acts (0-0.7s), Aura's damage appears on her right (0.75-1.6s), Aura responds (1.7-2.4s), then Frieren's damage appears on her left (2.45-3.3s). The next local move unlocks at 3.4s. A killing blow skips Aura's response and settles at 1.7s. Damage of zero does not produce a floating number. Guard labels use smaller text just above and in front of the defender's head, and disappear. Guard visuals remain through the incoming hit because they protect that hit.
 
-Aura's normal Attack summons the supplied headless halberd soldier. It takes two small steps (16 scene pixels total), keeping its body upright while the feet alternately lift and plant. The halberd's edge brightens after the steps, holds its glow for about 1.4 seconds, then fades with the soldier before her damage popup. The walking speed is unchanged. This response takes 3.4 seconds (1.7–5.1s); damage appears at 5.15s and the next move unlocks at 6.1s. Other responses keep their existing timings. Guard uses the supplied shield soldier: it takes one small step, plants its feet, and braces its shield with a restrained rim glow before the player's damage resolves. It stays through the hit, then fades. Assault commands five vector soldiers: two halberdiers closely behind three swordsmen, all at the same 1.75 scale as the individual Attack and Guard soldiers. The overlapping ranks share one small area of ground. Their short steps and weapon glows are staggered after a scales command cue. The whole formation fades before a single combined damage popup. Assault responds from 1.7–5.7s; damage appears at 5.75s and controls unlock at 6.7s. Its 30 MP cost and 10 damage remain unchanged.
+Aura's normal Attack summons the supplied headless halberd soldier. It takes two small steps (16 scene pixels total), keeping its body upright while the feet alternately lift and plant. The halberd's edge brightens after the steps, holds its glow for about 1.4 seconds, then fades with the soldier before her damage popup. The walking speed is unchanged. This response takes 3.4 seconds (1.7-5.1s); damage appears at 5.15s and the next move unlocks at 6.1s. Other responses keep their existing timings. Guard uses the supplied shield soldier: it takes one small step, plants its feet, and braces its shield with a restrained rim glow before the player's damage resolves. It stays through the hit, then fades. Assault commands five vector soldiers: two halberdiers closely behind three swordsmen, all at the same 1.75 scale as the individual Attack and Guard soldiers. The overlapping ranks share one small area of ground. Their short steps and weapon glows are staggered after a scales command cue. The whole formation fades before a single combined damage popup. Assault responds from 1.7-5.7s; damage appears at 5.75s and controls unlock at 6.7s. Its 30 MP cost and 10 damage remain unchanged.
 
 The event records pre-turn health and mana. The SVG updates those values at their resolution times and uses the recorded enemy action, rather than animating the next announced intent. Old receipts without a pre-turn snapshot keep final health/mana visible. Rendering never rolls or reapplies a move. Damage popups, critical labels, attack effects, and guard barriers disappear; ambient character/forest motion and focused/prepared mana effects may remain.
 
@@ -74,7 +74,7 @@ Frieren starts with **26 HP and 240/240 MP**. Aura starts with **100 HP and 40/6
 
 | Action | Effect | Mana / restriction |
 | --- | --- | --- |
-| Attack | 5–7 damage, or 14–18 while focused. Consumes Focus. | 10 MP normally, 20 MP focused. Independent 10% critical chance; ×1.5 rounded down. |
+| Attack | 5-7 damage, or 14-18 while focused. Consumes Focus. | 10 MP normally, 20 MP focused. Independent 10% critical chance; ×1.5 rounded down. |
 | Guard | Reduce this turn's incoming damage to at most 1. Preserve Focus and ultimate preparation. | 15 MP. Take one other accepted turn before guarding again. |
 | Focus | Restore up to 40 MP and empower the next normal Attack. | Free. Can refill while focused; the boost never stacks. Unavailable only when focused and at full MP. Does not prepare Ultimate. |
 | Prepare Ult | Spend a turn preparing **Unleashed Zoltraak**; deal no damage and let Aura respond. | 80 MP, paid now. Requires zero cooldown. Preparation persists through Attack, Guard, and Focus. |
@@ -94,10 +94,10 @@ Run `node game/balance.mjs` for reproducible seeded simulations (10,000 encounte
 
 | Policy | Wins | Winning turn range | Mean winning turns |
 | --- | ---: | --- | ---: |
-| Guard her prepared ultimate and empowered attack, then cast | 10,000 | 27–49 | 36.90 |
-| Same approach without the ultimate | 2,137 | 20–51 | 32.77 |
-| Attack repeatedly, Focus only when necessary | 42 | 17–23 | 20.07 |
-| Rush Focus/Attack/Ultimate without guarding | 4,282 | 10–20 | 16.30 |
+| Guard her prepared ultimate and empowered attack, then cast | 10,000 | 27-49 | 36.90 |
+| Same approach without the ultimate | 2,137 | 20-51 | 32.77 |
+| Attack repeatedly, Focus only when necessary | 42 | 17-23 | 20.07 |
+| Rush Focus/Attack/Ultimate without guarding | 4,282 | 10-20 | 16.30 |
 
 These are fixed-policy simulations, not a guarantee about every player strategy. They establish that answering her prepared ultimate and empowered attack makes the fight reliable, the ultimate is what carries those wins, and ignoring defense is unreliable. The policies cannot see her unannounced choice.
 
