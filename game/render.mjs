@@ -299,12 +299,7 @@ ${controls}
 <td valign="middle"><p><strong>Aura</strong></p><p>${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP</p></td>
 </tr>
 </table>
-<p><strong>Frieren:</strong> ${state.heroHp}/${RULES.heroHp} HP · <strong>Aura:</strong> ${state.bossHp}/${RULES.bossHp} HP · <strong>Attack:</strong> ${state.charged ? 'focused' : 'normal'} · <strong>Ultimate:</strong> ${state.ultimatePrepared ? 'charged; mana paid' : 'not prepared'}</p>
-<p><strong>Mana:</strong> Frieren ${state.heroMana}/${RULES.heroMana} MP · Aura ${state.bossMana}/${RULES.bossMana} MP</p>
-<p><strong>Cooldowns:</strong> ${cooldownSummary(state)}. Counts decrease only on accepted turns.</p>
-${unavailable ? `<p>${xml(unavailable)}</p>\n` : ''}${outcome}
-${state.previousResult ? `<p>Previous result: encounter ${state.previousResult.encounter}, ${state.previousResult.status}, ${state.previousResult.turns} turns. Revision ${state.revision}.</p>` : `<p>Revision ${state.revision}.</p>`}
-</td>
+${unavailable ? `<p>${xml(unavailable)}</p>\n` : ''}${outcome}${state.previousResult ? `<p>Previous result: encounter ${state.previousResult.encounter}, ${state.previousResult.status}, ${state.previousResult.turns} turns.</p>\n` : ''}</td>
 <td width="50%" valign="top">
 <h3>Recent moves</h3>
 ${history}

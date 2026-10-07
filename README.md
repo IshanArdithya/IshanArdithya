@@ -22,11 +22,6 @@
 <td valign="middle"><p><strong>Aura</strong></p><p>100 HP / 40/60 MP</p></td>
 </tr>
 </table>
-<p><strong>Frieren:</strong> 22/26 HP · <strong>Aura:</strong> 90/100 HP · <strong>Attack:</strong> normal · <strong>Ultimate:</strong> not prepared</p>
-<p><strong>Mana:</strong> Frieren 230/240 MP · Aura 40/60 MP</p>
-<p><strong>Cooldowns:</strong> CD · GUARD: READY · ULT: READY. Counts decrease only on accepted turns.</p>
-
-<p>Revision 1.</p>
 </td>
 <td width="50%" valign="top">
 <h3>Recent moves</h3>

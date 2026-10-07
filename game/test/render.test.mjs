@@ -57,7 +57,7 @@ test('each battle state has its intended character pose and readable health', ()
   const all = fixtures();
   for (const [name, pose] of Object.entries({ ready: 'ready', charged: 'charged', attacking: 'attacking', guarding: 'guarding', victory: 'victorious', defeat: 'defeated' })) {
     assert.match(renderScene(all[name]), new RegExp(`data-pose="${pose}"`));
-    assert.ok(renderSection(all[name]).includes(`<strong>Frieren:</strong> ${all[name].heroHp}/26 HP`));
+    assert.ok(renderSection(all[name]).includes(`Frieren ${all[name].heroHp}/26 HP`));
   }
   assert.match(renderScene(all.critical), />CRITICAL</);
   const defender = renderScene(all.charged);
@@ -116,7 +116,6 @@ test('ultimate controls use phase-specific assets but the same revisioned action
   assert.doesNotMatch(renderSection(all.prepared),/%7Cultimate-cast&/);
   assert.match(renderScene(all.prepared),/data-effect="ultimate-preparation"/);
   assert.doesNotMatch(renderScene(all.prepared),/data-effect="unleashed-zoltraak"/);
-  assert.match(renderSection(all.charged), /<strong>Attack:<\/strong> focused/);
   assert.match(renderSection(initialState()), /<h3>Recent moves<\/h3>\n<p>Starts with the first move\.<\/p>/);
   assert.match(renderSection(all.charged), /<a href="https:\/\/github.com\/IshanArdithya\/IshanArdithya\/issues\/1">Turn 1<\/a> · @visitor /);
   assert.doesNotMatch(renderSection(all.charged), /\[Turn 1 · @visitor\]/);
