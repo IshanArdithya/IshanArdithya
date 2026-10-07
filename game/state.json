@@ -1,16 +1,53 @@
 {
   "version": 6,
   "encounter": 1,
-  "revision": 2,
+  "revision": 3,
   "status": "active",
-  "turn": 2,
-  "heroHp": 22,
+  "turn": 3,
+  "heroHp": 12,
   "bossHp": 84,
   "charged": false,
   "wins": 0,
   "losses": 0,
   "previousResult": null,
   "recent": [
+    {
+      "issue": 4,
+      "player": "IshanArdithya",
+      "encounter": 1,
+      "revision": 3,
+      "action": "ultimate",
+      "turn": 3,
+      "baseDamage": 0,
+      "critical": false,
+      "rolledDamage": 0,
+      "damage": 0,
+      "incoming": 10,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 80,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 0,
+      "enemyAction": "cast",
+      "ultimatePhase": "prepare",
+      "before": {
+        "heroHp": 22,
+        "bossHp": 84,
+        "heroMana": 220,
+        "bossMana": 10
+      },
+      "summary": "@IshanArdithya prepared Unleashed Zoltraak and took 10. Spent 80 mana.",
+      "status": "active",
+      "heroHp": 12,
+      "bossHp": 84,
+      "heroMana": 140,
+      "bossMana": 10,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 3,
       "player": "SakinduD",
@@ -84,16 +121,16 @@
       "charged": false
     }
   ],
-  "heroMana": 220,
+  "heroMana": 140,
   "bossMana": 10,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
-  "ultimatePrepared": false,
+  "ultimatePrepared": true,
   "players": {
-    "IshanArdithya": 1,
+    "IshanArdithya": 2,
     "SakinduD": 1
   },
-  "bossIntent": "prepare",
+  "bossIntent": "cast",
   "bossCharged": false,
-  "bossUltimatePrepared": true
+  "bossUltimatePrepared": false
 }
