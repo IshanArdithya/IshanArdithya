@@ -56,7 +56,7 @@ export function renderScene(state, { animate = true } = {}) {
   }
   const auraPose = state.status === 'victory' ? 'defeated' : 'ready';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc" class="${playback ? 'turn-playback' : ''}" style="--turn-duration:${seconds(duration)}">
-  <title id="title">README Raid: Frieren vs Aura</title>
+  <title id="title">Aura the Guillotine: Frieren vs Aura</title>
   <desc id="desc">${xml(`Encounter ${state.encounter}. Frieren ${state.heroHp}/${RULES.heroHp} HP. Aura ${state.bossHp}/${RULES.bossHp} HP. Mana: Frieren ${state.heroMana}/${RULES.heroMana}, Aura ${state.bossMana}/${RULES.bossMana}. ${cooldownSummary(state)}. Ultimate ${state.ultimatePrepared ? 'prepared; mana already paid' : 'not prepared'}. ${ended ? state.status : 'Battle in progress.'} ${state.charged ? 'Attack focused.' : 'Attack normal.'}`)}</desc>
   <style>
     .hair-left { animation: hair-left 3.8s steps(1,end) infinite; }
@@ -203,7 +203,7 @@ export function cooldownSummary(state) {
 }
 export function actionDescription(state, action) {
   return {
-    attack: `Attack: 5–7 damage, or 14–18 focused; ${state.charged ? RULES.chargedCost : RULES.attackCost} mana`,
+    attack: `Attack: 5 - 7 damage, or 14 - 18 focused; ${state.charged ? RULES.chargedCost : RULES.attackCost} mana`,
     guard: `Guard: take at most 1 damage; ${RULES.guardCost} mana; skip one turn before reusing`,
     focus: `Focus: restore ${RULES.chargeRestore} mana and empower the next normal Attack`,
     ultimate: state.ultimatePrepared
@@ -247,9 +247,13 @@ ${lettering.definitions()}${label}${badge}</svg>\n`;
 export function issueUrl(state, action, repository = DEFAULT_REPOSITORY) {
   const query = new URLSearchParams({
     title: `raid|${state.encounter}|${state.revision}|${action}`,
-    body: `Submit this issue to take one shared turn in README Raid. No editing needed.\n\nWait for the result, then return and refresh: https://github.com/${repository}#readme-raid\n\nEveryone controls Frieren together. If another visitor moves first, refresh and choose again.`,
+    body: `Submit this issue to take one shared turn in Aura the Guillotine. No editing needed.\n\nWait for the result, then return and refresh: https://github.com/${repository}#aura-the-guillotine\n\nEveryone controls Frieren together. If another visitor moves first, refresh and choose again.`,
   });
   return `https://github.com/${repository}/issues/new?${query}`;
+}
+
+export function sceneFile(state) {
+  return `battle-e${state.encounter}t${state.turn}.svg`;
 }
 
 export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch = 'main' } = {}) {
@@ -277,11 +281,11 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   const ability = (icon, name, effect) => `<tr><td width="72" valign="top">${still(`${raw}/${icon}.png`)}</td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
   const pattern = (name, first, second) => `<td width="25%" valign="top"><p><strong>${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
   return `${START}
-## README Raid
+## Aura the Guillotine
 
 **Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
-<picture><img src="https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg" width="100%" alt="${xml(`Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}`)}"></picture>
+<picture><img src="https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/${sceneFile(state)}" width="100%" alt="${xml(`Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}`)}"></picture>
 
 ${controls}
 
@@ -311,7 +315,7 @@ ${history}
 ### Ability summary
 
 <table>
-${ability('attack', 'Attack', '5–7 damage for 10 mana; 14–18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).')}
+${ability('attack', 'Attack', '5 - 7 damage for 10 mana; 14 - 18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).')}
 ${ability('guard', 'Guard', 'Spend 15 mana to take at most 1 damage. Preserve Focus and ultimate preparation. Take one other turn before guarding again.')}
 ${ability('focus', 'Focus', 'Restore up to 40 mana and empower the next normal Attack. Mana can be refilled while focused. Focus does not prepare Ultimate.')}
 ${ability('ultimate', 'Prepare Ult / Cast Ult', 'First spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown. No critical hits.')}

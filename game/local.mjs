@@ -57,5 +57,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     console.error(error.code === 'EADDRINUSE' ? `Port ${port} is in use. Try PORT=4174 node game/local.mjs` : error.message);
     process.exitCode = 1;
   });
-  server.listen(port, '127.0.0.1', () => console.log(`Play README Raid locally: http://127.0.0.1:${port}\nEach tab has its own battle. Refresh to reset. No GitHub access or file writes.`));
+  server.listen(port, '127.0.0.1', () => console.log(`Play Aura the Guillotine locally: http://127.0.0.1:${port}\nEach tab has its own battle. Refresh to reset. No GitHub access or file writes.`));
 }

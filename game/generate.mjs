@@ -1,11 +1,11 @@
 import { spawn } from 'node:child_process';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { initialState, validateState, migrateState } from './engine.mjs';
 import { loadButtonIcons } from './button-icons.mjs';
 import { HUD_PORTRAITS } from './hud-source.mjs';
-import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS, buttonIcon } from './render.mjs';
+import { renderScene, renderButton, renderSection, updateReadme, DEFAULT_REPOSITORY, BUTTON_ASSETS, buttonIcon, sceneFile } from './render.mjs';
 
 function iconDocument(iconSvg, { muted = false } = {}) {
   const artwork = iconSvg.replace(/^[\s\S]*?<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '')
@@ -28,7 +28,14 @@ function rasterizeButton(svg, dest) {
 }
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
-export const GENERATED_PATHS = ['README.md', 'game/state.json', 'game/events.jsonl', 'game/assets/battle.svg'];
+
+export function generatedPaths(state) {
+  return ['README.md', 'game/state.json', 'game/events.jsonl', `game/assets/${sceneFile(state)}`];
+}
+
+function isSceneFile(name) {
+  return name === 'battle.svg' || /^battle-e[1-9]\d*t(?:0|[1-9]\d*)\.svg$/.test(name);
+}
 
 const PORTRAIT_BACK = { frieren: '#173139', aura: '#342039' };
 
@@ -48,9 +55,14 @@ export async function writeArtifacts(root, state, options) {
   validateState(state);
   const readme = updateReadme(await readFile(resolve(root, 'README.md'), 'utf8'), renderSection(state, options));
   const scene = renderScene(state);
-  await mkdir(resolve(root, 'game/assets'), { recursive: true });
+  const name = sceneFile(state);
+  const dir = resolve(root, 'game/assets');
+  await mkdir(dir, { recursive: true });
   await writeFile(resolve(root, 'game/state.json'), `${JSON.stringify(state, null, 2)}\n`);
-  await writeFile(resolve(root, 'game/assets/battle.svg'), scene);
+  await writeFile(resolve(dir, name), scene);
+  for (const file of await readdir(dir)) {
+    if (isSceneFile(file) && file !== name) await unlink(resolve(dir, file));
+  }
   await writeFile(resolve(root, 'README.md'), readme);
 }
 

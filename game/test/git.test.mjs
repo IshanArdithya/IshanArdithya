@@ -56,7 +56,7 @@ test('real Git adapter saves atomic moves on a non-main branch and survives a co
     assert.equal(result.state.revision, 1);
     assert.equal(await readFile(join(work, 'notes.txt'), 'utf8'), 'Unrelated change that must survive.\n');
     const paths = (await git(bare, 'diff-tree', '--no-commit-id', '--name-only', '-r', 'trunk')).stdout.trim().split('\n').sort();
-    assert.deepEqual(paths, ['README.md', 'game/assets/battle.svg', 'game/events.jsonl', 'game/state.json']);
+    assert.deepEqual(paths, ['README.md', 'game/assets/battle-e1t0.svg', 'game/assets/battle-e1t1.svg', 'game/events.jsonl', 'game/state.json']);
     const receipt = await processIssue(input, adapter, acknowledge);
     assert.equal(receipt.duplicate, true);
     assert.equal(acknowledgments, 2);

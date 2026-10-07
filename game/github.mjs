@@ -3,7 +3,7 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { ROOT, GENERATED_PATHS, writeArtifacts } from './generate.mjs';
+import { ROOT, generatedPaths, writeArtifacts } from './generate.mjs';
 import { migrateState } from './engine.mjs';
 import { processIssue } from './process.mjs';
 
@@ -33,7 +33,7 @@ export function acknowledger(api, repository) {
       existing = comments.find(c => c.user?.login === 'github-actions[bot]' && c.body?.startsWith(RECEIPT_MARKER));
       if (existing || comments.length < 100) break;
     }
-    const body = `${RECEIPT_MARKER}\n${message}\n\n[Return to README Raid and refresh](https://github.com/${repository}#readme-raid).`;
+    const body = `${RECEIPT_MARKER}\n${message}\n\n[Return to Aura the Guillotine and refresh](https://github.com/${repository}#aura-the-guillotine).`;
     if (existing) {
       if (existing.body !== body) await api(`/issues/comments/${existing.id}`, 'PATCH', { body });
     } else await api(`/issues/${number}/comments`, 'POST', { body });
@@ -59,7 +59,8 @@ export function gitRepository(root, repository, branch) {
       await appendFile(resolve(root, 'game/events.jsonl'), `${JSON.stringify(event)}\n`);
       await git('config', 'user.name', 'github-actions[bot]');
       await git('config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com');
-      await git('add', '--', ...GENERATED_PATHS);
+      await git('add', '--', ...generatedPaths(state));
+      await git('add', '-u', '--', 'game/assets');
       await git('commit', '-m', `raid: ${event.action} by ${event.player} (#${event.issue})`);
       await git('push', 'origin', `HEAD:refs/heads/${branch}`);
     },
@@ -83,7 +84,7 @@ export async function main() {
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   try { await main(); }
   catch (error) {
-    console.error(`README Raid failed: ${error.message}`);
+    console.error(`Aura the Guillotine failed: ${error.message}`);
     process.exitCode = 1;
   }
 }

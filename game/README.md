@@ -1,4 +1,4 @@
-# README Raid
+# Aura the Guillotine
 
 A shared, asynchronous Frieren-versus-Aura battle for this GitHub profile. The game uses plain JavaScript, supplied character artwork composed into SVG scenes, GitHub Issues, and GitHub Actions. No hosted server, database, personal access token, or runtime dependencies are required.
 
@@ -128,15 +128,15 @@ Issues use `raid|<encounter>|<revision>|<action>`. Links carry the exact visible
 
 The Actions concurrency group uses `queue: max`, with no in-progress cancellation. GitHub currently permits up to 100 queued runs; additional submissions may need a manual retry. Ordinary issues, pull requests, and bots do not play. Editing or reopening an issue does not automatically trigger another run.
 
-Moves are committed atomically with the scene, README, and event log before feedback is posted. If feedback fails, rerunning the same issue repairs its existing bot comment and closes it without replaying the move. The battle image uses the plain file address. GitHub can still keep that picture for about five minutes after a turn. The Markdown status and issue result provide the textual state.
+Moves are committed atomically with the scene, README, and event log before feedback is posted. If feedback fails, rerunning the same issue repairs its existing bot comment and closes it without replaying the move. Each turn saves the scene under a new name, such as `battle-e1t5.svg`, so the profile loads that picture immediately. The Markdown status and issue result provide the textual state.
 
 ## Enable on GitHub
 
 1. Publish the game files and both raid workflows on the repository's default branch. The included game state starts at encounter 1, revision 0.
 2. Ensure Issues and GitHub Actions are enabled. Allow the official `actions/checkout` and `actions/setup-node` actions used by the workflows.
 3. The game workflow requests `contents: write` and `issues: write` through the built-in `GITHUB_TOKEN`. Repository or organization policy must permit these permissions and bot pushes to the default branch. If rules require pull requests for every change, adjust the policy deliberately before enabling the game.
-4. Wait for **README Raid checks** to pass, then choose Focus from the profile README and submit the prefilled issue.
-5. Verify that **README Raid** commits revision 1, posts a result, closes the issue, and updates the profile after refresh.
+4. Wait for **Aura the Guillotine checks** to pass, then choose Focus from the profile README and submit the prefilled issue.
+5. Verify that **Aura the Guillotine** commits revision 1, posts a result, closes the issue, and updates the profile after refresh.
 
 The check workflow has read-only permissions. No personal token or secret setup is needed under the supported repository policy. Existing profile content and the snake workflow are not modified by the game.
 
@@ -156,8 +156,8 @@ These are real public game turns and will appear in the issue history and lifeti
 
 ## Recovery
 
-Open **Actions → README Raid → Run workflow**, select the default branch, and enter the game issue number. This retries a missed run, failed push, or missing acknowledgment. Refresh the profile for a new action if the original turn is now stale. Do not edit the event log or decrement revisions to replay an issue.
+Open **Actions → Aura the Guillotine → Run workflow**, select the default branch, and enter the game issue number. This retries a missed run, failed push, or missing acknowledgment. Refresh the profile for a new action if the original turn is now stale. Do not edit the event log or decrement revisions to replay an issue.
 
 Failed workflow runs and still-open game issues are the operational signals. A persistence failure leaves the issue open; the job log reports the failure without dumping tokens or authenticated remote URLs. Missing/corrupt state, log revision mismatch, and malformed README markers stop processing rather than resetting a live battle.
 
-To stop the game, disable the **README Raid** workflow. To remove the visible section, delete its entire marked region; preserve state and event history if the game may return.
+To stop the game, disable the **Aura the Guillotine** workflow. To remove the visible section, delete its entire marked region; preserve state and event history if the game may return.
