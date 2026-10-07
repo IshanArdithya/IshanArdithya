@@ -1,16 +1,52 @@
 {
   "version": 6,
   "encounter": 1,
-  "revision": 4,
+  "revision": 5,
   "status": "active",
-  "turn": 4,
+  "turn": 5,
   "heroHp": 12,
-  "bossHp": 52,
+  "bossHp": 46,
   "charged": false,
   "wins": 0,
   "losses": 0,
   "previousResult": null,
   "recent": [
+    {
+      "issue": 6,
+      "player": "IshanArdithya",
+      "encounter": 1,
+      "revision": 5,
+      "action": "attack",
+      "turn": 5,
+      "baseDamage": 6,
+      "critical": false,
+      "rolledDamage": 6,
+      "damage": 6,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 30,
+      "enemyManaRestored": 0,
+      "enemyAction": "prepare",
+      "before": {
+        "heroHp": 12,
+        "bossHp": 52,
+        "heroMana": 140,
+        "bossMana": 45
+      },
+      "summary": "@IshanArdithya dealt 6 damage and took 0. Spent 10 mana. Aura spent 30 mana.",
+      "status": "active",
+      "heroHp": 12,
+      "bossHp": 46,
+      "heroMana": 130,
+      "bossMana": 15,
+      "guardCooldown": 0,
+      "ultimateCooldown": 5,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 5,
       "player": "IshanArdithya",
@@ -158,16 +194,16 @@
       "charged": false
     }
   ],
-  "heroMana": 140,
-  "bossMana": 45,
+  "heroMana": 130,
+  "bossMana": 15,
   "guardCooldown": 0,
-  "ultimateCooldown": 6,
+  "ultimateCooldown": 5,
   "ultimatePrepared": false,
   "players": {
-    "IshanArdithya": 3,
+    "IshanArdithya": 4,
     "SakinduD": 1
   },
-  "bossIntent": "focus",
+  "bossIntent": "prepare",
   "bossCharged": true,
-  "bossUltimatePrepared": false
+  "bossUltimatePrepared": true
 }
