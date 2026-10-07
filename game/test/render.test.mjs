@@ -86,8 +86,9 @@ test('square ability cards keep icon art in a PNG and labels as lettering', () =
   const section = renderSection(initialState());
   assert.equal([...section.matchAll(/width="23%"/g)].length, 4);
   assert.doesNotMatch(section, /<br>/);
-  assert.match(section, /<picture><img src="[^"]+frieren-portrait\.svg" width="64" height="64"/);
-  assert.match(section, /<picture><img src="[^"]+attack\.png" width="64" height="64"/);
+  assert.match(section, /<picture><img src="[^"]+frieren-portrait\.svg" width="64" alt=""/);
+  assert.match(section, /<picture><img src="[^"]+attack\.png" width="64" alt=""/);
+  assert.doesNotMatch(section, /attack\.png" width="64" height=/);
   assert.match(section, /aura-portrait\.svg/);
   assert.match(section, /<strong>Frieren<\/strong><\/p><p>26 HP \/ 240 MP/);
   assert.match(renderSection(initialState()), /battle-e1t0\.svg" width="100%"/);

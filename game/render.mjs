@@ -277,7 +277,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
     return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${xml(body)}</p>`;
   }).join('\n') : '<p>Starts with the first move.</p>';
   const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} | ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
-  const still = src => `<picture><img src="${src}" width="64" height="64" alt=""></picture>`;
+  const still = src => `<picture><img src="${src}" width="64" alt=""></picture>`;
   const ability = (icon, name, effect) => `<tr><td width="72" valign="top">${still(`${raw}/${icon}.png`)}</td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
   const pattern = (name, first, second) => `<td width="25%" valign="top"><p><strong>${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
   return `${START}

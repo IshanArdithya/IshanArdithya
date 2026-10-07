@@ -16,9 +16,9 @@
 <h3>Starting stats</h3>
 <table>
 <tr>
-<td width="72" valign="middle"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/frieren-portrait.svg" width="64" height="64" alt=""></picture></td>
+<td width="72" valign="middle"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/frieren-portrait.svg" width="64" alt=""></picture></td>
 <td valign="middle"><p><strong>Frieren</strong></p><p>26 HP / 240 MP</p></td>
-<td width="72" valign="middle"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/aura-portrait.svg" width="64" height="64" alt=""></picture></td>
+<td width="72" valign="middle"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/aura-portrait.svg" width="64" alt=""></picture></td>
 <td valign="middle"><p><strong>Aura</strong></p><p>100 HP / 40/60 MP</p></td>
 </tr>
 </table>
@@ -38,10 +38,10 @@
 ### Ability summary
 
 <table>
-<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.png" width="64" height="64" alt=""></picture></td><td valign="top"><p><strong>Attack</strong></p><p>5 - 7 damage for 10 mana; 14 - 18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</p></td></tr>
-<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.png" width="64" height="64" alt=""></picture></td><td valign="top"><p><strong>Guard</strong></p><p>Spend 15 mana to take at most 1 damage. Preserve Focus and ultimate preparation. Take one other turn before guarding again.</p></td></tr>
-<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.png" width="64" height="64" alt=""></picture></td><td valign="top"><p><strong>Focus</strong></p><p>Restore up to 40 mana and empower the next normal Attack. Mana can be refilled while focused. Focus does not prepare Ultimate.</p></td></tr>
-<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate.png" width="64" height="64" alt=""></picture></td><td valign="top"><p><strong>Prepare Ult / Cast Ult</strong></p><p>First spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown. No critical hits.</p></td></tr>
+<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.png" width="64" alt=""></picture></td><td valign="top"><p><strong>Attack</strong></p><p>5 - 7 damage for 10 mana; 14 - 18 for 20 mana when focused. 10% critical chance (×1.5, rounded down).</p></td></tr>
+<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.png" width="64" alt=""></picture></td><td valign="top"><p><strong>Guard</strong></p><p>Spend 15 mana to take at most 1 damage. Preserve Focus and ultimate preparation. Take one other turn before guarding again.</p></td></tr>
+<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.png" width="64" alt=""></picture></td><td valign="top"><p><strong>Focus</strong></p><p>Restore up to 40 mana and empower the next normal Attack. Mana can be refilled while focused. Focus does not prepare Ultimate.</p></td></tr>
+<tr><td width="72" valign="top"><picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate.png" width="64" alt=""></picture></td><td valign="top"><p><strong>Prepare Ult / Cast Ult</strong></p><p>First spend 80 mana to prepare; Aura responds. On a later turn, cast for 32 fixed damage at no further mana cost. Preparation persists through Attack, Guard, and Focus. Casting preserves Focus and starts a six-turn cooldown. No critical hits.</p></td></tr>
 </table>
 
 ### Enemy pattern
