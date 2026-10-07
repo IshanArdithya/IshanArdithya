@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: '24'
       - run: node --test game/test/*.test.mjs
+      - name: Install resvg
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/resvg.tar.gz" https://github.com/linebender/resvg/releases/download/v0.48.1/resvg-linux-x86_64.tar.gz
+          tar -xzf "$RUNNER_TEMP/resvg.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/resvg" --version
       - name: Check generated assets are current
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
