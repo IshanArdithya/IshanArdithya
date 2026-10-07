@@ -86,10 +86,11 @@ test('square ability cards keep icon art in a PNG and labels as lettering', () =
   const section = renderSection(initialState());
   assert.equal([...section.matchAll(/width="23%"/g)].length, 4);
   assert.doesNotMatch(section, /<br>/);
-  assert.match(section, /frieren-portrait\.svg/);
+  assert.match(section, /<picture><img src="[^"]+frieren-portrait\.svg" width="64" height="64"/);
+  assert.match(section, /<picture><img src="[^"]+attack\.png" width="64" height="64"/);
   assert.match(section, /aura-portrait\.svg/);
   assert.match(section, /<strong>Frieren<\/strong><\/p><p>26 HP \/ 240 MP/);
-  assert.match(renderSection(initialState()), /battle\.svg\)/);
+  assert.match(renderSection(initialState()), /battle\.svg" width="100%"/);
   assert.doesNotMatch(renderSection(initialState()), /battle\.svg\?v=/);
   assert.match(renderSection(initialState(), { repository: 'owner/repo', branch: 'trunk' }), /owner\/repo\/trunk\/game\/assets/);
 });

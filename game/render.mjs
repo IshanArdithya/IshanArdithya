@@ -273,14 +273,15 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
     return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${xml(body)}</p>`;
   }).join('\n') : '<p>Starts with the first move.</p>';
   const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} | ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
-  const ability = (icon, name, effect) => `<tr><td width="44" valign="top"><img src="${raw}/${icon}.png" width="32" height="32" alt=""></td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
+  const still = src => `<picture><img src="${src}" width="64" height="64" alt=""></picture>`;
+  const ability = (icon, name, effect) => `<tr><td width="72" valign="top">${still(`${raw}/${icon}.png`)}</td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
   const pattern = (name, first, second) => `<td width="25%" valign="top"><p><strong>${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
   return `${START}
 ## README Raid
 
 **Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
-![Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}](https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg)
+<picture><img src="https://raw.githubusercontent.com/${repository}/${encodeURIComponent(branch)}/game/assets/battle.svg" width="100%" alt="${xml(`Frieren ${state.heroHp}/${RULES.heroHp} HP; Aura ${state.bossHp}/${RULES.bossHp} HP; ${state.status}; ${state.charged ? 'attack focused' : 'attack normal'}; ultimate ${state.ultimatePrepared ? 'prepared' : 'not prepared'}`)}"></picture>
 
 ${controls}
 
@@ -293,9 +294,9 @@ ${controls}
 <h3>Starting stats</h3>
 <table>
 <tr>
-<td width="40" valign="middle"><img src="${raw}/frieren-portrait.svg" width="34" height="34" alt=""></td>
+<td width="72" valign="middle">${still(`${raw}/frieren-portrait.svg`)}</td>
 <td valign="middle"><p><strong>Frieren</strong></p><p>${RULES.heroHp} HP / ${RULES.heroMana} MP</p></td>
-<td width="40" valign="middle"><img src="${raw}/aura-portrait.svg" width="34" height="34" alt=""></td>
+<td width="72" valign="middle">${still(`${raw}/aura-portrait.svg`)}</td>
 <td valign="middle"><p><strong>Aura</strong></p><p>${RULES.bossHp} HP / ${RULES.bossStartMana}/${RULES.bossMana} MP</p></td>
 </tr>
 </table>
