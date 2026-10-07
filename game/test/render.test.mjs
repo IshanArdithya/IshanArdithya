@@ -75,11 +75,10 @@ test('square ability cards keep icon art in a PNG and labels as lettering', () =
     for (const kind of [action, `${action}-disabled`]) {
       const svg = renderButton(kind);
       assert.match(svg, /width="128" height="128" viewBox="0 0 128 128"/);
-      assert.match(svg, new RegExp(`href="${action}\\.png"`));
+      assert.match(svg, new RegExp(`href="${kind}\\.png"`));
       assert.match(svg, /data-lettering="/);
-      assert.doesNotMatch(svg, /id="arcane-|<script/);
+      assert.doesNotMatch(svg, /id="arcane-|<script|muted-icon/);
       for (const [, href] of svg.matchAll(/\bhref="#([^"]+)"/g)) assert.match(href, /^letter-/);
-      assert.equal(svg.includes('filter="url(#muted-icon)"'), kind.endsWith('-disabled'));
     }
   }
   assert.match(renderButton('ultimate'), /ZOLTRAAK \(PREP\)/);

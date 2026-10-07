@@ -216,8 +216,7 @@ export function buttonKind(state, action) {
   return actionUnavailable(state, action) ? `${kind}-disabled` : kind;
 }
 export function buttonIcon(action) {
-  const base = action.endsWith('-disabled') ? action.slice(0, -9) : action;
-  return base === 'restart' ? null : `${base}.png`;
+  return action === 'restart' ? null : `${action}.png`;
 }
 export const BUTTON_ASSETS = [...ACTIONS, ...ACTIONS.map(a => `${a}-disabled`), 'ultimate-cast', 'ultimate-cast-disabled', 'restart'];
 export function renderButton(action, iconHref = buttonIcon(action)) {
@@ -238,11 +237,10 @@ export function renderButton(action, iconHref = buttonIcon(action)) {
   const label = lettering.text(64,115,config[0],18,disabled ? '#9aa5b5' : '#f3e6cb','text-anchor="middle"',112);
   const badge = config[2] ? `<g data-phase-badge="${config[2]}"><path d="M78 6h40v2h2v15h-2v2H78v-2h-2V8h2z" fill="#171c2c" stroke="${color}" shape-rendering="crispEdges"/>${lettering.text(98,20,config[2],12,disabled ? '#9aa5b5' : '#f0deff','text-anchor="middle"',36)}</g>` : '';
   const title = `${config[0]}${config[2] ? ` (${config[2]})` : ''}${disabled ? ' unavailable' : ''}`;
-  const muted = disabled ? '<defs><filter id="muted-icon" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/></filter></defs>' : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="${xml(title)}" data-action-card="${base}">
 <title>${xml(title)}</title><rect x="1" y="1" width="126" height="126" rx="5" fill="#131d2a" stroke="${disabled ? '#435063' : '#897754'}"/>
 <path d="M8 3h112" stroke="${color}" opacity=".7"/>
-${muted}<image href="${xml(iconHref)}" x="18" y="5" width="92" height="92" preserveAspectRatio="xMidYMid meet"${disabled ? ' filter="url(#muted-icon)" opacity=".45"' : ''}/>
+<image href="${xml(iconHref)}" x="18" y="5" width="92" height="92" preserveAspectRatio="xMidYMid meet"/>
 ${lettering.definitions()}${label}${badge}</svg>\n`;
 }
 

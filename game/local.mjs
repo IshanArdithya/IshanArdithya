@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 const files = new Map([
-  ...['attack', 'guard', 'focus', 'ultimate', 'ultimate-cast'].map(name => [`/assets/${name}.png`, [`assets/${name}.png`, 'image/png']]),
+  ...['attack', 'guard', 'focus', 'ultimate', 'ultimate-cast'].flatMap(name => [name, `${name}-disabled`].map(file => [`/assets/${file}.png`, [`assets/${file}.png`, 'image/png']])),
   ['/assets/restart.svg', ['assets/restart.svg', 'image/svg+xml']],
   ['/', ['local.html', 'text/html']],
   ['/local-client.mjs', ['local-client.mjs', 'text/javascript']],

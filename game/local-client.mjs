@@ -1,6 +1,6 @@
 import { TURN_TIMING as T, turnPlayback } from './playback.mjs';
 import { initialState, RULES, ACTIONS, actionUnavailable, transition } from './engine.mjs';
-import { renderScene, renderButton, buttonKind, actionDescription } from './render.mjs';
+import { renderScene, renderButton, buttonKind, buttonIcon, actionDescription } from './render.mjs';
 import { HUD_PORTRAITS } from './hud-source.mjs';
 
 let state = initialState();
@@ -93,7 +93,7 @@ function render({ scene = true } = {}) {
       button.textContent = 'Next encounter →';
     } else {
       const kind = buttonKind(state, action);
-      button.insertAdjacentHTML('beforeend', renderButton(kind, `/assets/${kind.replace(/-disabled$/, '')}.png`));
+      button.insertAdjacentHTML('beforeend', renderButton(kind, `/assets/${buttonIcon(kind)}`));
     }
     button.addEventListener('click', () => play(action));
     element('actions').append(button);
