@@ -100,15 +100,15 @@ test('top 10 ranks visitors by accepted turns and omits the profile owner', () =
   assert.match(renderSection(initialState()), /No visitor turns yet/);
   const state = { ...initialState(), players: { IshanArdithya: 9, ishanardithya: 4, SakinduD: 1, visitor: 3 } };
   const section = renderSection(state);
-  assert.match(section, /<td>1<\/td><td>@visitor<\/td><td>3 turns<\/td>/);
-  assert.match(section, /<td>2<\/td><td>@SakinduD<\/td><td>1 turn<\/td>/);
+  assert.match(section, /<td>1<\/td><td><a href="https:\/\/github.com\/visitor">@visitor<\/a><\/td><td>3 turns<\/td>/);
+  assert.match(section, /<td>2<\/td><td><a href="https:\/\/github.com\/SakinduD">@SakinduD<\/a><\/td><td>1 turn<\/td>/);
   assert.doesNotMatch(section, /@IshanArdithya|@ishanardithya/);
   const players = { owner: 100 };
   for (let index = 0; index < 12; index++) players[`player${String(index).padStart(2, '0')}`] = 20 - index;
   const board = renderSection({ ...initialState(), players }, { repository: 'owner/repo' });
   assert.doesNotMatch(board, /@owner/);
-  assert.equal([...board.matchAll(/<td>@player/g)].length, 10);
-  assert.match(board, /<td>1<\/td><td>@player00<\/td><td>20 turns<\/td>/);
+  assert.equal([...board.matchAll(/<td><a href="https:\/\/github.com\/player/g)].length, 10);
+  assert.match(board, /<td>1<\/td><td><a href="https:\/\/github.com\/player00">@player00<\/a><\/td><td>20 turns<\/td>/);
   assert.doesNotMatch(board, /@player1[01]/);
 });
 
@@ -136,7 +136,7 @@ test('ultimate controls use phase-specific assets but the same revisioned action
   assert.match(renderScene(all.prepared),/data-effect="ultimate-preparation"/);
   assert.doesNotMatch(renderScene(all.prepared),/data-effect="unleashed-zoltraak"/);
   assert.match(renderSection(initialState()), /<h3>Recent moves<\/h3>\n<p>Starts with the first move\.<\/p>/);
-  assert.match(renderSection(all.charged), /<a href="https:\/\/github.com\/IshanArdithya\/IshanArdithya\/issues\/1">Turn 1<\/a> · @visitor /);
+  assert.match(renderSection(all.charged), /<a href="https:\/\/github.com\/IshanArdithya\/IshanArdithya\/issues\/1">Turn 1<\/a> · <a href="https:\/\/github.com\/visitor">@visitor<\/a> /);
   assert.doesNotMatch(renderSection(all.charged), /\[Turn 1 · @visitor\]/);
   assert.doesNotMatch(renderScene(all.charged),/data-lettering="(?:ATTACK:|CD ·|NEXT:)/);
   assert.match(renderSection(all.ready),/%7Cfocus&/);

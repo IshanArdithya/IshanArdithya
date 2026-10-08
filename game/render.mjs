@@ -270,11 +270,12 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
   const unavailable = active ? ACTIONS.filter(a => actionUnavailable(state, a)).map(a => `${a}: ${actionUnavailable(state, a)}`).join(' ') : '';
   const outcome = active ? '' : `<p><strong>${state.status === 'victory' ? 'Victory! The forest is safe.' : 'Defeat. Frieren will rise again.'}</strong> Choose Play Again for a fresh encounter.</p>\n`;
   const moves = state.recent.filter(event => event.encounter === state.encounter);
+  const playerLink = login => `<a href="${xml(`https://github.com/${login}`)}">@${xml(login)}</a>`;
   const history = moves.length ? moves.map(event => {
     const label = event.action === 'restart' ? 'New encounter' : `Turn ${event.turn}`;
     const mention = `@${event.player}`;
-    const body = event.summary.startsWith(`${mention} `) ? event.summary : `${mention} ${event.summary}`;
-    return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${xml(body)}</p>`;
+    const rest = event.summary.startsWith(`${mention} `) ? event.summary.slice(mention.length) : ` ${event.summary}`;
+    return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${playerLink(event.player)}${xml(rest)}</p>`;
   }).join('\n') : '<p>Starts with the first move.</p>';
   const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} | ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
   const owner = repository.split('/')[0].toLowerCase();
@@ -283,7 +284,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, 10);
   const leaderboard = ranked.length
-    ? `<table>\n${ranked.map(([login, count], index) => `<tr><td>${index + 1}</td><td>@${xml(login)}</td><td>${count} ${count === 1 ? 'turn' : 'turns'}</td></tr>`).join('\n')}\n</table>`
+    ? `<table>\n${ranked.map(([login, count], index) => `<tr><td>${index + 1}</td><td>${playerLink(login)}</td><td>${count} ${count === 1 ? 'turn' : 'turns'}</td></tr>`).join('\n')}\n</table>`
     : '<p>No visitor turns yet.</p>';
   const still = src => `<picture><img src="${src}" width="64" alt=""></picture>`;
   const ability = (icon, name, effect) => `<tr><td width="72" valign="top">${still(`${raw}/${icon}.png`)}</td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;

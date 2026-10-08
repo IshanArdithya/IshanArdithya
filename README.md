@@ -27,11 +27,11 @@
 </td>
 <td width="50%" valign="top">
 <h3>Recent moves</h3>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/15">Turn 4</a> · @IshanDilmith cast Unleashed Zoltraak and dealt 16 damage (Aura guarded 16) and took 0. Aura spent 15 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/14">Turn 3</a> · @IshanDilmith prepared Unleashed Zoltraak and took 0. Spent 80 mana. Aura restored 35 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/13">Turn 2</a> · @IshanDilmith guarded, blocking 9 damage and took 1. Spent 15 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/12">Turn 1</a> · @IshanDilmith dealt 10 damage (critical!) and took 0. Spent 10 mana. Aura spent 30 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/11">New encounter</a> · @IshanArdithya began encounter 2.</p>
+<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/15">Turn 4</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> cast Unleashed Zoltraak and dealt 16 damage (Aura guarded 16) and took 0. Aura spent 15 mana.</p>
+<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/14">Turn 3</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> prepared Unleashed Zoltraak and took 0. Spent 80 mana. Aura restored 35 mana.</p>
+<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/13">Turn 2</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> guarded, blocking 9 damage and took 1. Spent 15 mana.</p>
+<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/12">Turn 1</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> dealt 10 damage (critical!) and took 0. Spent 10 mana. Aura spent 30 mana.</p>
+<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/11">New encounter</a> · <a href="https://github.com/IshanArdithya">@IshanArdithya</a> began encounter 2.</p>
 </td>
 </tr>
 </table>
@@ -39,7 +39,8 @@
 ### Top 10
 
 <table>
-<tr><td>1</td><td>@SakinduD</td><td>1 turn</td></tr>
+<tr><td>1</td><td><a href="https://github.com/IshanDilmith">@IshanDilmith</a></td><td>4 turns</td></tr>
+<tr><td>2</td><td><a href="https://github.com/SakinduD">@SakinduD</a></td><td>1 turn</td></tr>
 </table>
 
 ### Ability summary
