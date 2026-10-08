@@ -1,18 +1,18 @@
 {
   "version": 6,
   "encounter": 2,
-  "revision": 13,
+  "revision": 14,
   "status": "active",
-  "turn": 3,
+  "turn": 4,
   "heroHp": 25,
-  "bossHp": 90,
+  "bossHp": 74,
   "heroMana": 135,
-  "bossMana": 45,
+  "bossMana": 30,
   "guardCooldown": 0,
-  "ultimateCooldown": 0,
-  "ultimatePrepared": true,
+  "ultimateCooldown": 6,
+  "ultimatePrepared": false,
   "charged": false,
-  "bossIntent": "focus",
+  "bossIntent": "guard",
   "bossCharged": true,
   "bossUltimatePrepared": false,
   "wins": 0,
@@ -23,6 +23,43 @@
     "turns": 9
   },
   "recent": [
+    {
+      "issue": 15,
+      "player": "IshanDilmith",
+      "encounter": 2,
+      "revision": 14,
+      "action": "ultimate",
+      "turn": 4,
+      "baseDamage": 32,
+      "critical": false,
+      "rolledDamage": 32,
+      "damage": 16,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 16,
+      "manaSpent": 0,
+      "manaRestored": 0,
+      "enemyManaSpent": 15,
+      "enemyManaRestored": 0,
+      "enemyAction": "guard",
+      "ultimatePhase": "cast",
+      "before": {
+        "heroHp": 25,
+        "bossHp": 90,
+        "heroMana": 135,
+        "bossMana": 45
+      },
+      "summary": "@IshanDilmith cast Unleashed Zoltraak and dealt 16 damage (Aura guarded 16) and took 0. Aura spent 15 mana.",
+      "status": "active",
+      "heroHp": 25,
+      "bossHp": 74,
+      "heroMana": 135,
+      "bossMana": 30,
+      "guardCooldown": 0,
+      "ultimateCooldown": 6,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 14,
       "player": "IshanDilmith",
@@ -166,6 +203,6 @@
   "players": {
     "IshanArdithya": 9,
     "SakinduD": 1,
-    "IshanDilmith": 3
+    "IshanDilmith": 4
   }
 }
