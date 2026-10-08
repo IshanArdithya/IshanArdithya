@@ -27,11 +27,11 @@
 </td>
 <td width="50%" valign="top">
 <h3>Recent moves</h3>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/15">Turn 4</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> cast Unleashed Zoltraak and dealt 16 damage (Aura guarded 16) and took 0. Aura spent 15 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/14">Turn 3</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> prepared Unleashed Zoltraak and took 0. Spent 80 mana. Aura restored 35 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/13">Turn 2</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> guarded, blocking 9 damage and took 1. Spent 15 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/12">Turn 1</a> · <a href="https://github.com/IshanDilmith">@IshanDilmith</a> dealt 10 damage (critical!) and took 0. Spent 10 mana. Aura spent 30 mana.</p>
-<p><a href="https://github.com/IshanArdithya/IshanArdithya/issues/11">New encounter</a> · <a href="https://github.com/IshanArdithya">@IshanArdithya</a> began encounter 2.</p>
+<p><strong>Turn 4</strong> | <a href="https://github.com/IshanDilmith">@IshanDilmith</a> cast Unleashed Zoltraak and dealt 16 damage (Aura guarded 16) and took 0. Aura spent 15 mana.</p>
+<p><strong>Turn 3</strong> | <a href="https://github.com/IshanDilmith">@IshanDilmith</a> prepared Unleashed Zoltraak and took 0. Spent 80 mana. Aura restored 35 mana.</p>
+<p><strong>Turn 2</strong> | <a href="https://github.com/IshanDilmith">@IshanDilmith</a> guarded, blocking 9 damage and took 1. Spent 15 mana.</p>
+<p><strong>Turn 1</strong> | <a href="https://github.com/IshanDilmith">@IshanDilmith</a> dealt 10 damage (critical!) and took 0. Spent 10 mana. Aura spent 30 mana.</p>
+<p><strong>New encounter</strong> | <a href="https://github.com/IshanArdithya">@IshanArdithya</a> began encounter 2.</p>
 </td>
 </tr>
 </table>

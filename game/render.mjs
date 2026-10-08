@@ -275,7 +275,7 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
     const label = event.action === 'restart' ? 'New encounter' : `Turn ${event.turn}`;
     const mention = `@${event.player}`;
     const rest = event.summary.startsWith(`${mention} `) ? event.summary.slice(mention.length) : ` ${event.summary}`;
-    return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${playerLink(event.player)}${xml(rest)}</p>`;
+    return `<p><strong>${xml(label)}</strong> | ${playerLink(event.player)}${xml(rest)}</p>`;
   }).join('\n') : '<p>Starts with the first move.</p>';
   const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} | ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
   const owner = repository.split('/')[0].toLowerCase();

@@ -136,8 +136,8 @@ test('ultimate controls use phase-specific assets but the same revisioned action
   assert.match(renderScene(all.prepared),/data-effect="ultimate-preparation"/);
   assert.doesNotMatch(renderScene(all.prepared),/data-effect="unleashed-zoltraak"/);
   assert.match(renderSection(initialState()), /<h3>Recent moves<\/h3>\n<p>Starts with the first move\.<\/p>/);
-  assert.match(renderSection(all.charged), /<a href="https:\/\/github.com\/IshanArdithya\/IshanArdithya\/issues\/1">Turn 1<\/a> · <a href="https:\/\/github.com\/visitor">@visitor<\/a> /);
-  assert.doesNotMatch(renderSection(all.charged), /\[Turn 1 · @visitor\]/);
+  assert.match(renderSection(all.charged), /<strong>Turn 1<\/strong> \| <a href="https:\/\/github.com\/visitor">@visitor<\/a> /);
+  assert.doesNotMatch(renderSection(all.charged), /issues\/1">Turn 1/);
   assert.doesNotMatch(renderScene(all.charged),/data-lettering="(?:ATTACK:|CD ·|NEXT:)/);
   assert.match(renderSection(all.ready),/%7Cfocus&/);
   assert.doesNotMatch(renderSection(all.ready),/%7Ccharge&/);
