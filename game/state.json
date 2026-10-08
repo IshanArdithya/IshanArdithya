@@ -1,19 +1,19 @@
 {
   "version": 6,
   "encounter": 2,
-  "revision": 12,
+  "revision": 13,
   "status": "active",
-  "turn": 2,
+  "turn": 3,
   "heroHp": 25,
   "bossHp": 90,
-  "heroMana": 215,
-  "bossMana": 10,
-  "guardCooldown": 1,
+  "heroMana": 135,
+  "bossMana": 45,
+  "guardCooldown": 0,
   "ultimateCooldown": 0,
-  "ultimatePrepared": false,
+  "ultimatePrepared": true,
   "charged": false,
-  "bossIntent": "cast",
-  "bossCharged": false,
+  "bossIntent": "focus",
+  "bossCharged": true,
   "bossUltimatePrepared": false,
   "wins": 0,
   "losses": 1,
@@ -23,6 +23,43 @@
     "turns": 9
   },
   "recent": [
+    {
+      "issue": 14,
+      "player": "IshanDilmith",
+      "encounter": 2,
+      "revision": 13,
+      "action": "ultimate",
+      "turn": 3,
+      "baseDamage": 0,
+      "critical": false,
+      "rolledDamage": 0,
+      "damage": 0,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 80,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 35,
+      "enemyAction": "focus",
+      "ultimatePhase": "prepare",
+      "before": {
+        "heroHp": 25,
+        "bossHp": 90,
+        "heroMana": 215,
+        "bossMana": 10
+      },
+      "summary": "@IshanDilmith prepared Unleashed Zoltraak and took 0. Spent 80 mana. Aura restored 35 mana.",
+      "status": "active",
+      "heroHp": 25,
+      "bossHp": 90,
+      "heroMana": 135,
+      "bossMana": 45,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 13,
       "player": "IshanDilmith",
@@ -129,6 +166,6 @@
   "players": {
     "IshanArdithya": 9,
     "SakinduD": 1,
-    "IshanDilmith": 2
+    "IshanDilmith": 3
   }
 }
