@@ -96,6 +96,22 @@ test('square ability cards keep icon art in a PNG and labels as lettering', () =
   assert.match(renderSection(initialState(), { repository: 'owner/repo', branch: 'trunk' }), /owner\/repo\/trunk\/game\/assets/);
 });
 
+test('top 10 ranks visitors by accepted turns and omits the profile owner', () => {
+  assert.match(renderSection(initialState()), /No visitor turns yet/);
+  const state = { ...initialState(), players: { IshanArdithya: 9, ishanardithya: 4, SakinduD: 1, visitor: 3 } };
+  const section = renderSection(state);
+  assert.match(section, /<td>1<\/td><td>@visitor<\/td><td>3 turns<\/td>/);
+  assert.match(section, /<td>2<\/td><td>@SakinduD<\/td><td>1 turn<\/td>/);
+  assert.doesNotMatch(section, /@IshanArdithya|@ishanardithya/);
+  const players = { owner: 100 };
+  for (let index = 0; index < 12; index++) players[`player${String(index).padStart(2, '0')}`] = 20 - index;
+  const board = renderSection({ ...initialState(), players }, { repository: 'owner/repo' });
+  assert.doesNotMatch(board, /@owner/);
+  assert.equal([...board.matchAll(/<td>@player/g)].length, 10);
+  assert.match(board, /<td>1<\/td><td>@player00<\/td><td>20 turns<\/td>/);
+  assert.doesNotMatch(board, /@player1[01]/);
+});
+
 test('mana, ultimate effects, fallback intent, and unavailable actions appear in the rendered state', () => {
   const all=fixtures();
   assert.match(renderScene(all.ultimate), /data-effect="unleashed-zoltraak"/);

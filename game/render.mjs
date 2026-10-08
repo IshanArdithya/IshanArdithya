@@ -277,6 +277,14 @@ export function renderSection(state, { repository = DEFAULT_REPOSITORY, branch =
     return `<p><a href="${xml(`https://github.com/${repository}/issues/${event.issue}`)}">${xml(label)}</a> · ${xml(body)}</p>`;
   }).join('\n') : '<p>Starts with the first move.</p>';
   const record = `${state.wins} ${state.wins === 1 ? 'victory' : 'victories'} | ${state.losses} ${state.losses === 1 ? 'defeat' : 'defeats'}`;
+  const owner = repository.split('/')[0].toLowerCase();
+  const ranked = Object.entries(state.players)
+    .filter(([login]) => login.toLowerCase() !== owner)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 10);
+  const leaderboard = ranked.length
+    ? `<table>\n${ranked.map(([login, count], index) => `<tr><td>${index + 1}</td><td>@${xml(login)}</td><td>${count} ${count === 1 ? 'turn' : 'turns'}</td></tr>`).join('\n')}\n</table>`
+    : '<p>No visitor turns yet.</p>';
   const still = src => `<picture><img src="${src}" width="64" alt=""></picture>`;
   const ability = (icon, name, effect) => `<tr><td width="72" valign="top">${still(`${raw}/${icon}.png`)}</td><td valign="top"><p><strong>${name}</strong></p><p>${effect}</p></td></tr>`;
   const pattern = (name, first, second) => `<td width="25%" valign="top"><p><strong>${name}</strong></p><p>${first}</p><p>${second}</p></td>`;
@@ -311,6 +319,10 @@ ${history}
 </td>
 </tr>
 </table>
+
+### Top 10
+
+${leaderboard}
 
 ### Ability summary
 
