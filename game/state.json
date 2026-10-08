@@ -1,20 +1,20 @@
 {
   "version": 6,
   "encounter": 2,
-  "revision": 10,
+  "revision": 11,
   "status": "active",
-  "turn": 0,
+  "turn": 1,
   "heroHp": 26,
-  "bossHp": 100,
-  "heroMana": 240,
-  "bossMana": 40,
+  "bossHp": 90,
+  "heroMana": 230,
+  "bossMana": 10,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": false,
   "charged": false,
-  "bossIntent": null,
+  "bossIntent": "prepare",
   "bossCharged": false,
-  "bossUltimatePrepared": false,
+  "bossUltimatePrepared": true,
   "wins": 0,
   "losses": 1,
   "previousResult": {
@@ -23,6 +23,42 @@
     "turns": 9
   },
   "recent": [
+    {
+      "issue": 12,
+      "player": "IshanDilmith",
+      "encounter": 2,
+      "revision": 11,
+      "action": "attack",
+      "turn": 1,
+      "baseDamage": 7,
+      "critical": true,
+      "rolledDamage": 10,
+      "damage": 10,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 30,
+      "enemyManaRestored": 0,
+      "enemyAction": "prepare",
+      "before": {
+        "heroHp": 26,
+        "bossHp": 100,
+        "heroMana": 240,
+        "bossMana": 40
+      },
+      "summary": "@IshanDilmith dealt 10 damage (critical!) and took 0. Spent 10 mana. Aura spent 30 mana.",
+      "status": "active",
+      "heroHp": 26,
+      "bossHp": 90,
+      "heroMana": 230,
+      "bossMana": 10,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 11,
       "player": "IshanArdithya",
@@ -56,6 +92,7 @@
   ],
   "players": {
     "IshanArdithya": 9,
-    "SakinduD": 1
+    "SakinduD": 1,
+    "IshanDilmith": 1
   }
 }
