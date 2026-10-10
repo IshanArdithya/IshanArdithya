@@ -1,18 +1,18 @@
 {
   "version": 6,
   "encounter": 2,
-  "revision": 21,
+  "revision": 22,
   "status": "active",
-  "turn": 11,
+  "turn": 12,
   "heroHp": 9,
-  "bossHp": 49,
-  "heroMana": 30,
-  "bossMana": 50,
+  "bossHp": 46,
+  "heroMana": 20,
+  "bossMana": 35,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": true,
   "charged": false,
-  "bossIntent": "focus",
+  "bossIntent": "guard",
   "bossCharged": true,
   "bossUltimatePrepared": false,
   "wins": 0,
@@ -23,6 +23,42 @@
     "turns": 9
   },
   "recent": [
+    {
+      "issue": 23,
+      "player": "roosaramendis",
+      "encounter": 2,
+      "revision": 22,
+      "action": "attack",
+      "turn": 12,
+      "baseDamage": 5,
+      "critical": false,
+      "rolledDamage": 5,
+      "damage": 3,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 2,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 15,
+      "enemyManaRestored": 0,
+      "enemyAction": "guard",
+      "before": {
+        "heroHp": 9,
+        "bossHp": 49,
+        "heroMana": 30,
+        "bossMana": 50
+      },
+      "summary": "@roosaramendis dealt 3 damage (Aura guarded 2) and took 0. Spent 10 mana. Aura spent 15 mana.",
+      "status": "active",
+      "heroHp": 9,
+      "bossHp": 46,
+      "heroMana": 20,
+      "bossMana": 35,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 22,
       "player": "roosaramendis",
@@ -167,42 +203,6 @@
       "ultimateCooldown": 2,
       "ultimatePrepared": false,
       "charged": false
-    },
-    {
-      "issue": 18,
-      "player": "HirushaDheemantha",
-      "encounter": 2,
-      "revision": 17,
-      "action": "attack",
-      "turn": 7,
-      "baseDamage": 6,
-      "critical": false,
-      "rolledDamage": 6,
-      "damage": 6,
-      "incoming": 8,
-      "blocked": 0,
-      "enemyBlocked": 0,
-      "manaSpent": 10,
-      "manaRestored": 0,
-      "enemyManaSpent": 0,
-      "enemyManaRestored": 0,
-      "enemyAction": "attack",
-      "before": {
-        "heroHp": 17,
-        "bossHp": 67,
-        "heroMana": 110,
-        "bossMana": 60
-      },
-      "summary": "@HirushaDheemantha dealt 6 damage and took 8. Spent 10 mana.",
-      "status": "active",
-      "heroHp": 9,
-      "bossHp": 61,
-      "heroMana": 100,
-      "bossMana": 60,
-      "guardCooldown": 0,
-      "ultimateCooldown": 3,
-      "ultimatePrepared": false,
-      "charged": false
     }
   ],
   "players": {
@@ -210,6 +210,6 @@
     "SakinduD": 1,
     "IshanDilmith": 4,
     "HirushaDheemantha": 3,
-    "roosaramendis": 4
+    "roosaramendis": 5
   }
 }
