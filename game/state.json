@@ -1,14 +1,14 @@
 {
   "version": 6,
   "encounter": 2,
-  "revision": 22,
+  "revision": 23,
   "status": "active",
-  "turn": 12,
+  "turn": 13,
   "heroHp": 9,
   "bossHp": 46,
-  "heroMana": 20,
-  "bossMana": 35,
-  "guardCooldown": 0,
+  "heroMana": 5,
+  "bossMana": 20,
+  "guardCooldown": 1,
   "ultimateCooldown": 0,
   "ultimatePrepared": true,
   "charged": false,
@@ -23,6 +23,42 @@
     "turns": 9
   },
   "recent": [
+    {
+      "issue": 24,
+      "player": "roosaramendis",
+      "encounter": 2,
+      "revision": 23,
+      "action": "guard",
+      "turn": 13,
+      "baseDamage": 0,
+      "critical": false,
+      "rolledDamage": 0,
+      "damage": 0,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 15,
+      "manaRestored": 0,
+      "enemyManaSpent": 15,
+      "enemyManaRestored": 0,
+      "enemyAction": "guard",
+      "before": {
+        "heroHp": 9,
+        "bossHp": 46,
+        "heroMana": 20,
+        "bossMana": 35
+      },
+      "summary": "@roosaramendis guarded, blocking 0 damage and took 0. Spent 15 mana. Aura spent 15 mana.",
+      "status": "active",
+      "heroHp": 9,
+      "bossHp": 46,
+      "heroMana": 5,
+      "bossMana": 20,
+      "guardCooldown": 1,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 23,
       "player": "roosaramendis",
@@ -167,42 +203,6 @@
       "ultimateCooldown": 1,
       "ultimatePrepared": false,
       "charged": true
-    },
-    {
-      "issue": 19,
-      "player": "roosaramendis",
-      "encounter": 2,
-      "revision": 18,
-      "action": "attack",
-      "turn": 8,
-      "baseDamage": 5,
-      "critical": true,
-      "rolledDamage": 7,
-      "damage": 4,
-      "incoming": 0,
-      "blocked": 0,
-      "enemyBlocked": 3,
-      "manaSpent": 10,
-      "manaRestored": 0,
-      "enemyManaSpent": 15,
-      "enemyManaRestored": 0,
-      "enemyAction": "guard",
-      "before": {
-        "heroHp": 9,
-        "bossHp": 61,
-        "heroMana": 100,
-        "bossMana": 60
-      },
-      "summary": "@roosaramendis dealt 4 damage (critical!) (Aura guarded 3) and took 0. Spent 10 mana. Aura spent 15 mana.",
-      "status": "active",
-      "heroHp": 9,
-      "bossHp": 57,
-      "heroMana": 90,
-      "bossMana": 45,
-      "guardCooldown": 0,
-      "ultimateCooldown": 2,
-      "ultimatePrepared": false,
-      "charged": false
     }
   ],
   "players": {
@@ -210,6 +210,6 @@
     "SakinduD": 1,
     "IshanDilmith": 4,
     "HirushaDheemantha": 3,
-    "roosaramendis": 5
+    "roosaramendis": 6
   }
 }
