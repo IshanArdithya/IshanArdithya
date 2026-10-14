@@ -1,3 +1,5 @@
+If you took a turn against Aura, a ⭐ on [this repo](https://github.com/IshanArdithya/IshanArdithya) helps more people find the fight.
+
 <!-- README-RAID:START -->
 ## Aura the Guillotine
 
@@ -79,3 +81,5 @@ Cooldowns do not tick while nobody plays. Invalid actions, stale links, and retr
 
 </details>
 <!-- README-RAID:END -->
+
+More of my work: [ishanardithya.com](https://ishanardithya.com/)
