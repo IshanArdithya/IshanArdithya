@@ -1,13 +1,13 @@
 {
   "version": 6,
   "encounter": 3,
-  "revision": 41,
+  "revision": 42,
   "status": "active",
-  "turn": 8,
+  "turn": 9,
   "heroHp": 23,
-  "bossHp": 78,
-  "heroMana": 75,
-  "bossMana": 35,
+  "bossHp": 75,
+  "heroMana": 65,
+  "bossMana": 20,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": true,
@@ -23,6 +23,42 @@
     "turns": 22
   },
   "recent": [
+    {
+      "issue": 43,
+      "player": "hesreallyhim",
+      "encounter": 3,
+      "revision": 42,
+      "action": "attack",
+      "turn": 9,
+      "baseDamage": 5,
+      "critical": false,
+      "rolledDamage": 5,
+      "damage": 3,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 2,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 15,
+      "enemyManaRestored": 0,
+      "enemyAction": "guard",
+      "before": {
+        "heroHp": 23,
+        "bossHp": 78,
+        "heroMana": 75,
+        "bossMana": 35
+      },
+      "summary": "@hesreallyhim dealt 3 damage (Aura guarded 2) and took 0. Spent 10 mana. Aura spent 15 mana.",
+      "status": "active",
+      "heroHp": 23,
+      "bossHp": 75,
+      "heroMana": 65,
+      "bossMana": 20,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 42,
       "player": "hesreallyhim",
@@ -167,42 +203,6 @@
       "ultimateCooldown": 0,
       "ultimatePrepared": false,
       "charged": false
-    },
-    {
-      "issue": 38,
-      "player": "sheiksabah",
-      "encounter": 3,
-      "revision": 37,
-      "action": "guard",
-      "turn": 4,
-      "baseDamage": 0,
-      "critical": false,
-      "rolledDamage": 0,
-      "damage": 0,
-      "incoming": 1,
-      "blocked": 7,
-      "enemyBlocked": 0,
-      "manaSpent": 15,
-      "manaRestored": 0,
-      "enemyManaSpent": 0,
-      "enemyManaRestored": 0,
-      "enemyAction": "attack",
-      "before": {
-        "heroHp": 25,
-        "bossHp": 88,
-        "heroMana": 205,
-        "bossMana": 45
-      },
-      "summary": "@sheiksabah guarded, blocking 7 damage and took 1. Spent 15 mana.",
-      "status": "active",
-      "heroHp": 24,
-      "bossHp": 88,
-      "heroMana": 190,
-      "bossMana": 45,
-      "guardCooldown": 1,
-      "ultimateCooldown": 0,
-      "ultimatePrepared": false,
-      "charged": false
     }
   ],
   "players": {
@@ -213,6 +213,6 @@
     "roosaramendis": 15,
     "sheiksabah": 1,
     "PushoDev": 1,
-    "hesreallyhim": 1
+    "hesreallyhim": 2
   }
 }
