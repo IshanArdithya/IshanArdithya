@@ -1,19 +1,19 @@
 {
   "version": 6,
   "encounter": 4,
-  "revision": 56,
+  "revision": 57,
   "status": "active",
-  "turn": 0,
+  "turn": 1,
   "heroHp": 26,
-  "bossHp": 100,
-  "heroMana": 240,
-  "bossMana": 40,
+  "bossHp": 95,
+  "heroMana": 230,
+  "bossMana": 60,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": false,
   "charged": false,
-  "bossIntent": null,
-  "bossCharged": false,
+  "bossIntent": "focus",
+  "bossCharged": true,
   "bossUltimatePrepared": false,
   "wins": 2,
   "losses": 1,
@@ -23,6 +23,42 @@
     "turns": 22
   },
   "recent": [
+    {
+      "issue": 58,
+      "player": "xaurluv",
+      "encounter": 4,
+      "revision": 57,
+      "action": "attack",
+      "turn": 1,
+      "baseDamage": 5,
+      "critical": false,
+      "rolledDamage": 5,
+      "damage": 5,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 20,
+      "enemyAction": "focus",
+      "before": {
+        "heroHp": 26,
+        "bossHp": 100,
+        "heroMana": 240,
+        "bossMana": 40
+      },
+      "summary": "@xaurluv dealt 5 damage and took 0. Spent 10 mana. Aura restored 20 mana.",
+      "status": "active",
+      "heroHp": 26,
+      "bossHp": 95,
+      "heroMana": 230,
+      "bossMana": 60,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 57,
       "player": "IshanArdithya",
@@ -62,6 +98,7 @@
     "roosaramendis": 15,
     "sheiksabah": 1,
     "PushoDev": 1,
-    "hesreallyhim": 2
+    "hesreallyhim": 2,
+    "xaurluv": 1
   }
 }
