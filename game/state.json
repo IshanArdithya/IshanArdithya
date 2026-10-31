@@ -1,17 +1,17 @@
 {
   "version": 6,
   "encounter": 4,
-  "revision": 61,
+  "revision": 62,
   "status": "active",
-  "turn": 5,
+  "turn": 6,
   "heroHp": 18,
-  "bossHp": 88,
-  "heroMana": 165,
-  "bossMana": 15,
+  "bossHp": 79,
+  "heroMana": 145,
+  "bossMana": 0,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": true,
-  "charged": true,
+  "charged": false,
   "bossIntent": "guard",
   "bossCharged": false,
   "bossUltimatePrepared": false,
@@ -23,6 +23,42 @@
     "turns": 22
   },
   "recent": [
+    {
+      "issue": 63,
+      "player": "juzzuo",
+      "encounter": 4,
+      "revision": 62,
+      "action": "attack",
+      "turn": 6,
+      "baseDamage": 18,
+      "critical": false,
+      "rolledDamage": 18,
+      "damage": 9,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 9,
+      "manaSpent": 20,
+      "manaRestored": 0,
+      "enemyManaSpent": 15,
+      "enemyManaRestored": 0,
+      "enemyAction": "guard",
+      "before": {
+        "heroHp": 18,
+        "bossHp": 88,
+        "heroMana": 165,
+        "bossMana": 15
+      },
+      "summary": "@juzzuo dealt 9 damage (Aura guarded 9) and took 0. Spent 20 mana. Aura spent 15 mana.",
+      "status": "active",
+      "heroHp": 18,
+      "bossHp": 79,
+      "heroMana": 145,
+      "bossMana": 0,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 62,
       "player": "juzzuo",
@@ -167,42 +203,6 @@
       "ultimateCooldown": 0,
       "ultimatePrepared": false,
       "charged": false
-    },
-    {
-      "issue": 58,
-      "player": "xaurluv",
-      "encounter": 4,
-      "revision": 57,
-      "action": "attack",
-      "turn": 1,
-      "baseDamage": 5,
-      "critical": false,
-      "rolledDamage": 5,
-      "damage": 5,
-      "incoming": 0,
-      "blocked": 0,
-      "enemyBlocked": 0,
-      "manaSpent": 10,
-      "manaRestored": 0,
-      "enemyManaSpent": 0,
-      "enemyManaRestored": 20,
-      "enemyAction": "focus",
-      "before": {
-        "heroHp": 26,
-        "bossHp": 100,
-        "heroMana": 240,
-        "bossMana": 40
-      },
-      "summary": "@xaurluv dealt 5 damage and took 0. Spent 10 mana. Aura restored 20 mana.",
-      "status": "active",
-      "heroHp": 26,
-      "bossHp": 95,
-      "heroMana": 230,
-      "bossMana": 60,
-      "guardCooldown": 0,
-      "ultimateCooldown": 0,
-      "ultimatePrepared": false,
-      "charged": false
     }
   ],
   "players": {
@@ -215,6 +215,6 @@
     "PushoDev": 1,
     "hesreallyhim": 2,
     "xaurluv": 1,
-    "juzzuo": 4
+    "juzzuo": 5
   }
 }
