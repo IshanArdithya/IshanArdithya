@@ -1,19 +1,19 @@
 {
   "version": 6,
   "encounter": 4,
-  "revision": 57,
+  "revision": 58,
   "status": "active",
-  "turn": 1,
-  "heroHp": 26,
-  "bossHp": 95,
-  "heroMana": 230,
+  "turn": 2,
+  "heroHp": 18,
+  "bossHp": 88,
+  "heroMana": 220,
   "bossMana": 60,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": false,
   "charged": false,
-  "bossIntent": "focus",
-  "bossCharged": true,
+  "bossIntent": "attack",
+  "bossCharged": false,
   "bossUltimatePrepared": false,
   "wins": 2,
   "losses": 1,
@@ -23,6 +23,42 @@
     "turns": 22
   },
   "recent": [
+    {
+      "issue": 59,
+      "player": "juzzuo",
+      "encounter": 4,
+      "revision": 58,
+      "action": "attack",
+      "turn": 2,
+      "baseDamage": 7,
+      "critical": false,
+      "rolledDamage": 7,
+      "damage": 7,
+      "incoming": 8,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 0,
+      "enemyAction": "attack",
+      "before": {
+        "heroHp": 26,
+        "bossHp": 95,
+        "heroMana": 230,
+        "bossMana": 60
+      },
+      "summary": "@juzzuo dealt 7 damage and took 8. Spent 10 mana.",
+      "status": "active",
+      "heroHp": 18,
+      "bossHp": 88,
+      "heroMana": 220,
+      "bossMana": 60,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 58,
       "player": "xaurluv",
@@ -99,6 +135,7 @@
     "sheiksabah": 1,
     "PushoDev": 1,
     "hesreallyhim": 2,
-    "xaurluv": 1
+    "xaurluv": 1,
+    "juzzuo": 1
   }
 }
