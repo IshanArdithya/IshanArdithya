@@ -1,20 +1,20 @@
 {
   "version": 6,
   "encounter": 5,
-  "revision": 80,
+  "revision": 81,
   "status": "active",
-  "turn": 5,
-  "heroHp": 21,
-  "bossHp": 78,
-  "heroMana": 175,
+  "turn": 6,
+  "heroHp": 11,
+  "bossHp": 64,
+  "heroMana": 155,
   "bossMana": 15,
   "guardCooldown": 0,
-  "ultimateCooldown": 5,
+  "ultimateCooldown": 4,
   "ultimatePrepared": false,
-  "charged": true,
-  "bossIntent": "prepare",
+  "charged": false,
+  "bossIntent": "cast",
   "bossCharged": true,
-  "bossUltimatePrepared": true,
+  "bossUltimatePrepared": false,
   "wins": 3,
   "losses": 1,
   "previousResult": {
@@ -23,6 +23,42 @@
     "turns": 18
   },
   "recent": [
+    {
+      "issue": 82,
+      "player": "roscoe-sincero-sys",
+      "encounter": 5,
+      "revision": 81,
+      "action": "attack",
+      "turn": 6,
+      "baseDamage": 14,
+      "critical": false,
+      "rolledDamage": 14,
+      "damage": 14,
+      "incoming": 10,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 20,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 0,
+      "enemyAction": "cast",
+      "before": {
+        "heroHp": 21,
+        "bossHp": 78,
+        "heroMana": 175,
+        "bossMana": 15
+      },
+      "summary": "@roscoe-sincero-sys dealt 14 damage and took 10. Spent 20 mana.",
+      "status": "active",
+      "heroHp": 11,
+      "bossHp": 64,
+      "heroMana": 155,
+      "bossMana": 15,
+      "guardCooldown": 0,
+      "ultimateCooldown": 4,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 81,
       "player": "roscoe-sincero-sys",
@@ -168,42 +204,6 @@
       "ultimateCooldown": 0,
       "ultimatePrepared": false,
       "charged": false
-    },
-    {
-      "issue": 77,
-      "player": "roscoe-sincero-sys",
-      "encounter": 5,
-      "revision": 76,
-      "action": "attack",
-      "turn": 1,
-      "baseDamage": 6,
-      "critical": false,
-      "rolledDamage": 6,
-      "damage": 6,
-      "incoming": 4,
-      "blocked": 0,
-      "enemyBlocked": 0,
-      "manaSpent": 10,
-      "manaRestored": 0,
-      "enemyManaSpent": 0,
-      "enemyManaRestored": 0,
-      "enemyAction": "attack",
-      "before": {
-        "heroHp": 26,
-        "bossHp": 100,
-        "heroMana": 240,
-        "bossMana": 40
-      },
-      "summary": "@roscoe-sincero-sys dealt 6 damage and took 4. Spent 10 mana.",
-      "status": "active",
-      "heroHp": 22,
-      "bossHp": 94,
-      "heroMana": 230,
-      "bossMana": 40,
-      "guardCooldown": 0,
-      "ultimateCooldown": 0,
-      "ultimatePrepared": false,
-      "charged": false
     }
   ],
   "players": {
@@ -217,6 +217,6 @@
     "hesreallyhim": 2,
     "xaurluv": 1,
     "juzzuo": 17,
-    "roscoe-sincero-sys": 5
+    "roscoe-sincero-sys": 6
   }
 }
