@@ -1,18 +1,18 @@
 {
   "version": 6,
   "encounter": 5,
-  "revision": 75,
+  "revision": 76,
   "status": "active",
-  "turn": 0,
-  "heroHp": 26,
-  "bossHp": 100,
-  "heroMana": 240,
+  "turn": 1,
+  "heroHp": 22,
+  "bossHp": 94,
+  "heroMana": 230,
   "bossMana": 40,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": false,
   "charged": false,
-  "bossIntent": null,
+  "bossIntent": "attack",
   "bossCharged": false,
   "bossUltimatePrepared": false,
   "wins": 3,
@@ -23,6 +23,42 @@
     "turns": 18
   },
   "recent": [
+    {
+      "issue": 77,
+      "player": "roscoe-sincero-sys",
+      "encounter": 5,
+      "revision": 76,
+      "action": "attack",
+      "turn": 1,
+      "baseDamage": 6,
+      "critical": false,
+      "rolledDamage": 6,
+      "damage": 6,
+      "incoming": 4,
+      "blocked": 0,
+      "enemyBlocked": 0,
+      "manaSpent": 10,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 0,
+      "enemyAction": "attack",
+      "before": {
+        "heroHp": 26,
+        "bossHp": 100,
+        "heroMana": 240,
+        "bossMana": 40
+      },
+      "summary": "@roscoe-sincero-sys dealt 6 damage and took 4. Spent 10 mana.",
+      "status": "active",
+      "heroHp": 22,
+      "bossHp": 94,
+      "heroMana": 230,
+      "bossMana": 40,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 76,
       "player": "IshanArdithya",
@@ -64,6 +100,7 @@
     "PushoDev": 1,
     "hesreallyhim": 2,
     "xaurluv": 1,
-    "juzzuo": 17
+    "juzzuo": 17,
+    "roscoe-sincero-sys": 1
   }
 }
