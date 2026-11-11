@@ -1,17 +1,17 @@
 {
   "version": 6,
   "encounter": 6,
-  "revision": 90,
+  "revision": 91,
   "status": "active",
-  "turn": 2,
+  "turn": 3,
   "heroHp": 26,
-  "bossHp": 100,
-  "heroMana": 200,
-  "bossMana": 45,
+  "bossHp": 91,
+  "heroMana": 180,
+  "bossMana": 30,
   "guardCooldown": 0,
   "ultimateCooldown": 0,
   "ultimatePrepared": true,
-  "charged": true,
+  "charged": false,
   "bossIntent": "guard",
   "bossCharged": true,
   "bossUltimatePrepared": false,
@@ -23,6 +23,42 @@
     "turns": 12
   },
   "recent": [
+    {
+      "issue": 93,
+      "player": "roscoe-sincero-sys",
+      "encounter": 6,
+      "revision": 91,
+      "action": "attack",
+      "turn": 3,
+      "baseDamage": 17,
+      "critical": false,
+      "rolledDamage": 17,
+      "damage": 9,
+      "incoming": 0,
+      "blocked": 0,
+      "enemyBlocked": 8,
+      "manaSpent": 20,
+      "manaRestored": 0,
+      "enemyManaSpent": 15,
+      "enemyManaRestored": 0,
+      "enemyAction": "guard",
+      "before": {
+        "heroHp": 26,
+        "bossHp": 100,
+        "heroMana": 200,
+        "bossMana": 45
+      },
+      "summary": "@roscoe-sincero-sys dealt 9 damage (Aura guarded 8) and took 0. Spent 20 mana. Aura spent 15 mana.",
+      "status": "active",
+      "heroHp": 26,
+      "bossHp": 91,
+      "heroMana": 180,
+      "bossMana": 30,
+      "guardCooldown": 0,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": true,
+      "charged": false
+    },
     {
       "issue": 92,
       "player": "roscoe-sincero-sys",
@@ -138,6 +174,6 @@
     "hesreallyhim": 2,
     "xaurluv": 1,
     "juzzuo": 17,
-    "roscoe-sincero-sys": 15
+    "roscoe-sincero-sys": 16
   }
 }
