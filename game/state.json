@@ -1,14 +1,14 @@
 {
   "version": 6,
   "encounter": 5,
-  "revision": 76,
+  "revision": 77,
   "status": "active",
-  "turn": 1,
-  "heroHp": 22,
+  "turn": 2,
+  "heroHp": 21,
   "bossHp": 94,
-  "heroMana": 230,
+  "heroMana": 215,
   "bossMana": 40,
-  "guardCooldown": 0,
+  "guardCooldown": 1,
   "ultimateCooldown": 0,
   "ultimatePrepared": false,
   "charged": false,
@@ -23,6 +23,42 @@
     "turns": 18
   },
   "recent": [
+    {
+      "issue": 78,
+      "player": "roscoe-sincero-sys",
+      "encounter": 5,
+      "revision": 77,
+      "action": "guard",
+      "turn": 2,
+      "baseDamage": 0,
+      "critical": false,
+      "rolledDamage": 0,
+      "damage": 0,
+      "incoming": 1,
+      "blocked": 3,
+      "enemyBlocked": 0,
+      "manaSpent": 15,
+      "manaRestored": 0,
+      "enemyManaSpent": 0,
+      "enemyManaRestored": 0,
+      "enemyAction": "attack",
+      "before": {
+        "heroHp": 22,
+        "bossHp": 94,
+        "heroMana": 230,
+        "bossMana": 40
+      },
+      "summary": "@roscoe-sincero-sys guarded, blocking 3 damage and took 1. Spent 15 mana.",
+      "status": "active",
+      "heroHp": 21,
+      "bossHp": 94,
+      "heroMana": 215,
+      "bossMana": 40,
+      "guardCooldown": 1,
+      "ultimateCooldown": 0,
+      "ultimatePrepared": false,
+      "charged": false
+    },
     {
       "issue": 77,
       "player": "roscoe-sincero-sys",
@@ -101,6 +137,6 @@
     "hesreallyhim": 2,
     "xaurluv": 1,
     "juzzuo": 17,
-    "roscoe-sincero-sys": 1
+    "roscoe-sincero-sys": 2
   }
 }
