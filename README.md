@@ -5,9 +5,9 @@ If you took a turn against Aura, a ⭐ on [this repo](https://github.com/IshanAr
 
 **Keep Aura outside the walls.** Frieren faces Aura. Everyone takes a turn. Choose an action, submit the prefilled issue, then return and refresh. GitHub sign-in required.
 
-<picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle-e6t5.svg" width="100%" alt="Frieren 26/26 HP; Aura 75/100 HP; active; attack focused; ultimate not prepared"></picture>
+<picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/battle-e6t6.svg" width="100%" alt="Frieren 26/26 HP; Aura 75/100 HP; active; attack focused; ultimate not prepared"></picture>
 
-<a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C6%7C93%7Cattack&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg" width="23%" alt="Attack: 5 - 7 damage, or 14 - 18 focused; 20 mana"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C6%7C93%7Cguard&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg" width="23%" alt="Guard: take at most 1 damage; 15 mana; skip one turn before reusing"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C6%7C93%7Cfocus&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus.svg" width="23%" alt="Focus: restore 40 mana and empower the next normal Attack"></a> <picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate-disabled.svg" width="23%" alt="Zoltraak (Prep): spend 80 mana now; Aura responds; cast on a later turn. Unavailable: Ultimate is cooling down: 6 other turns remaining."></picture>
+<a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C6%7C94%7Cattack&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/attack.svg" width="23%" alt="Attack: 5 - 7 damage, or 14 - 18 focused; 20 mana"></a> <a href="https://github.com/IshanArdithya/IshanArdithya/issues/new?title=raid%7C6%7C94%7Cguard&amp;body=Submit+this+issue+to+take+one+shared+turn+in+Aura+the+Guillotine.+No+editing+needed.%0A%0AWait+for+the+result%2C+then+return+and+refresh%3A+https%3A%2F%2Fgithub.com%2FIshanArdithya%2FIshanArdithya%23aura-the-guillotine%0A%0AEveryone+controls+Frieren+together.+If+another+visitor+moves+first%2C+refresh+and+choose+again."><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/guard.svg" width="23%" alt="Guard: take at most 1 damage; 15 mana; skip one turn before reusing"></a> <picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/focus-disabled.svg" width="23%" alt="Focus: restore 40 mana and empower the next normal Attack. Unavailable: Already focused with full mana. Choose another action."></picture> <picture><img src="https://raw.githubusercontent.com/IshanArdithya/IshanArdithya/main/game/assets/ultimate-disabled.svg" width="23%" alt="Zoltraak (Prep): spend 80 mana now; Aura responds; cast on a later turn. Unavailable: Ultimate is cooling down: 5 other turns remaining."></picture>
 
 <table>
 <tr>
@@ -24,16 +24,16 @@ If you took a turn against Aura, a ⭐ on [this repo](https://github.com/IshanAr
 <td valign="middle"><p><strong>Aura</strong></p><p>100 HP / 40/60 MP</p></td>
 </tr>
 </table>
-<p>ultimate: Ultimate is cooling down: 6 other turns remaining.</p>
+<p>focus: Already focused with full mana. Choose another action. ultimate: Ultimate is cooling down: 5 other turns remaining.</p>
 <p>Previous result: encounter 5, defeat, 12 turns.</p>
 </td>
 <td width="50%" valign="top">
 <h3>Recent moves</h3>
+<p><strong>Turn 6</strong> | <a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a> focused and restored 20 mana and took 0. Aura restored 35 mana.</p>
 <p><strong>Turn 5</strong> | <a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a> cast Unleashed Zoltraak and dealt 16 damage (Aura guarded 16) and took 0. Aura spent 15 mana.</p>
 <p><strong>Turn 4</strong> | <a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a> focused and restored 40 mana and took 0. Aura spent 15 mana.</p>
 <p><strong>Turn 3</strong> | <a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a> dealt 9 damage (Aura guarded 8) and took 0. Spent 20 mana. Aura spent 15 mana.</p>
 <p><strong>Turn 2</strong> | <a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a> focused and restored 40 mana and took 0. Aura spent 15 mana.</p>
-<p><strong>Turn 1</strong> | <a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a> prepared Unleashed Zoltraak and took 0. Spent 80 mana. Aura restored 20 mana.</p>
 </td>
 </tr>
 </table>
@@ -41,7 +41,7 @@ If you took a turn against Aura, a ⭐ on [this repo](https://github.com/IshanAr
 ### Top 10
 
 <table>
-<tr><td>1</td><td><a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a></td><td>18 turns</td></tr>
+<tr><td>1</td><td><a href="https://github.com/roscoe-sincero-sys">@roscoe-sincero-sys</a></td><td>19 turns</td></tr>
 <tr><td>2</td><td><a href="https://github.com/juzzuo">@juzzuo</a></td><td>17 turns</td></tr>
 <tr><td>3</td><td><a href="https://github.com/roosaramendis">@roosaramendis</a></td><td>15 turns</td></tr>
 <tr><td>4</td><td><a href="https://github.com/IshanDilmith">@IshanDilmith</a></td><td>4 turns</td></tr>
